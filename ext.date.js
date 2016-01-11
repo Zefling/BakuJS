@@ -1,4 +1,28 @@
 
+Date.prototype.monthNames = {
+ 	'fr' : [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ]
+};
+Date.prototype.dayNames = {
+	'fr' : [ 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi' ]
+};
+
+/**
+ * le nom du mois (suivant la langue donnée ou du navigateur)
+ * @param lg lg la langue, ex : 'fr' (factuatif)
+ * @return  le nom du mois
+ */
+Date.prototype.getMonthName = function(lg) {
+	return this.monthNames[lg ? lg : navigator.language][this.getMonth()];
+};
+
+/**
+ * le nom du jour de la semaine (suivant la langue donnée ou du navigateur)
+ * @param lg lg la langue, ex : 'fr' (factuatif)
+ * @return le nom du jour de la semaine
+ */
+Date.prototype.getDayName = function(lg) {
+	return this.dayNames[lg ? lg : navigator.language][this.getDay()];
+}; 
 
 /**
  * donne le jour de l'année en prenant en compte le changement d'heure (hiver/été)
