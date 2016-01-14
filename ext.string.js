@@ -38,3 +38,37 @@ String.prototype.format = function (){
 			: args[value];
 	});
 };
+
+/**
+ * ajout d'une chaine répété au début jusqu'à la longeur désirée
+ * @params n taille de chaîne désirée
+ * @params str chaîne à répété (par la fin)
+ * @return chaîne modifiée
+ */
+String.prototype.padLeft = function(n, str) {
+	 if (!n || n <= 0 || this.length >= n || str === undefined) {
+		return this;
+	 } else {
+		 var adding = n - this.length;
+		 var size = Math.trunc(adding / str.length + 1);
+		 var cut =  str.length - (adding % str.length); 
+		 return str.substring(cut, str.length) + Array(size).join(str || ' ') + this;
+	 }
+}; 
+
+/**
+ * ajout d'une chaine répété à la fin jusqu'à la longeur désirée
+ * @params n taille de chaîne désirée
+ * @params str chaîne à répété (par le début)
+ * @return chaîne modifiée
+ */
+String.prototype.padRight = function(n, str) {
+	 if (!n || n <= 0 || this.length >= n || str === undefined) {
+		return this;
+	 } else {
+		 var adding = n - this.length;
+		 var size = Math.trunc(adding / str.length + 1);
+		 var cut =  adding % str.length; 
+		 return this + Array(size).join(str || ' ') + str.substring(0, cut);
+	 }
+}; 
