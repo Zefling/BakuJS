@@ -24,7 +24,7 @@ var Formater = {};
  * formatage par function et paramètres :
  * - {key, function, params}
  * les functions sont des méthodes de Formater
- * @params liste d'arguments, array ou object
+ * @param liste d'arguments, array ou object
  * @return string
  */
 String.prototype.format = function (){
@@ -41,8 +41,8 @@ String.prototype.format = function (){
 
 /**
  * ajout d'une chaine répété au début jusqu'à la longeur désirée
- * @params n taille de chaîne désirée
- * @params str chaîne à répété (par la fin)
+ * @param n taille de chaîne désirée
+ * @param str chaîne à répété (par la fin)
  * @return chaîne modifiée
  */
 String.prototype.padLeft = function(n, str) {
@@ -58,8 +58,8 @@ String.prototype.padLeft = function(n, str) {
 
 /**
  * ajout d'une chaine répété à la fin jusqu'à la longeur désirée
- * @params n taille de chaîne désirée
- * @params str chaîne à répété (par le début)
+ * @param n taille de chaîne désirée
+ * @param str chaîne à répété (par le début)
  * @return chaîne modifiée
  */
 String.prototype.padRight = function(n, str) {
