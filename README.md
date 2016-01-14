@@ -9,3 +9,5 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
  
 **String**
 - <code>String.format()</code> : formateur {0, func, params} 
+- <code>String.padLeft()</code> : aggrandir une chaine par la gauche avec une chaine
+- <code>String.padRight()</code> : aggrandir une chaine par la droite avec une chaine
