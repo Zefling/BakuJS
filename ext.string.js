@@ -40,7 +40,7 @@ String.prototype.format = function (){
 };
 
 /**
- * ajout d'une chaine répété au début jusqu'à la longeur désirée
+ * ajout d'une chaine répétée au début jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
  * @param str chaîne à répété (par la fin)
  * @return chaîne modifiée
@@ -57,7 +57,7 @@ String.prototype.padLeft = function(n, str) {
 }; 
 
 /**
- * ajout d'une chaine répété à la fin jusqu'à la longeur désirée
+ * ajout d'une chaine répétée à la fin jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
  * @param str chaîne à répété (par le début)
  * @return chaîne modifiée
