@@ -20,9 +20,12 @@
  * {0,choice,1# an|1< ans}
  */ 
 Formatter.choice = function (val, arg) {
-	var c, choicesRegex = /\s*([-\d])+\s*(#|[><]=?)\s*((?:\\.|[^|])+)/g;
+	var c, 
+	    val = typeof(val) === 'string' ? val.trim() : val,
+	    choicesRegex = /\s*([-\da-zA-Z]+)\s*(#|[><]=?)\s*((?:\\.|[^|])+)/g;
 	while((c = choicesRegex.exec(arg)) !== null) {
-		var test = c[1], etat = c[2], result = c[3].trim();
+		var test = c[1], etat = c[2], result = c[3].replace('\\|', '|').trim();
+		console.log (c);
 		if((etat === "#"  && val == test) ||
 		   (etat === "<=" && val <= test) ||
 		   (etat === "<"  && val <  test) ||

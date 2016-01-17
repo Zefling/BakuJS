@@ -27,11 +27,11 @@
  */
 Number.prototype.formatByPattern = function(pattern, params) {
 	var params = typeof(params) === 'object' ? params : {},
-		groupingSize = 0, 
+	    groupingSize = 0, 
 	    decimalSize = 0, 
 	    lg = params.lg || navigator.language,
-		dot = params.dot,
-		space = params.space; 
+	    dot = params.dot,
+	    space = params.space; 
 	
 	if(!pattern) {
 		// partern par défaut
