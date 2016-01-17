@@ -25,7 +25,6 @@ Formatter.choice = function (val, arg) {
 	    choicesRegex = /\s*([-\da-zA-Z]+)\s*(#|[><]=?)\s*((?:\\.|[^|])+)/g;
 	while((c = choicesRegex.exec(arg)) !== null) {
 		var test = c[1], etat = c[2], result = c[3].replace('\\|', '|').trim();
-		console.log (c);
 		if((etat === "#"  && val == test) ||
 		   (etat === "<=" && val <= test) ||
 		   (etat === "<"  && val <  test) ||
@@ -49,7 +48,14 @@ Formatter.number = function (val, arg) {
 	else if(arg === "integer") {
 		arg = "#,##0";
 	}
-	return val.formatByPattern(arg);
+	// recupération de la langue : #,##0:fr
+	var params = {},
+	    match = arg.match(/[#0]:(([a-z]{2})(-[A-Z]{2})?)/);
+	if(match && match[1]) {
+		params.lg = match[2];
+		params.local = match[1];
+	}
+	return val.formatByPattern(arg, params);
 }
 
 /**

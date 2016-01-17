@@ -94,6 +94,12 @@ window.onload = function(){
 	Test.equals(new Number(1000000).formatByPattern('#,####',   {lg : 'fr'}), '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals(new Number(123456789.987654321).formatByPattern('#,###.00',   {lg : 'en'}), '123,456,789.98', '123456789.987654321 + #,###.00 → 123,456,789.98');
 	
+	Test.title("String.format() + number");
+	Test.equals('{0, number, #,###}'.format(1),             '1',             '1 + {0, number, #,###} → 1');
+	Test.equals('{0, number, #,###:fr}'.format([1000.10]),  '1\u00A0000',    '[1000.10] + {0, number, #,###:fr} → 1\u00A0000');
+	Test.equals('{0, number, #,###.00:fr}'.format(1000.10), '1\u00A0000,10', '1000.10 + {0, number, #,###.00:fr} → 1\u00A0000,00');
+	Test.equals('{0, number, #,###.00:en}'.format(1000.10), '1,000.10', '1000.10 + {0, number, #,###.00:en} → 1,000.10');
+	
 	Test.title("String.format() + choice");
 	Test.equals('{0, choice, 1# true|2# false}'.format(1),             'true',      '1 + {0, choice, 1# true|2# false} → true');
 	Test.equals('{0, choice, 1# true\\|true|2# false}'.format(1),      'true|true', '1 + {0, choice, 1# true\\|true|2# false} → true|true');
