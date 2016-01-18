@@ -27,7 +27,7 @@ Test.equals = function (value, equals, message) {
 	var diff = performance.now()  - this.time;
 	var b = document.createElement("div"), ok = value == equals;
 	b.classList.add(ok ? 'ok' : 'ko');
-	b.title = message + (ok ? ' #ok' : ' #ko : "' + value + '" != "' + equals + '"' ) +  ' (' + diff + 'ms)';
+	b.title = message + (ok ? ' #ok' : ' #ko : "' + value + '" != "' + equals + '"' ) +  ' (' + (Math.round(diff * 10000) / 10000) + 'ms)';
 	document.body.appendChild(b);
 	this.time = performance.now(); 
 };
@@ -114,7 +114,7 @@ window.onload = function(){
 	Test.title("String.format() + date");
 	Test.equals('{0, date, d/M/yy}'.format('2015-02-08'),     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');
 	Test.equals('{0, date, dd/MM/yyyy}'.format('2015-10-20'), '20/10/2015', '2015-10-20 + {0, date, dd/MM/yyyy} → 20/10/2015');
-	Test.equals('{0, date, w-yyyy}'.format('2015-10-20'),     '43-2015',    '2015-10-20 + {0, date, dd/MM/yyyy} → 43-2015');
+	Test.equals('{0, date, w-yyyy}'.format('2015-10-20'),     '43-2015',    '2015-10-20 + {0, date, w-yyyy} → 43-2015');
 	Test.equals('{0, date, \\w\\e\\e\\kw\\\\yyyy}'.format('2015-10-20'), 'week43\\2015', '2015-10-20 + {0, date, \\w\\e\\e\\kw\\\\yyyy} → week43\\2015');
 	
 }
