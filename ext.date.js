@@ -97,37 +97,44 @@ Date.prototype.toStringFormat = function (pattern, lg) {
 	    k  = this.getHours() === 0 ? 24 : this.getHours(),
 	    h  = this.getHours() > 12 ? this.getHours() % 12 : (this.getHours() === 0 ? 12 : this.getHours());
 	
+	
+		
 	return pattern
 	
+		.replace(/\\\\/g,           "[[\\\\]]")
 		// date
-		.replace(/yyyy/g, this.getFullYear())
-		.replace(/yy/g, String(this.getFullYear()).substr(2, 2))
-		.replace(/M{3,}/g, nm.substr(0, 3))
-		.replace(/MM/g, String(this.getMonth() + 1).padLeft(2, '0'))
-		.replace(/ww/g, String(this.getWeek()).padLeft(2, '0'))
-		.replace(/w/g, this.getWeek())
-		.replace(/DDD/g, String(this.getDayOfYear()).padLeft(2, '0'))
-		.replace(/D{1,2}/g, this.getDayOfYear())
-		.replace(/dd/g, String(this.getDate()).padLeft(2, '0'))
-		.replace(/d/g, this.getDate())
-		.replace(/F/g, this.getDay())
-		.replace(/E{4,}/g, nd)
-		.replace(/E+/g, nd.substr(0, 3))
+		.replace(/(^|[^\\]|)yyyy/g, "$1" + this.getFullYear())
+		.replace(/(^|[^\\])yy/g,    "$1" + String(this.getFullYear()).substr(2, 2))
+		.replace(/(^|[^\\])M{3,}/g, "$1" + nm.substr(0, 3))
+		.replace(/(^|[^\\])MM/g,    "$1" + String(this.getMonth() + 1).padLeft(2, '0'))
+		.replace(/(^|[^\\])M/g,     "$1" + (this.getMonth() + 1))
+		.replace(/(^|[^\\])ww/g,    "$1" + String(this.getWeek()).padLeft(2, '0'))
+		.replace(/(^|[^\\])w/g,     "$1" + this.getWeek())
+		.replace(/(^|[^\\])DDD/g,   "$1" + String(this.getDayOfYear()).padLeft(2, '0'))
+		.replace(/(^|[^\\])D{1,2}/g,"$1" + this.getDayOfYear())
+		.replace(/(^|[^\\])dd/g,    "$1" + String(this.getDate()).padLeft(2, '0'))
+		.replace(/(^|[^\\])d/g,     "$1" + this.getDate())
+		.replace(/(^|[^\\])F/g,     "$1" + this.getDay())
+		.replace(/(^|[^\\])E{4,}/g, "$1" + nd)
+		.replace(/(^|[^\\])E+/g,    "$1" + nd.substr(0, 3))
 
 		// heure
-		.replace(/a/g, this.getHours() > 12 | this.getHours() === 0 ? 'PM' : 'AM')
-		.replace(/HH/g, String(this.getHours()).padLeft(2, '0'))
-		.replace(/H/g, this.getHours())
-		.replace(/kk/g, String(k).padLeft(2, '0'))
-		.replace(/k/g, k)
-		.replace(/KK/g, String(this.getHours() % 12).padLeft(2, '0'))
-		.replace(/K/g, this.getHours() % 12)
-		.replace(/hh/g, String(h).padLeft(2, '0'))
-		.replace(/h/g, h)
-		.replace(/mm/g, String(this.getMinutes()).padLeft(2, '0'))
-		.replace(/m/g, this.getMinutes())
-		.replace(/ss/g, String(this.getSeconds()).padLeft(2, '0'))
-		.replace(/s/g, this.getSeconds())
-		.replace(/S{3,}/g, String(this.getMilliseconds()).padLeft(3, '0'))
-		.replace(/S+/g, String(this.getMilliseconds()));
+		.replace(/(^|[^\\])a/g,     "$1" + this.getHours() > 12 | this.getHours() === 0 ? 'PM' : 'AM')
+		.replace(/(^|[^\\])HH/g,    "$1" + String(this.getHours()).padLeft(2, '0'))
+		.replace(/(^|[^\\])H/g,     "$1" + this.getHours())
+		.replace(/(^|[^\\])kk/g,    "$1" + String(k).padLeft(2, '0'))
+		.replace(/(^|[^\\])k/g,     "$1" + k)
+		.replace(/(^|[^\\])KK/g,    "$1" + String(this.getHours() % 12).padLeft(2, '0'))
+		.replace(/(^|[^\\])K/g,     "$1" + this.getHours() % 12)
+		.replace(/(^|[^\\])hh/g,    "$1" + String(h).padLeft(2, '0'))
+		.replace(/(^|[^\\])h/g,     "$1" + h)
+		.replace(/(^|[^\\])mm/g,    "$1" + String(this.getMinutes()).padLeft(2, '0'))
+		.replace(/(^|[^\\])m/g,     "$1" + this.getMinutes())
+		.replace(/(^|[^\\])ss/g,    "$1" + String(this.getSeconds()).padLeft(2, '0'))
+		.replace(/(^|[^\\])s/g,     "$1" + this.getSeconds())
+		.replace(/(^|[^\\])S{3,}/g, "$1" + String(this.getMilliseconds()).padLeft(3, '0'))
+		.replace(/(^|[^\\])S+/g,    "$1" + String(this.getMilliseconds()))
+		
+		.replace(/\\(.)/g,          "$1")
+		.replace(/\[\[\\\]\]/g,   "\\");
 }
