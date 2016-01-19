@@ -1,4 +1,4 @@
-# extJS
+# BakuJS
 Quelques petites méthodes en plus, par ajout sur le prototype des objets de base :
 
 **Date**
