@@ -79,6 +79,12 @@ window.onload = function(){
 	Test.equals(new Number(1000000).formatByPattern('#,####',   {lg : 'fr'}), '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals(new Number(123456789.987654321).formatByPattern('#,###.00',   {lg : 'en'}), '123,456,789.98', '123456789.987654321 + #,###.00 → 123,456,789.98');
 	
+	Test.title("String.format()");
+	Test.equals('{0}'.format(1),             '1',             '1 + {0} → 1');
+	Test.equals('{0}{0}{0}'.format(1),       '111',           '1 + {0}{0}{0} → 111');
+	Test.equals('{0}\\{0}{0}'.format(1),     '1{0}1',         '1 + {0}\\{0}{0} → 1{0}1');
+	Test.equals('{0}{0{0}'.format(1),        '1{01',          '1 + {0}{0{0} → 1{01');
+	
 	Test.title("String.format() + number");
 	Test.equals('{0, number, #,###}'.format(1),             '1',             '1 + {0, number, #,###} → 1');
 	Test.equals('{0, number, #,###:fr}'.format([1000.10]),  '1\u00A0000',    '[1000.10] + {0, number, #,###:fr} → 1\u00A0000');
@@ -91,7 +97,8 @@ window.onload = function(){
 	Test.equals('{0, choice, 1# false|2# true}'.format(2),             'true',      '2 + {0, choice, 1# false|2# true} → true');
 	Test.equals('{0, choice, 1# false|2# true}'.format([2]),           'true',      '[2] + {0, choice,  1# false|2# true} → true');
 	Test.equals('{0, choice, this# true|other false}'.format(['this']),'true',          '[\'get\'] + {0, choice, get# true|other false} → true');
-	Test.equals('{val, choice, this# true|other false}'.format({val : 'this'}), 'true', '{val : \'this\'} + {val, choice, get# true|other false} → true');
+	Test.equals('{val, choice, this# true|other false}'.format({val : 'this'}),  'true', '{val : \'this\'} + {val, choice, get# true|other false} → true');
+	Test.equals('{val, choice, this# {1\\}|other#{0\\}}'.format({val : 'this'}), '{1}',  '{val : \'this\'} + {val, choice, this# {1\\}|other#{0\\}} → true');
 	
 	Test.title("String.format() + date");
 	Test.equals('{0, date, d/M/yy}'.format('2015-02-08'),     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');
