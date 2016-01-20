@@ -14,7 +14,6 @@ String.prototype.format = function (){
 		args = args[0];
 	}
 	return this.replace(/(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:\\.|[^}])+)\s*)?}/g, function (base, test, value, func, params) {
-		console.log(base, test, value, func, params);
 		return test !== '\\' ? (
 			(func !== undefined && typeof Formatter[func] === 'function')  
 			? ( params !== undefined ? Formatter[func](args[value], params.replace('\\}', '}')) : Formatter[func](args[value]) )

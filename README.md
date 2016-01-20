@@ -21,3 +21,19 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - choice : {0,choice,1# an|1< ans}
 - number : {0, number, #,##0}
 - date :  {0,date, dd/MM/yyyy}
+
+**DOM**
+Raccoucis :
+- <code>baku.id = document.elementById</code>
+- <code>baku.first = document.querySelector</code>
+- <code>baku.list = document.querySelectorAll</code>
+
+Aides :
+- <code>HTMLElement.css()</code> : ajout s'implifier de CSS sur un élement du DOM
+- <code>NodeList.css()</code> : ajout s'implifier de CSS sur une liste d'élements du DOM
+- <code>NodeList.addClass()</code> : ajout s'implifier d'une classe sur une liste d'élements du DOM
+- <code>NodeList.removeClass()</code> : suppression s'implifier d'une classe sur une liste d'élements du DOM
+
+Exemple : 
+- baku.list('p').css({'color' : 'red', 'text-decoration' : 'underline'});
+- baku.list('p').removeClass('ok');
