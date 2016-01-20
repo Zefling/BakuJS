@@ -23,17 +23,21 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - date :  {0,date, dd/MM/yyyy}
 
 **DOM**
-Raccoucis :
+
+_Raccourcis :_
 - <code>baku.id = document.elementById</code>
 - <code>baku.first = document.querySelector</code>
 - <code>baku.list = document.querySelectorAll</code>
 
-Aides :
-- <code>HTMLElement.css()</code> : ajout s'implifier de CSS sur un élement du DOM
-- <code>NodeList.css()</code> : ajout s'implifier de CSS sur une liste d'élements du DOM
-- <code>NodeList.addClass()</code> : ajout s'implifier d'une classe sur une liste d'élements du DOM
-- <code>NodeList.removeClass()</code> : suppression s'implifier d'une classe sur une liste d'élements du DOM
+_Aides :_
+- <code>HTMLElement.css()</code> : ajout s'implifié de CSS sur un élement du DOM
+- <code>NodeList.css()</code> : ajout s'implifié de CSS sur une liste d'élements du DOM
+- <code>NodeList.addClass()</code> : ajout s'implifié d'une classe sur une liste d'élements du DOM
+- <code>NodeList.removeClass()</code> : suppression s'implifié d'une classe sur une liste d'élements du DOM
 
-Exemple : 
-- baku.list('p').css({'color' : 'red', 'text-decoration' : 'underline'});
-- baku.list('p').removeClass('ok');
+_Exemples :_
+```js
+baku.list('h2 + div')
+    .css({'color' : 'red', 'text-decoration' : 'underline'})
+    .removeClass('ko');
+```
