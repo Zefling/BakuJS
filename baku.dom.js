@@ -3,6 +3,8 @@ baku._id = document.elementById;
 baku._first = document.querySelector;
 baku._list = document.querySelectorAll;
 baku._new = document.createElement;
+baku._frag = document.createDocumentFragment;
+
 
 
 /**
@@ -40,7 +42,8 @@ HTMLElement.prototype._css = function (name, value) {
  * @param value valeur du style
  * @return valeur ou undefined si non trouvée
  */
-NodeList.prototype._css = function (name, value) {
+NodeList.prototype._css =
+Array.prototype._css = function (name, value) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 		    this[i]._css(name, value);
@@ -54,7 +57,8 @@ NodeList.prototype._css = function (name, value) {
  * @param name nom de classe
  * @return la liste
  */
-NodeList.prototype._addClass = function (name) {
+NodeList.prototype._addClass = 
+Array.prototype._addClass = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.add(name);
@@ -68,7 +72,8 @@ NodeList.prototype._addClass = function (name) {
  * @param name nom de classe
  * @return la liste
  */
-NodeList.prototype._rmClass = function (name) {
+NodeList.prototype._rmClass = 
+Array.prototype._rmClass  = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.remove(name);
@@ -76,3 +81,44 @@ NodeList.prototype._rmClass = function (name) {
 	}
 	return this;
 };
+
+/**
+ * utilise le selector sur tout les élements de la liste et retour le premier
+ * @param selector nom de classe
+ * @return element
+ */
+NodeList.prototype._first = 
+Array.prototype._first = function (selector) {
+	var e = new HTMLElement();
+	for (var i in this) {
+		if (this[i] instanceof HTMLElement && (e = this[i].querySelector(selector)) !== undefined) {
+			break;
+		}
+	}
+	return e;
+};
+
+/**
+ * utilise le selector sur tout les élements de la liste et retourne une liste
+ * @param selector nom de classe
+ * @return la liste
+ */
+NodeList.prototype._list = 
+Array.prototype._list = function (selector) {
+	var e, k = 0, list = new Array();
+	for (var i in this) {
+		if (this[i] instanceof HTMLElement) {
+			e = this[i].querySelectorAll(selector);
+			if (e.length > 0) {
+				for(var j in e) {
+					if (e[j] instanceof HTMLElement) {
+						list[list.length] = e[j];
+					}
+				}
+			}
+		}
+	}
+	return list;
+};
+
+
