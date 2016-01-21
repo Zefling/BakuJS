@@ -1,7 +1,8 @@
 var baku = document;
-baku.id = document.elementById;
-baku.first = document.querySelector;
-baku.list = document.querySelectorAll;
+baku._id = document.elementById;
+baku._first = document.querySelector;
+baku._list = document.querySelectorAll;
+baku._new = document.createElement;
 
 
 /**
@@ -12,7 +13,7 @@ baku.list = document.querySelectorAll;
  * @param value valeur du style (facultatif)
  * @return valeur pour @get, this pour @set
  */
-HTMLElement.prototype.css = function (name, value) {
+HTMLElement.prototype._css = function (name, value) {
 	if (typeof(name) !== 'object' && value === undefined) {
 		if (this.style[name]) {
 			return this.style[name];
@@ -39,10 +40,10 @@ HTMLElement.prototype.css = function (name, value) {
  * @param value valeur du style
  * @return valeur ou undefined si non trouvée
  */
-NodeList.prototype.css = function (name, value) {
+NodeList.prototype._css = function (name, value) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
-		    this[i].css(name, value);
+		    this[i]._css(name, value);
 		}
 	}
 	return this;
@@ -53,7 +54,7 @@ NodeList.prototype.css = function (name, value) {
  * @param name nom de classe
  * @return la liste
  */
-NodeList.prototype.addClass = function (name) {
+NodeList.prototype._addClass = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.add(name);
@@ -67,7 +68,7 @@ NodeList.prototype.addClass = function (name) {
  * @param name nom de classe
  * @return la liste
  */
-NodeList.prototype.removeClass = function (name) {
+NodeList.prototype._rmClass = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.remove(name);
