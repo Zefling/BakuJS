@@ -22,6 +22,12 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - number : {0, number, #,##0}
 - date :  {0,date, dd/MM/yyyy}
 
+_Exemples :_
+```js
+"Il y a {0, number, #,##0:fr} jour{0, choice,1<=|1>s}".format(1200);                 // Il y a 1 200 jours
+"Il y a {jours, number, #,##0:fr} jour{jours, choice,1<=|1>s}".format({jours : 1});  // Il y a 1 jour
+```
+
 **DOM**
 
 _Raccourcis :_
