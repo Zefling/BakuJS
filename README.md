@@ -46,5 +46,5 @@ _Exemples :_
 ```js
 baku._list('h2 + div')
     ._css({'color' : 'red', 'text-decoration' : 'underline'})
-    ._removeClass('ko');
+    ._rmClass('ko');
 ```
