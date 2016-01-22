@@ -5,7 +5,10 @@ baku._list = document.querySelectorAll;
 baku._new = document.createElement;
 baku._frag = document.createDocumentFragment;
 
-
+var DomArray = function() {}; 
+for(key in Array.prototype) { 
+ DomArray.prototype[key] = Array.prototype[key];
+}
 
 /**
  * ajout d'un style sur un élement. 
@@ -43,7 +46,7 @@ HTMLElement.prototype._css = function (name, value) {
  * @return valeur ou undefined si non trouvée
  */
 NodeList.prototype._css =
-Array.prototype._css = function (name, value) {
+DomArray.prototype._css = function (name, value) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 		    this[i]._css(name, value);
@@ -58,7 +61,7 @@ Array.prototype._css = function (name, value) {
  * @return la liste
  */
 NodeList.prototype._addClass = 
-Array.prototype._addClass = function (name) {
+DomArray.prototype._addClass = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.add(name);
@@ -73,7 +76,7 @@ Array.prototype._addClass = function (name) {
  * @return la liste
  */
 NodeList.prototype._rmClass = 
-Array.prototype._rmClass  = function (name) {
+DomArray.prototype._rmClass  = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i].classList.remove(name);
@@ -88,7 +91,7 @@ Array.prototype._rmClass  = function (name) {
  * @return element
  */
 NodeList.prototype._first = 
-Array.prototype._first = function (selector) {
+DomArray.prototype._first = function (selector) {
 	var e = new HTMLElement();
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement && (e = this[i].querySelector(selector)) !== undefined) {
@@ -104,8 +107,8 @@ Array.prototype._first = function (selector) {
  * @return la liste
  */
 NodeList.prototype._list = 
-Array.prototype._list = function (selector) {
-	var e, k = 0, list = new Array();
+DomArray.prototype._list = function (selector) {
+	var e, k = 0, list = new DomArray();
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			e = this[i].querySelectorAll(selector);
