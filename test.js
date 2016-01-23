@@ -83,13 +83,13 @@ window.onload = function(){
 	Test.equals('{0}'.format(1),             '1',             '1 + {0} → 1');
 	Test.equals('{0}{0}{0}'.format(1),       '111',           '1 + {0}{0}{0} → 111');
 	Test.equals('{0}\\{0}{0}'.format(1),     '1{0}1',         '1 + {0}\\{0}{0} → 1{0}1');
-	Test.equals('{0}{0{0}'.format(1),        '1{01',          '1 + {0}{0{0} → 1{01');
 	
 	Test.title("String.format() + number");
 	Test.equals('{0, number, #,###}'.format(1),             '1',             '1 + {0, number, #,###} → 1');
 	Test.equals('{0, number, #,###:fr}'.format([1000.10]),  '1\u00A0000',    '[1000.10] + {0, number, #,###:fr} → 1\u00A0000');
 	Test.equals('{0, number, #,###.00:fr}'.format(1000.10), '1\u00A0000,10', '1000.10 + {0, number, #,###.00:fr} → 1\u00A0000,00');
-	Test.equals('{0, number, #,###.00:en}'.format(1000.10), '1,000.10', '1000.10 + {0, number, #,###.00:en} → 1,000.10');
+	Test.equals('{0, number, #,###.00:en}'.format(1000.10), '1,000.10',      '1000.10 + {0, number, #,###.00:en} → 1,000.10');
+	Test.equals('{0, number, {1}}'.format([1, '#,###.00:fr']),'1,00',        '[1, #,###.00:fr] + {0, number, {1}} → 1,00');
 	
 	Test.title("String.format() + choice");
 	Test.equals('{0, choice, 1# true|2# false}'.format(1),             'true',      '1 + {0, choice, 1# true|2# false} → true');
@@ -98,12 +98,14 @@ window.onload = function(){
 	Test.equals('{0, choice, 1# false|2# true}'.format([2]),           'true',      '[2] + {0, choice,  1# false|2# true} → true');
 	Test.equals('{0, choice, this# true|other false}'.format(['this']),'true',          '[\'get\'] + {0, choice, get# true|other false} → true');
 	Test.equals('{val, choice, this# true|other false}'.format({val : 'this'}),  'true', '{val : \'this\'} + {val, choice, get# true|other false} → true');
-	Test.equals('{val, choice, this# {1\\}|other#{0\\}}'.format({val : 'this'}), '{1}',  '{val : \'this\'} + {val, choice, this# {1\\}|other#{0\\}} → true');
+	Test.equals('{val, choice, this# \\{1\\}|other#\\{0\\}}'.format({val : 'this'}), '{1}',  '{val : \'this\'} + {val, choice, this# \\{1\\}|other#\\{0\\}} → true');
+	Test.equals('{0, choice, 1#{1}|2#{2}}'.format([1, 2, 3]),        '2',          '[1, 2, 3] + {0, choice, 1#{1}|2#{2}} → 2');
 	
 	Test.title("String.format() + date");
 	Test.equals('{0, date, d/M/yy}'.format('2015-02-08'),     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');
 	Test.equals('{0, date, dd/MM/yyyy}'.format('2015-10-20'), '20/10/2015', '2015-10-20 + {0, date, dd/MM/yyyy} → 20/10/2015');
 	Test.equals('{0, date, w-yyyy}'.format('2015-10-20'),     '43-2015',    '2015-10-20 + {0, date, w-yyyy} → 43-2015');
 	Test.equals('{0, date, \\w\\e\\e\\kw\\\\yyyy}'.format('2015-10-20'), 'week43\\2015', '2015-10-20 + {0, date, \\w\\e\\e\\kw\\\\yyyy} → week43\\2015');
+	Test.equals('{0, date, {1}}'.format(['2015-10-20', 'dd/MM/yyyy']),   '20/10/2015',          '[2015-10-20, dd/MM/yyyy] + {0, date, {1}} → 20/10/2015');
 	
 }
