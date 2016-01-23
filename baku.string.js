@@ -67,45 +67,57 @@ String.prototype.format = function (){
 		args = args[0];
 	}
 	
-	str = Formatter.parse(this, function (base, value, func, params) {
+	return Formatter.parse(this, function (base, value, func, params) {
 		return (func !== undefined && typeof Formatter[func] === 'function')  
 				? ( params !== undefined ? Formatter[func](args[value], args, params) : Formatter[func](args[value], args) )
 				: args[value];
-			});
-	return str.replace('\\}', '}').replace('\\{', '{');
+			}).replace('\\}', '}').replace('\\{', '{');
 };
 
 
 /**
  * ajout d'une chaine répétée au début jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
- * @param str chaîne à répété (par la fin)
+ * @param str chaîne à répété 
+ * @param mode mode de répétition
  * @return chaîne modifiée
  */
-String.prototype.padLeft = function(n, str) {
-	 if (!n || n <= 0 || this.length >= n || str === undefined) {
+String.prototype.padLeft = function(n, str, mode) {
+	if (!n || n <= 0 || this.length >= n || str === undefined) {
 		return this;
-	 } else {
-		 var adding = n - this.length;
-		 var size = Math.trunc(adding / str.length + 1);
-		 var cut =  str.length - (adding % str.length); 
-		 return str.substring(cut, str.length) + Array(size).join(str || ' ') + this;
+	 } 
+	 switch (mode) {
+		case 'r':
+			return ''.padLeft(n, str).substring(0, n - this.length) + this;
+			break;
+		default : 
+			var adding = n - this.length,
+			    size = Math.trunc(adding / str.length + 1),
+			    cut =  str.length - (adding % str.length); 
+			return str.substring(cut, str.length) + Array(size).join(str || ' ') + this
 	 }
 }; 
 
 /**
  * ajout d'une chaine répétée à la fin jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
- * @param str chaîne à répété (par le début)
+ * @param str chaîne à répété
+ * @param mode mode de répétition
  * @return chaîne modifiée
  */
-String.prototype.padRight = function(n, str) {
+String.prototype.padRight = function(n, str, mode) {
 	 if (!n || n <= 0 || this.length >= n || str === undefined) {
 		return this;
-	 } else {
-		 var adding = n - this.length;
-		 var size = Math.trunc(adding / str.length + 1);
-		 var cut =  adding % str.length; 
-		 return this + Array(size).join(str || ' ') + str.substring(0, cut);
+	}
+	switch (mode) {
+		case 'r':
+			return this + ''.padRight(n, str).substring(this.length, n);
+			break;
+		default : 
+			 var adding = n - this.length,
+			     size = Math.trunc(adding / str.length + 1),
+			     cut =  adding % str.length; 
+			 return this + Array(size).join(str || ' ') + str.substring(0, cut)
+			 break;
 	 }
 }; 

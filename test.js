@@ -148,10 +148,43 @@ window.onload = function(){
 	Test.equals("new Number(1000000).formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals("new Number(123456789.987654321).formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.98', '123456789.987654321 + #,###.00 → 123,456,789.98');
 	
+	Test.title("String.padLeft()");
+	Test.equals("'1'.padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
+	Test.equals("'1'.padLeft(2,  '.')",            '.1',            "1 + left(1, '.') → .1");
+	Test.equals("'1'.padLeft(10, '.')",            '.........1',    "1 + left(10, '.') → ........1");
+	Test.equals("'1'.padLeft(2,  'ABCD')",         'D1',            "1 + left(2, 'ABCD') → C1");
+	Test.equals("'1'.padLeft(10, 'ABCD')",         'DABCDABCD1',    "1 + left(10, 'ABCD') → DABCDABCD1");
+	Test.equals("'1'.padLeft(2,  'ABCD', 'r')",    'C1',            "1 + left(2, 'ABCD') → C1");
+	Test.equals("'1'.padLeft(10, 'ABCD', 'r')",    'CDABCDABC1',    "1 + left(10, 'ABCD') → CDABCDABC1");
+	Test.equals("'12'.padLeft(1, '.')",            '12',            "12 + left(1, '') → 12");
+	Test.equals("'12'.padLeft(4, '.')",            '..12',          "12 + left(4, '.') → ..12");
+	Test.equals("'12'.padLeft(10,'.')",            '........12',    "12 + left(10, '.') → .......12");
+	Test.equals("'12'.padLeft(4, 'ABCD')",         'CD12',          "12 + left(4, 'ABCD') → CD12");
+	Test.equals("'12'.padLeft(10,'ABCD')",         'ABCDABCD12',    "12 + left(10, 'ABCD') → ABCDABCD12");
+	Test.equals("'12'.padLeft(4, 'ABCD', 'r')",    'AB12',          "12 + left(4, 'ABCD') → AB12");
+	Test.equals("'12'.padLeft(10,'ABCD', 'r')",    'CDABCDAB12',    "12 + left(10, 'ABCD') → CDABCDAB12");
+	Test.equals("'12345'.padLeft(4, 'ABCD')",      '12345',         "12345 + left(4, 'ABCD') → 12345");
+	Test.equals("'12345'.padLeft(6, 'ABCD')",      'D12345',        "12345 + left(6, 'ABCD') → D12345");
+	Test.equals("'12345'.padLeft(10,'ABCD')",      'DABCD12345',    "12345 + left(10, 'ABCD') → DABCD12345");
+	
+	Test.title("String.padRight()");	
+	Test.equals("'1'.padRight(1, '.')",            '1',              "1 + right(1, '') → 1");
+	Test.equals("'1'.padRight(2, '.')",            '1.',             "1 + right(1, '.') → 1.");
+	Test.equals("'1'.padRight(10, '.')",           '1.........',     "1 + right(10, '.') → 1........");
+	Test.equals("'1'.padRight(2, 'ABCD')",         '1A',             "1 + left(2, 'ABCD') → 1A");
+	Test.equals("'1'.padRight(10, 'ABCD')",        '1ABCDABCDA',     "1 + right(10, 'ABCD') → 1ABCDABCDA");
+	Test.equals("'1'.padRight(2, 'ABCD', 'r')",    '1B',             "1 + left(2, 'ABCD') → 1B");
+	Test.equals("'1'.padRight(10, 'ABCD', 'r')",   '1BCDABCDAB',     "1 + right(10, 'ABCD') → 1BCDABCDAB");
+	Test.equals("'12345'.padRight(4, 'ABCD')",     '12345',          "12345 + left(4, 'ABCD') → 12345");
+	Test.equals("'12345'.padRight(6, 'ABCD')",     '12345A',         "12345 + left(6, 'ABCD') → 12345A");
+	Test.equals("'12345'.padRight(10,'ABCD')",     '12345ABCDA',     "12345 + left(10, 'ABCD') → 12345ABCDA");
+	Test.equals("'12345'.padRight(6, 'ABCD', 'r')",'12345B',         "12345 + left(6, 'ABCD') → 12345B");
+	Test.equals("'12345'.padRight(10,'ABCD', 'r')",'12345BCDAB',     "12345 + left(10, 'ABCD') → 12345BCDAB");
+	
 	Test.title("String.format()");
-	Test.equals("'{0}'.format(1)",             '1',             '1 + {0} → 1');
-	Test.equals("'{0}{0}{0}'.format(1)",       '111',           '1 + {0}{0}{0} → 111');
-	Test.equals("'{0}\\\\{0\\\\}{0}'.format(1)",   '1{0}1',         '1 + {0}\\{0\\}{0} → 1{0}1');
+	Test.equals("'{0}'.format(1)",               '1',     '1 + {0} → 1');
+	Test.equals("'{0}{0}{0}'.format(1)",         '111',   '1 + {0}{0}{0} → 111');
+	Test.equals("'{0}\\\\{0\\\\}{0}'.format(1)", '1{0}1', '1 + {0}\\{0\\}{0} → 1{0}1');
 	Test.error("'{0}\\\\{0}{0}'.format(1)");
 	Test.error("'{0}{0\\\\}{0}'.format(1)");
 	Test.error("'{0}{0,}{0}'.format(1)");
