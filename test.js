@@ -82,7 +82,7 @@ window.onload = function(){
 	Test.title("String.format()");
 	Test.equals('{0}'.format(1),             '1',             '1 + {0} → 1');
 	Test.equals('{0}{0}{0}'.format(1),       '111',           '1 + {0}{0}{0} → 111');
-	Test.equals('{0}\\{0}{0}'.format(1),     '1{0}1',         '1 + {0}\\{0}{0} → 1{0}1');
+	Test.equals('{0}\\{0\\}{0}'.format(1),   '1{0}1',         '1 + {0}\\{0\\}{0} → 1{0}1');
 	
 	Test.title("String.format() + number");
 	Test.equals('{0, number, #,###}'.format(1),             '1',             '1 + {0, number, #,###} → 1');

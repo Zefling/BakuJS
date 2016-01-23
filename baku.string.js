@@ -2,6 +2,53 @@
 var Formatter = {};
 
 /**
+ * fonction pour simuler le regex : /(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g
+ * @param str la chaîne à parser
+ * @param func la function à exécuter sur les balises
+ * @return la chaine parsée
+ */
+Formatter.parse = function (str, func) {
+	var rtn = "", i  = 0, op = 0, cl = 0, frag = {};
+	while ((i = str.indexOf('{' , i)) > -1) {
+		if (i === 0 || str[i-1] !== '\\') {
+			frag[i] = 1;
+			op++;
+		}
+		i++;
+	}
+	i  = 0;
+	while ((i = str.indexOf('}' , i)) > -1) {
+		if (i === 0 || str[i-1] !== '\\') {
+			frag[i] = -1;
+			cl++;
+		}
+		i++;
+	}
+	if (op === cl) {
+		var ct = 0, j = 0, mrq = 0;
+		for(var pos in frag) {
+			pos = parseInt(pos);
+			if (frag[pos] === 1 && frag[pos] + ct === 1) {
+				rtn += str.substring(mrq, pos);
+				mrq = pos;
+			}
+			else if (frag[pos] === -1 && frag[pos] + ct === 0) {
+				rtn += str.substring(mrq + 1, pos).replace(/\s*([^,]+)\s*(?:,\s*([^,]+)\s*)?(?:,\s*(.*)\s*)?/g, func);
+				mrq = pos + 1;
+				j++;
+			}
+			frag[pos] += ct;
+			ct = frag[pos];
+		}
+		rtn += str.substr(mrq);
+	}
+	else {
+		console.log('pattern error');
+	}
+	return rtn;
+};
+
+/**
  * formatage par function et paramètres :
  * - {key, function, params}
  * les functions sont des méthodes de Formatter
@@ -9,18 +56,17 @@ var Formatter = {};
  * @return string
  */
 String.prototype.format = function (){
-	var args = arguments;
+	var args = arguments, str;
 	if (typeof args[0] === 'array' || typeof args[0] === 'object') {
 		args = args[0];
 	}
 	
-	return XRegExp.replace(this.replace(/(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g, function (base, test, value, func, params) {
-		return test !== '\\' ? (
-			(func !== undefined && typeof Formatter[func] === 'function')  
-			? ( params !== undefined ? Formatter[func](args[value], args, params).replace('\\}', '}') : Formatter[func](args[value], args) )
-			: args[value])
-			: base.substring(1);
-	});
+	str = Formatter.parse(this, function (base, value, func, params) {
+		return (func !== undefined && typeof Formatter[func] === 'function')  
+				? ( params !== undefined ? Formatter[func](args[value], args, params) : Formatter[func](args[value], args) )
+				: args[value];
+			});
+	return str.replace('\\}', '}').replace('\\{', '{');
 };
 
 
