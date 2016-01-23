@@ -43,27 +43,23 @@ Date.prototype.getWeek = function (premier, base) {
 	    correction = 0,
 	    
 	    premierAnPre = new Date(this.getFullYear(),0,0),
-	    dernierAn    = new Date(this.getFullYear() +1,0,0),
+	    dernierJourAn= new Date(this.getFullYear() +1,0,0),
 	    jourSemaine  = (premierAnPre.getDay() + 7 + premier ) % 7;
 
 	if (premier == 1) {
 		correction = -2;
-	} else if (premier === 0) {
-		correction = -1;
-	}   
+	} 
 	num = Math.ceil( (this.getDayOfYear() + jourSemaine + correction) / 7)  + (jourSemaine <= base ? 0 : -1);
  
 	if (num == 0) {
 		num = premierAnPre.getWeek(premier, base);	
 	} 
-	else if (
-		num >= 52 
-		&& (dernierAn.getDayOfYear() - this.getDayOfYear()) <=  base 
-		&& (dernierAn.getDay() + 7 + premier ) % 7 <= base
-	) {
-		num = 1;
+	else {
+		var pos = (dernierJourAn.getDayOfYear() + 1 - (this.getDayOfYear() - this.getDay())) % 7;
+		if (num > 52  && pos > 0 && pos < base) {
+			num = 1;
+		}
 	}
- 
 	return num;
 };
 
@@ -78,8 +74,6 @@ Date.prototype.toStringFormat = function (pattern, lg) {
 	    nd = this.getDayName(lg),
 	    k  = this.getHours() === 0 ? 24 : this.getHours(),
 	    h  = this.getHours() > 12 ? this.getHours() % 12 : (this.getHours() === 0 ? 12 : this.getHours());
-	
-	
 		
 	return pattern
 	

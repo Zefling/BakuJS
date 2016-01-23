@@ -25,7 +25,7 @@ Formatter.parse = function (str, func) {
 		i++;
 	}
 	if (op === cl) {
-		var ct = 0, j = 0, mrq = 0;
+		var ct = 0, j = 0, mrq = 0, tmp, match = /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/;
 		for(var pos in frag) {
 			pos = parseInt(pos);
 			if (frag[pos] === 1 && frag[pos] + ct === 1) {
@@ -33,7 +33,13 @@ Formatter.parse = function (str, func) {
 				mrq = pos;
 			}
 			else if (frag[pos] === -1 && frag[pos] + ct === 0) {
-				rtn += str.substring(mrq + 1, pos).replace(/\s*([^,]+)\s*(?:,\s*([^,]+)\s*)?(?:,\s*(.*)\s*)?/g, func);
+				tmp = str.substring(mrq + 1, pos);
+				if (tmp.match(match)) {
+					rtn += tmp.replace(match, func);
+				}
+				else {
+					throw 'pattern error';
+				}
 				mrq = pos + 1;
 				j++;
 			}
@@ -43,7 +49,7 @@ Formatter.parse = function (str, func) {
 		rtn += str.substr(mrq);
 	}
 	else {
-		console.log('pattern error');
+		throw 'pattern error';
 	}
 	return rtn;
 };
