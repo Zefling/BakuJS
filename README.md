@@ -26,6 +26,7 @@ _Exemples :_
 ```js
 "Il y a {0, number, #,##0:fr} jour{0, choice,1<=|1>s}".format(1200);                 // Il y a 1 200 jours
 "Il y a {jours, number, #,##0:fr} jour{jours, choice,1<=|1>s}".format({jours : 1});  // Il y a 1 jour
+"Le resultat est {0, choice, 10<{1}|10>={2}}.".format([12, 'petit', 'grand']);       // Le resultat est grand.
 ```
 
 **DOM**
