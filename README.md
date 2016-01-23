@@ -18,7 +18,7 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - <code>String.padRight()</code> : aggrandir une chaine par la droite avec une chaine
 
 **String : String.format() > Formatter**
-- choice : {0,choice,1# an|1< ans}
+- choice : {0,choice,1# an|1> ans}
 - number : {0, number, #,##0}
 - date : {0,date, dd/MM/yyyy}
 
