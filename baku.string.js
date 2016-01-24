@@ -87,7 +87,10 @@ String.prototype.padLeft = function(n, str, mode) {
 		return this;
 	 } 
 	 switch (mode) {
-		case 'r':
+		 case 'r':
+			return ''.padRight(n, str).substring(0, n - this.length) + this;
+			break;
+		case 'l':
 			return ''.padLeft(n, str).substring(0, n - this.length) + this;
 			break;
 		default : 
@@ -110,6 +113,9 @@ String.prototype.padRight = function(n, str, mode) {
 		return this;
 	}
 	switch (mode) {
+		case 'l':
+			return this + ''.padLeft(n, str).substring(this.length, n);
+			break;
 		case 'r':
 			return this + ''.padRight(n, str).substring(this.length, n);
 			break;
