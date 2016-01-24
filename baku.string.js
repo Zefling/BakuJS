@@ -1,13 +1,14 @@
 /** formateur (object avec des fonctions : "func(mixed value):string" ou "func(mixed value, string params):string"   */
 var Formatter = {};
 
+Formatter._parsePattern = /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/;
 /**
  * fonction pour simuler le regex : /(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g
  * @param str la chaîne à parser
  * @param func la function à exécuter sur les balises
  * @return la chaine parsée
  */
-Formatter.parse = function (str, func) {
+Formatter._parse = function (str, func) {
 	var rtn = "", i  = 0, op = 0, cl = 0, frag = {};
 	while ((i = str.indexOf('{' , i)) > -1) {
 		if (i === 0 || str[i-1] !== '\\') {
@@ -25,7 +26,7 @@ Formatter.parse = function (str, func) {
 		i++;
 	}
 	if (op === cl) {
-		var ct = 0, j = 0, mrq = 0, tmp, match = /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/;
+		var ct = 0, j = 0, mrq = 0, tmp;
 		for(var pos in frag) {
 			pos = parseInt(pos);
 			if (frag[pos] === 1 && frag[pos] + ct === 1) {
@@ -34,8 +35,8 @@ Formatter.parse = function (str, func) {
 			}
 			else if (frag[pos] === -1 && frag[pos] + ct === 0) {
 				tmp = str.substring(mrq + 1, pos);
-				if (tmp.match(match)) {
-					rtn += tmp.replace(match, func);
+				if (tmp.match(Formatter._parsePattern)) {
+					rtn += tmp.replace(Formatter._parsePattern, func);
 				}
 				else {
 					throw 'pattern error';
@@ -67,7 +68,7 @@ String.prototype.format = function (){
 		args = args[0];
 	}
 	
-	return Formatter.parse(this, function (base, value, func, params) {
+	return Formatter._parse(this, function (base, value, func, params) {
 		return (func !== undefined && typeof Formatter[func] === 'function')  
 				? ( params !== undefined ? Formatter[func](args[value], args, params) : Formatter[func](args[value], args) )
 				: args[value];
