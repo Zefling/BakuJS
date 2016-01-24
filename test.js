@@ -3,35 +3,38 @@ Test.title = function (title) {
 	var b = document.createElement("h2");
 	b.textContent = title;
 	document.body.appendChild(b);
-	this.time = performance.now() ; 
 };
 Test.equals = function (test, equals, message) {
-	var result, ok, diff = performance.now() - this.time, b = document.createElement("div");
+	var result, ok, time1, time2, b = document.createElement("div");
 	try {
+		time1 = performance.now(); 
 		result = eval(test);
+		time2 = performance.now();
 		ok = result == equals;
 	}
 	catch (e) {
 		ok = false;
 	}
 	b.classList.add(ok ? 'ok' : 'ko');
-	b.title = message + (ok ? ' #ok' : ' #ko : "' + result + '" != "' + equals + '"' ) +  ' (' + (Math.round(diff * 10000) / 10000) + 'ms)';
+	b.title = message + (ok ? ' #ok' : ' #ko : "' + result + '" != "' + equals + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000).formatByPattern('#,###.000') + 'ms)';
 	document.body.appendChild(b);
-	this.time = performance.now(); 
+	
 };
 Test.error = function (test) {
 	var ok = false, message = 'valide ?', diff = performance.now() - this.time, b = document.createElement("div");
 	try {
+		time1 = performance.now(); 
 		result = eval(test);
+		time2 = performance.now();
 	}
 	catch (e) {
+		time2 = performance.now();
 		ok = true;
 		message = e;
 	}
 	b.classList.add(ok ? 'ok' : 'ko');
-	b.title = test + (ok ? ' #ko : ' + message : ' #ok : "' + result + '"' ) +  ' (' + (Math.round(diff * 10000) / 10000) + 'ms)';
+	b.title = test + (ok ? ' #ko : ' + message : ' #ok : "' + result + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000).formatByPattern('#,###.000') + 'ms)';
 	document.body.appendChild(b);
-	this.time = performance.now(); 
 };
 
 // ----------------------------------------------------------------------------------
