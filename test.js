@@ -193,8 +193,14 @@ window.onload = function(){
 	Test.equals("'12345'.padRight(10,'ABCD', 'l')",'12345DABCD',     "12345 + left(10, 'ABCD', 'l') → 12345DABCD");
 	
 	Test.title("String.format()");
+	Test.equals("'a'.format(1)",                 'a',     '1 + a → a');
 	Test.equals("'{0}'.format(1)",               '1',     '1 + {0} → 1');
+	Test.equals("'a{0}'.format(1)",              'a1',    '1 + a{0} → a1');
+	Test.equals("'{0}b'.format(1)",              '1b',    '1 + {0}b → 1b');
+	Test.equals("'a{0}b'.format(1)",             'a1b',   '1 + a{0}b → a1b');
+	Test.equals("'a{0}b'.format(1)",             'a1b',   '1 + a{0}b → a1b');
 	Test.equals("'{0}{0}{0}'.format(1)",         '111',   '1 + {0}{0}{0} → 111');
+	Test.equals("'a{0}b{0}c'.format(1)",         'a1b1c', '1 + a{0}b{0}c → a1b1c');
 	Test.equals("'{0}\\\\{0\\\\}{0}'.format(1)", '1{0}1', '1 + {0}\\{0\\}{0} → 1{0}1');
 	Test.error("'{0}\\\\{0}{0}'.format(1)");
 	Test.error("'{0}{0\\\\}{0}'.format(1)");
