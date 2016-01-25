@@ -161,6 +161,7 @@ window.onload = function(){
 	Test.equals("new Number(123.103).formatByPattern('00,000,000.00',{lg : 'en'})", '00,000,123.10', '123.103 + 00,000,000.00 → 00,000,123.10');
 	Test.equals("new Number(123.103).formatByPattern('00000,000.00', {lg : 'en'})", '00,000,123.10', '123.103 + 00000,000.00 → 00,000,123.10');
 	Test.equals("new Number(123.103).formatByPattern('#0,000.00',    {lg : 'en'})", '0,123.10',      '123.103 + #0,000.00 → 0,123.10');
+	Test.equals("new Number(1325123.103456).formatByPattern('0,00,000.000 00',  {lg : 'en'})", '1,325,123.10346', '1325123.103456 + #0,000.00 → 1,325,123.10346');
 	Test.error("new Number(123.103).formatByPattern('0#000.##',  {lg : 'fr'})");
 	Test.error("new Number(123.103).formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103).formatByPattern('0000.#0#',  {lg : 'fr'})");
