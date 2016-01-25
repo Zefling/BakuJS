@@ -145,11 +145,22 @@ window.onload = function(){
 	Test.equals("new Number(1).formatByPattern('#,###.00', {lg : 'fr'})", '1,00', '1 + #,###.000 → 1,00');
 	Test.equals("new Number(1).formatByPattern('#,###.0',  {lg : 'en'})", '1.0',  '1 + #,### → 1.0');
 	Test.equals("new Number(1).formatByPattern('#,###.00', {lg : 'en'})", '1.00', '1 + #,### → 1.00');
+	Test.equals("new Number(1).formatByPattern('#,###.##', {lg : 'en'})", '1', '1 + #,### → 1');
+	Test.equals("new Number(1.1).formatByPattern('#,###.##', {lg : 'en'})", '1.1', '1 + #,### → 1.1');
 	Test.equals("new Number(1000   ).formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000', '1000 + #,### → 1\u00A0000');
 	Test.equals("new Number(1000000).formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000\u00A0000', '1000000 + #,### → 1\u00A0000\u00A0000');
 	Test.equals("new Number(1000   ).formatByPattern('#,####',   {lg : 'fr'})", '1000', '1000 + #,### → 1000');
 	Test.equals("new Number(1000000).formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals("new Number(123456789.987654321).formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.98', '123456789.987654321 + #,###.00 → 123,456,789.98');
+	Test.equals("new Number(123456789.987654321).formatByPattern('#,###.##', {lg : 'en'})", '123,456,789.98', '123456789.987654321 + #,###.## → 123,456,789.98');
+	Test.equals("new Number(123.123).formatByPattern('0000.00',   {lg : 'fr'})", '0123,12',   '123.123 + #,### → 0123,12');
+	Test.equals("new Number(123.123).formatByPattern('0000.0###', {lg : 'fr'})", '0123,123',  '123.123 + #,### → 0123,123');
+	Test.equals("new Number(123.123).formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');
+	Test.equals("new Number(123.103).formatByPattern('0000.##',   {lg : 'fr'})", '0123,1',    '123.103 + #,### → 0123,1');
+	Test.equals("new Number(123.103).formatByPattern('#000.##',   {lg : 'fr'})", '123,1',     '123.103 + #,### → 123,1');
+	Test.error("new Number(123.103).formatByPattern('0#000.##',  {lg : 'fr'})");
+	Test.error("new Number(123.103).formatByPattern('0000.#0',   {lg : 'fr'})");
+	Test.error("new Number(123.103).formatByPattern('0000.#0#',  {lg : 'fr'})");
 	
 	Test.title("String.padLeft()");
 	Test.equals("'1'.padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
