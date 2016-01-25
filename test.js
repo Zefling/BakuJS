@@ -140,7 +140,7 @@ window.onload = function(){
 	Test.title("Number.formatByPattern()");
 	Test.equals("new Number(1).formatByPattern('#,###',    {lg : 'fr'})", '1', '1 + #,### → 1');
 	Test.equals("new Number(1).formatByPattern('#,##0',    {lg : 'fr'})", '1', '1 + #,##0 → 1');
-	Test.equals("new Number(1).formatByPattern('#,#00',    {lg : 'fr'})", '1', '1 + #,#00 → 1');
+	Test.equals("new Number(1).formatByPattern('#,#00',    {lg : 'fr'})", '01', '1 + #,#00 → 01');
 	Test.equals("new Number(1).formatByPattern('#,###.0',  {lg : 'fr'})", '1,0',  '1 + #,###.0 → 1,0');
 	Test.equals("new Number(1).formatByPattern('#,###.00', {lg : 'fr'})", '1,00', '1 + #,###.000 → 1,00');
 	Test.equals("new Number(1).formatByPattern('#,###.0',  {lg : 'en'})", '1.0',  '1 + #,### → 1.0');
@@ -158,6 +158,9 @@ window.onload = function(){
 	Test.equals("new Number(123.123).formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');
 	Test.equals("new Number(123.103).formatByPattern('0000.##',   {lg : 'fr'})", '0123,1',    '123.103 + #,### → 0123,1');
 	Test.equals("new Number(123.103).formatByPattern('#000.##',   {lg : 'fr'})", '123,1',     '123.103 + #,### → 123,1');
+	Test.equals("new Number(123.103).formatByPattern('00,000,000.00',{lg : 'en'})", '00,000,123.10', '123.103 + 00,000,000.00 → 00,000,123.10');
+	Test.equals("new Number(123.103).formatByPattern('00000,000.00', {lg : 'en'})", '00,000,123.10', '123.103 + 00000,000.00 → 00,000,123.10');
+	Test.equals("new Number(123.103).formatByPattern('#0,000.00',    {lg : 'en'})", '0,123.10',      '123.103 + #0,000.00 → 0,123.10');
 	Test.error("new Number(123.103).formatByPattern('0#000.##',  {lg : 'fr'})");
 	Test.error("new Number(123.103).formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103).formatByPattern('0000.#0#',  {lg : 'fr'})");
