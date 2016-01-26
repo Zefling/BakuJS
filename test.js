@@ -233,6 +233,7 @@ window.onload = function(){
 	Test.equals("'{0, number, #,###.00:fr}'.format(1000.10)", '1\u00A0000,10', '1000.10 + {0, number, #,###.00:fr} → 1\u00A0000,00');
 	Test.equals("'{0, number, #,###.00:en}'.format(1000.10)", '1,000.10',      '1000.10 + {0, number, #,###.00:en} → 1,000.10');
 	Test.equals("'{0, number, {1}}'.format([1, '#,###.00:fr'])",'1,00',        '[1, #,###.00:fr] + {0, number, {1}} → 1,00');
+	Test.equals("'{0, number, {1}}'.format([1, '#,###.00%:fr'])",'100,00%',    '[1, #,###.00%:fr] + {0, number, {1}} → 100,00%');
 	
 	Test.title("String.format() + choice");
 	Test.equals("'{0, choice, 1# true|2# false}'.format(1)",             'true',      '1 + {0, choice, 1# true|2# false} → true');

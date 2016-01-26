@@ -35,7 +35,7 @@ Formatter.number = function (val, vals, arg) {
 	}
 	// recupération de la langue : #,##0:fr
 	var params = {},
-	    match = arg.match(/([,#0. ]*)(?::(([a-z]{2})(-[A-Z]{2})?)|)/);
+	    match = arg.match(/([^:]*)(?::(([a-z]{2})(-[A-Z]{2})?)|)/);
 	if(match && match[2]) {
 		params.lg = match[3];
 		params.local = match[2];

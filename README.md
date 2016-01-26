@@ -11,6 +11,7 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 **Number**
 - <code>Number._formatByPattern()</code>  : formatage par pattern
 - <code>Number._format()</code>  : formatage
+- <code>Number._roundDecimal()</code>  : arrondir à une décimale précise
 
 **String**
 - <code>String.format()</code> : formateur {0, func, params} 
