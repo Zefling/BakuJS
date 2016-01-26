@@ -8,7 +8,7 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - <code>Date._getWeek()</code>  : numéro de semaine
 - <code>Date._toStringFormat()</code>  : formatage de la date
 
-*Number**
+**Math**
 - <code>Math._roundDecimal()</code>  : arrondir à une décimale précise
 
 **Number**
