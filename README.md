@@ -9,8 +9,8 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - <code>Date.toStringFormat()</code>  : formatage de la date
  
 **Number**
-- <code>Number.formatByPattern()</code>  : formatage par pattern
-- <code>Number.format()</code>  : formatage
+- <code>Number._formatByPattern()</code>  : formatage par pattern
+- <code>Number._format()</code>  : formatage
 
 **String**
 - <code>String.format()</code> : formateur {0, func, params} 
