@@ -7,68 +7,115 @@
  *   - language : langue de formatage (défaut : langue du navigateur)
  * @return la chaine formatée
  */
-Number.prototype.formatByPattern = function(pattern, params) {
+Number.prototype._formatByPattern = function(pattern, params) {
 	var params = typeof(params) === 'object' ? params : {},
-	    groupingSize = 0, 
-	    decimalSize = 0, 
-	    lg = params.lg || navigator.language,
-	    dot = params.dot,
-	    space = params.space; 
+		format = {
+			groupingSize : 0,
+			zeroDigitSize : 0,
+			decimalSize : 0, 
+			decimalZeroSize : 0,
+			unit : undefined,
+			dot : params.dot,
+			space : params.space
+		},
+		lg = params.lg || navigator.language;
 	
 	if(!pattern) {
 		// partern par défaut
 		pattern = '#,###';
 	}
 	
-	var match = pattern.match(/(#*,|)([#0]+)(?:\.(0+|#+|)|)/);
-	if(match) {
-		groupingSize = match[1] !== '' ? match[2].length : 0;
-		decimalSize = match[3] ? match[3].length : 0;
-	}
-	if (dot === undefined) {
-		switch (lg) {
-			case 'en' : dot = '.'; break;
-			case 'fr' : dot = ','; break;
+	var match = pattern.match(/\s*(?:((?:[#,]*)(?:[0,]*))(?:(?:\.([0 ]*#*))|))((?:\s*\%)|)\s*$/);
+	if(match && match[0] === pattern) {
+		var number  = match[1];
+		var decimal = match[2] ? match[2].replace(/\s/, '').match(/^(0*)#*/) : null;
+		format.unit    = match[3];
+		
+		// digit grouping
+		format.groupingSize  = number.match(/,?([#]*[0]*)$/)[1].length;
+		format.zeroDigitSize = number.match(/[,0]*$/)[0].replace(/,/g, '').length;
+		// decimal
+		if (decimal) {
+			format.decimalSize     = decimal[0].length;
+			format.decimalZeroSize = decimal[1].length;
 		}
 	}
-	if (space === undefined) {
+	else {
+		throw 'patten error : '+pattern;
+	}
+	if (format.dot === undefined) {
 		switch (lg) {
-			case 'en' : space = ',';      break;
-			case 'fr' : space = "\u00A0"; break;
+			case 'en' : format.dot = '.'; break;
+			case 'fr' : format.dot = ','; break;
 		}
 	}
-	return this.format(groupingSize, decimalSize, dot, space);
+	if (format.space === undefined) {
+		switch (lg) {
+			case 'en' : format.space = ',';      break;
+			case 'fr' : format.space = "\u00A0"; break;
+		}
+	}
+	return this._format(format);
 }
 
 /**
  * formatage suivant paramètre
- * @param groupingSize séparateur de lisiblité (0 = aucun)
- * @param decimalSize nombre de décimales affichées 
- * @param dot forme du séparateur de décimales (défaut : '.')
- * @param space sparateur de millier (ou autre) (défaut : '')
+ * @param format 
+ * - groupingSize : séparateur de lisiblité (0 = aucun)
+ * - zeroDigitSize : nombre de chiffres minimums
+ * - decimalSize : nombre de décimales affichées 
+ * - decimalZeroSize : nombre de chiffres minimums en décimal
+ * - dot : forme du séparateur de décimales (défaut : '.')
+ * - space : sparateur de millier (ou autre) (défaut : '')
+ * - unit : rien ou %
  * @return la chaine formatée
  */
-Number.prototype.format = function(groupingSize, decimalSize, dot, space) {
-	var val = new String(this),
+Number.prototype._format = function(format) {
+	var val,
+	    valueAsStr,
 	    result = '',
-	    valueAsStr = val.match(/(-|)(\d*)(?:.(\d*))?/);
+	    format = !format ? {} : format,
+	    unit = format.unit||'';
 	
+	switch (unit.trim()) {
+		case '%':
+			val = new String(this * 100);
+			break;
+		default : 
+			val = new String(this);
+	}
+	valueAsStr = val.match(/(-|)(\d*)(?:.(\d*))?/);
+	if (format.zeroDigitSize > 0) {
+		valueAsStr[2] = valueAsStr[2].padLeft(format.zeroDigitSize, '0');
+	}	
 	// ajoute des espaces
-	var entier = groupingSize && groupingSize > 0 
-	    ? valueAsStr[2].replace(new RegExp('(?=(?:\\d{' + groupingSize + '})+$)(?!^)', 'g'), space !== undefined ? space : '') 
-	    : valueAsStr[2];
+	var entier = format.space !== undefined && format.groupingSize && format.groupingSize > 0 
+		? valueAsStr[2].replace(new RegExp('(?=(?:\\d{' + format.groupingSize + '})+$)(?!^)', 'g'), format.space) 
+		: valueAsStr[2];
 	
 	// formatage des décimales
 	var decimal = '';
-	if(decimalSize && decimalSize > 0) {
-		decimal = valueAsStr[3];
-		if(!decimal) {
-			decimal = '0';
+	if(format.decimalSize && format.decimalSize > 0) {
+		decimal = new String(parseFloat('.' + (valueAsStr[3]||'0'))._roundDecimal(format.decimalSize)).replace('0.', '');
+		if (decimal == '0') {
+			decimal = '';
 		}
-		// si supérieur au nombre de zéro, on découpe, sinon on en ajoute à la fin
-		decimal = (dot !== undefined ? dot : '.') + (decimal.length > decimalSize
-		        ? decimal.substring(0, decimalSize)
-		        : decimal.padRight(decimalSize, '0'));
+		if (format.decimalZeroSize > 0) {
+			decimal = decimal.padRight(format.decimalZeroSize, '0');
+		}
+		if (decimal !== '') {
+			decimal = format.dot + decimal;
+		}
 	}
-	return valueAsStr[1] + entier + decimal;
+	return valueAsStr[1] + entier + decimal + unit;
 }
+
+/**
+ * arrondi à la décimale choisie
+ * @param decimalSize nombre de chiffres après la virgule
+ * @return la chaine formatée
+ */
+Number.prototype._roundDecimal = function(decimalSize) {
+	var pow = Math.pow(10, decimalSize);
+	return Math.round(this * pow) / pow;
+}	

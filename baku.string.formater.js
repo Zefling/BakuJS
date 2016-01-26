@@ -35,12 +35,12 @@ Formatter.number = function (val, vals, arg) {
 	}
 	// recupération de la langue : #,##0:fr
 	var params = {},
-	    match = arg.match(/[#0]:(([a-z]{2})(-[A-Z]{2})?)/);
-	if(match && match[1]) {
-		params.lg = match[2];
-		params.local = match[1];
+	    match = arg.match(/([,#0. ]*)(?::(([a-z]{2})(-[A-Z]{2})?)|)/);
+	if(match && match[2]) {
+		params.lg = match[3];
+		params.local = match[2];
 	}
-	return val.formatByPattern(arg, params);
+	return val._formatByPattern(match[1], params);
 }
 
 /**

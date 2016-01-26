@@ -16,7 +16,7 @@ Test.equals = function (test, equals, message) {
 		ok = false;
 	}
 	b.classList.add(ok ? 'ok' : 'ko');
-	b.title = message + (ok ? ' #ok' : ' #ko : "' + result + '" != "' + equals + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000).formatByPattern('#,###.000') + 'ms)';
+	b.title = message + (ok ? ' #ok' : ' #ko : "' + result + '" != "' + equals + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000) + 'ms)';
 	document.body.appendChild(b);
 	
 };
@@ -33,7 +33,7 @@ Test.error = function (test) {
 		message = e;
 	}
 	b.classList.add(ok ? 'ok' : 'ko');
-	b.title = test + (ok ? ' #ko : ' + message : ' #ok : "' + result + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000).formatByPattern('#,###.000') + 'ms)';
+	b.title = test + (ok ? ' #ko : ' + message : ' #ok : "' + result + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000) + 'ms)';
 	document.body.appendChild(b);
 };
 
@@ -137,34 +137,40 @@ window.onload = function(){
 	Test.equals("new Date('2016-01-03').getWeek(0)", 2, 'week : 2016-01-03 → 53'); 
 	Test.equals("new Date('2016-01-04').getWeek(0)", 2, 'week : 2016-01-04 → 1'); 
 
-	Test.title("Number.formatByPattern()");
-	Test.equals("new Number(1).formatByPattern('#,###',    {lg : 'fr'})", '1', '1 + #,### → 1');
-	Test.equals("new Number(1).formatByPattern('#,##0',    {lg : 'fr'})", '1', '1 + #,##0 → 1');
-	Test.equals("new Number(1).formatByPattern('#,#00',    {lg : 'fr'})", '01', '1 + #,#00 → 01');
-	Test.equals("new Number(1).formatByPattern('#,###.0',  {lg : 'fr'})", '1,0',  '1 + #,###.0 → 1,0');
-	Test.equals("new Number(1).formatByPattern('#,###.00', {lg : 'fr'})", '1,00', '1 + #,###.000 → 1,00');
-	Test.equals("new Number(1).formatByPattern('#,###.0',  {lg : 'en'})", '1.0',  '1 + #,### → 1.0');
-	Test.equals("new Number(1).formatByPattern('#,###.00', {lg : 'en'})", '1.00', '1 + #,### → 1.00');
-	Test.equals("new Number(1).formatByPattern('#,###.##', {lg : 'en'})", '1', '1 + #,### → 1');
-	Test.equals("new Number(1.1).formatByPattern('#,###.##', {lg : 'en'})", '1.1', '1 + #,### → 1.1');
-	Test.equals("new Number(1000   ).formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000', '1000 + #,### → 1\u00A0000');
-	Test.equals("new Number(1000000).formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000\u00A0000', '1000000 + #,### → 1\u00A0000\u00A0000');
-	Test.equals("new Number(1000   ).formatByPattern('#,####',   {lg : 'fr'})", '1000', '1000 + #,### → 1000');
-	Test.equals("new Number(1000000).formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
-	Test.equals("new Number(123456789.987654321).formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.98', '123456789.987654321 + #,###.00 → 123,456,789.98');
-	Test.equals("new Number(123456789.987654321).formatByPattern('#,###.##', {lg : 'en'})", '123,456,789.98', '123456789.987654321 + #,###.## → 123,456,789.98');
-	Test.equals("new Number(123.123).formatByPattern('0000.00',   {lg : 'fr'})", '0123,12',   '123.123 + #,### → 0123,12');
-	Test.equals("new Number(123.123).formatByPattern('0000.0###', {lg : 'fr'})", '0123,123',  '123.123 + #,### → 0123,123');
-	Test.equals("new Number(123.123).formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');
-	Test.equals("new Number(123.103).formatByPattern('0000.##',   {lg : 'fr'})", '0123,1',    '123.103 + #,### → 0123,1');
-	Test.equals("new Number(123.103).formatByPattern('#000.##',   {lg : 'fr'})", '123,1',     '123.103 + #,### → 123,1');
-	Test.equals("new Number(123.103).formatByPattern('00,000,000.00',{lg : 'en'})", '00,000,123.10', '123.103 + 00,000,000.00 → 00,000,123.10');
-	Test.equals("new Number(123.103).formatByPattern('00000,000.00', {lg : 'en'})", '00,000,123.10', '123.103 + 00000,000.00 → 00,000,123.10');
-	Test.equals("new Number(123.103).formatByPattern('#0,000.00',    {lg : 'en'})", '0,123.10',      '123.103 + #0,000.00 → 0,123.10');
-	Test.equals("new Number(1325123.103456).formatByPattern('0,00,000.000 00',  {lg : 'en'})", '1,325,123.10346', '1325123.103456 + #0,000.00 → 1,325,123.10346');
-	Test.error("new Number(123.103).formatByPattern('0#000.##',  {lg : 'fr'})");
-	Test.error("new Number(123.103).formatByPattern('0000.#0',   {lg : 'fr'})");
-	Test.error("new Number(123.103).formatByPattern('0000.#0#',  {lg : 'fr'})");
+	Test.title("Number._formatByPattern()");
+	Test.equals("new Number(1)._formatByPattern('#,###',    {lg : 'fr'})", '1', '1 + #,### → 1');
+	Test.equals("new Number(1)._formatByPattern('#,##0',    {lg : 'fr'})", '1', '1 + #,##0 → 1');
+	Test.equals("new Number(1)._formatByPattern('#,#00',    {lg : 'fr'})", '01', '1 + #,#00 → 01');
+	Test.equals("new Number(1)._formatByPattern('#,###.0',  {lg : 'fr'})", '1,0',  '1 + #,###.0 → 1,0');
+	Test.equals("new Number(1)._formatByPattern('#,###.00', {lg : 'fr'})", '1,00', '1 + #,###.000 → 1,00');
+	Test.equals("new Number(1)._formatByPattern('#,###.0',  {lg : 'en'})", '1.0',  '1 + #,###.0 → 1.0');
+	Test.equals("new Number(1)._formatByPattern('#,###.00', {lg : 'en'})", '1.00', '1 + #,###.00 → 1.00');
+	Test.equals("new Number(1)._formatByPattern('#,###.##', {lg : 'en'})", '1', '1 + #,###.## → 1');
+	Test.equals("new Number(1.1)._formatByPattern('#,###.##', {lg : 'en'})", '1.1', '1 + #,###.## → 1.1');
+	Test.equals("new Number(1000   )._formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000', '1000 + #,### → 1\u00A0000');
+	Test.equals("new Number(1000000)._formatByPattern('#,###',    {lg : 'fr'})", '1\u00A0000\u00A0000', '1000000 + #,### → 1\u00A0000\u00A0000');
+	Test.equals("new Number(1000   )._formatByPattern('#,####',   {lg : 'fr'})", '1000', '1000 + #,### → 1000');
+	Test.equals("new Number(1000000)._formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
+	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.00 → 123,456,789.99');
+	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.## → 123,456,789.99');
+	Test.equals("new Number(123.123)._formatByPattern('0000.00',   {lg : 'fr'})", '0123,12',   '123.123 + #,### → 0123,12');
+	Test.equals("new Number(123.123)._formatByPattern('0000.0###', {lg : 'fr'})", '0123,123',  '123.123 + #,### → 0123,123');
+	Test.equals("new Number(123.123)._formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');
+	Test.equals("new Number(123.103)._formatByPattern('0000.##',   {lg : 'fr'})", '0123,1',    '123.103 + #,### → 0123,1');
+	Test.equals("new Number(123.103)._formatByPattern('#000.##',   {lg : 'fr'})", '123,1',     '123.103 + #,### → 123,1');
+	Test.equals("new Number(123.103)._formatByPattern('00,000,000.00',{lg : 'en'})", '00,000,123.10', '123.103 + 00,000,000.00 → 00,000,123.10');
+	Test.equals("new Number(123.103)._formatByPattern('00000,000.00', {lg : 'en'})", '00,000,123.10', '123.103 + 00000,000.00 → 00,000,123.10');
+	Test.equals("new Number(123.103)._formatByPattern('#0,000.00',    {lg : 'en'})", '0,123.10',      '123.103 + #0,000.00 → 0,123.10');
+	Test.equals("new Number(1325123.103456)._formatByPattern('0,00,000.000 00',  {lg : 'en'})", '1,325,123.10346', '1325123.103456 + #0,000.00 → 1,325,123.10346');
+	Test.equals("new Number(1)._formatByPattern('#,###%',  {lg : 'fr'})", '100%',  '1 + #,###% → 100%');
+	Test.equals("new Number(1)._formatByPattern('#,### %', {lg : 'fr'})", '100 %', '1 + #,### % → 100 %');
+	Test.equals("new Number(1.1)._formatByPattern('#,###.00%',    {lg : 'fr'})", '110,00%',   '1.1 + #,###.00% → 110,00%');
+	Test.equals("new Number(1.1)._formatByPattern('0,000.00%',    {lg : 'en'})", '0,110.00%', '1.1 + #,###.00% → 0,110.00%');
+	Test.equals("new Number(1.1111)._formatByPattern('0,000.00%', {lg : 'en'})", '0,111.11%',   '1.1111 + #,###.00% → 0,111.11%');
+	Test.error("new Number(123.103)._formatByPattern('0#000.##',  {lg : 'fr'})");
+	Test.error("new Number(123.103)._formatByPattern('0000.#0',   {lg : 'fr'})");
+	Test.error("new Number(123.103)._formatByPattern('0000.#0#',  {lg : 'fr'})");
+	Test.error("new Number(123.103)._formatByPattern('0000.#0%',  {lg : 'fr'})");
 	
 	Test.title("String.padLeft()");
 	Test.equals("'1'.padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
