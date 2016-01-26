@@ -62,7 +62,7 @@ Formatter._parse = function (str, func) {
  * @param liste d'arguments, array ou object
  * @return string
  */
-String.prototype.format = function (){
+String.prototype._format = function (){
 	var args = arguments, str;
 	if (typeof args[0] === 'array' || typeof args[0] === 'object') {
 		args = args[0];
@@ -83,16 +83,19 @@ String.prototype.format = function (){
  * @param mode mode de répétition
  * @return chaîne modifiée
  */
-String.prototype.padLeft = function(n, str, mode) {
-	if (!n || n <= 0 || this.length >= n || str === undefined) {
+String.prototype._padLeft = function(n, str, mode) {
+	if (!n || n <= 0 || this.length >= n || str instanceof String) {
 		return this;
-	 } 
+	} 
+	if (str.length === 1) {
+		mode = '';
+	}
 	 switch (mode) {
 		 case 'r':
-			return ''.padRight(n, str).substring(0, n - this.length) + this;
+			return ''._padRight(n, str).substring(0, n - this.length) + this;
 			break;
 		case 'l':
-			return ''.padLeft(n, str).substring(0, n - this.length) + this;
+			return ''._padLeft(n, str).substring(0, n - this.length) + this;
 			break;
 		default : 
 			var adding = n - this.length,
@@ -109,22 +112,25 @@ String.prototype.padLeft = function(n, str, mode) {
  * @param mode mode de répétition
  * @return chaîne modifiée
  */
-String.prototype.padRight = function(n, str, mode) {
-	 if (!n || n <= 0 || this.length >= n || str === undefined) {
+String.prototype._padRight = function(n, str, mode) {
+	 if (!n || n <= 0 || this.length >= n || str instanceof String) {
 		return this;
+	}
+	if (str.length === 1) {
+		mode = '';
 	}
 	switch (mode) {
 		case 'l':
-			return this + ''.padLeft(n, str).substring(this.length, n);
+			return this + ''._padLeft(n, str).substring(this.length, n);
 			break;
 		case 'r':
-			return this + ''.padRight(n, str).substring(this.length, n);
+			return this + ''._padRight(n, str).substring(this.length, n);
 			break;
 		default : 
 			 var adding = n - this.length,
 			     size = Math.trunc(adding / str.length + 1),
 			     cut =  adding % str.length; 
-			 return this + Array(size).join(str || ' ') + str.substring(0, cut)
+			 return this + Array(size).join(str) + str.substring(0, cut)
 			 break;
 	 }
 }; 

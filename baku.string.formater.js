@@ -13,11 +13,11 @@ Formatter.choice = function (val, vals, arg) {
 		   (etat === ">=" && val >= test) ||
 		   (etat === ">"  && val >  test)
 		) {
-			return result.format(vals);
+			return result._format(vals);
 		}
 	} 
 	return '';
-}
+};
 
 /**
  * {0, number, #,##0}
@@ -31,7 +31,7 @@ Formatter.number = function (val, vals, arg) {
 		arg = "#,##0";
 	}
 	else if(arg.indexOf('{') > -1) {
-		arg = arg.format(vals);
+		arg = arg._format(vals);
 	}
 	// recupération de la langue : #,##0:fr
 	var params = {},
@@ -41,7 +41,7 @@ Formatter.number = function (val, vals, arg) {
 		params.local = match[2];
 	}
 	return val._formatByPattern(match[1], params);
-}
+};
 
 /**
  * {0,date, dd/MM/yyyy}
@@ -49,7 +49,7 @@ Formatter.number = function (val, vals, arg) {
  */ 
 Formatter.date = function (val, vals, arg) {
 	if(arg && arg.indexOf('{') > -1) {
-		arg = arg.format(vals);
+		arg = arg._format(vals);
 	}
-	return arg !== undefined ? new Date(val).toStringFormat(arg) : '';
-}
+	return arg !== undefined ? new Date(val)._toStringFormat(arg) : '';
+};

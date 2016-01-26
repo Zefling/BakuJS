@@ -86,7 +86,7 @@ Number.prototype._format = function(format) {
 	}
 	valueAsStr = val.match(/(-|)(\d*)(?:.(\d*))?/);
 	if (format.zeroDigitSize > 0) {
-		valueAsStr[2] = valueAsStr[2].padLeft(format.zeroDigitSize, '0');
+		valueAsStr[2] = valueAsStr[2]._padLeft(format.zeroDigitSize, '0');
 	}	
 	// ajoute des espaces
 	var entier = format.space !== undefined && format.groupingSize && format.groupingSize > 0 
@@ -96,12 +96,12 @@ Number.prototype._format = function(format) {
 	// formatage des décimales
 	var decimal = '';
 	if(format.decimalSize && format.decimalSize > 0) {
-		decimal = new String(parseFloat('.' + (valueAsStr[3]||'0'))._roundDecimal(format.decimalSize)).replace('0.', '');
+		decimal = new String(Math._roundDecimal(parseFloat('.' + (valueAsStr[3]||'0')),format.decimalSize)).replace('0.', '');
 		if (decimal == '0') {
 			decimal = '';
 		}
 		if (format.decimalZeroSize > 0) {
-			decimal = decimal.padRight(format.decimalZeroSize, '0');
+			decimal = decimal._padRight(format.decimalZeroSize, '0');
 		}
 		if (decimal !== '') {
 			decimal = format.dot + decimal;
@@ -109,13 +109,3 @@ Number.prototype._format = function(format) {
 	}
 	return valueAsStr[1] + entier + decimal + unit;
 }
-
-/**
- * arrondi à la décimale choisie
- * @param decimalSize nombre de chiffres après la virgule
- * @return la chaine formatée
- */
-Number.prototype._roundDecimal = function(decimalSize) {
-	var pow = Math.pow(10, decimalSize);
-	return Math.round(this * pow) / pow;
-}	
