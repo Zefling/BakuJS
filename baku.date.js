@@ -1,8 +1,8 @@
 Date.prototype._monthNames = {
- 	'fr' : [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ]
+ 	'fr' : [ 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre' ]
 };
 Date.prototype._dayNames = {
-	'fr' : [ 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi' ]
+	'fr' : [ 'dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi' ]
 };
 
 /**
@@ -62,6 +62,44 @@ Date.prototype._getWeek = function (premier) {
 	return num;
 };
 
+var _dateFormatters = {
+	// date
+	yyyy : [/(^|[^\\])yyyy/  , function (d) {return d.getFullYear()}],
+	yy   : [/(^|[^\\])yy/    , function (d) {return new String(d.getFullYear()).substr(2, 2)}],
+	MMMM : [/(^|[^\\])MMMM/  , function (d, lg) {return d._getMonthName(lg).replace(/(.)/g, '\\$1')}],
+	MMM  : [/(^|[^\\])MMM/   , function (d, lg) {return d._getMonthName(lg).substr(0, 3).replace(/(.)/g, '\\$1')}],
+	MM   : [/(^|[^\\])MM/    , function (d) {return new String(d.getMonth() + 1)._padLeft(2, '0')}],
+	M    : [/(^|[^\\])M/     , function (d) {return (d.getMonth() + 1)}],
+	ww   : [/(^|[^\\])ww/    , function (d) {return new String(d._getWeek())._padLeft(2, '0')}],
+	w    : [/(^|[^\\])w/     , function (d) {return d._getWeek()}],
+	DDD  : [/(^|[^\\])DDD/   , function (d) {return new String(d._getDayOfYear())._padLeft(2, '0')}],
+	D    : [/(^|[^\\])D{1,2}/, function (d) {return d._getDayOfYear()}],
+	dd   : [/(^|[^\\])dd/    , function (d) {return new String(d.getDate())._padLeft(2, '0')}],
+	d    : [/(^|[^\\])d/     , function (d) {return d.getDate()}],
+	F    : [/(^|[^\\])F/     , function (d) {return d.getDay()}],
+	EEEE : [/(^|[^\\])EEEE/  , function (d, lg) {return d._getDayName(lg).replace(/(.)/g, '\\$1')}],
+	EEE  : [/(^|[^\\])EEE/   , function (d, lg) {return d._getDayName(lg).substr(0, 3).replace(/(.)/g, '\\$1')}],
+	E    : [/(^|[^\\])E/     , function (d, lg) {return d._getDayName(lg).substr(0, 1).replace(/(.)/g, '\\$1')}],
+
+	// heure
+	a    : [/(^|[^\\])a/     , function (d) {return (d.getHours() > 12 || d.getHours() === 0) ? 'PM' : 'AM'}],
+	HH   : [/(^|[^\\])HH/    , function (d) {return new String(d.getHours())._padLeft(2, '0')}],
+	H    : [/(^|[^\\])H/     , function (d) {return d.getHours()}],
+	kk   : [/(^|[^\\])kk/    , function (d) {return new String(_dateFormatters.k[1](d))._padLeft(2, '0')}],
+	k    : [/(^|[^\\])k/     , function (d) {return d.getHours() === 0 ? 24 : d.getHours()}],
+	KK   : [/(^|[^\\])KK/    , function (d) {return new String(d.getHours() % 12)._padLeft(2, '0')}],
+	K    : [/(^|[^\\])K/     , function (d) {return d.getHours() % 12}],
+	hh   : [/(^|[^\\])hh/    , function (d) {return new String(_dateFormatters.h[1](d))._padLeft(2, '0')}],
+	h    : [/(^|[^\\])h/     , function (d) {return d.getHours() > 12 ? d.getHours() % 12 : (d.getHours() === 0 ? 12 : d.getHours())}],
+	mm   : [/(^|[^\\])mm/    , function (d) {return new String(d.getMinutes())._padLeft(2, '0')}],
+	m    : [/(^|[^\\])m/     , function (d) {return d.getMinutes()}],
+	ss   : [/(^|[^\\])ss/    , function (d) {return new Sring(d.getSeconds())._padLeft(2, '0')}],
+	s    : [/(^|[^\\])s/     , function (d) {return d.getSeconds()}],
+	SSS  : [/(^|[^\\])S{3,}/ , function (d) {return new String(d.getMilliseconds())._padLeft(3, '0')}],
+	S    : [/(^|[^\\])S+/    , function (d) {return new String(d.getMilliseconds())}]
+};
+
+
 /**
  * formater la date suivant un pattern
  * @param pattern pour formater 
@@ -69,47 +107,20 @@ Date.prototype._getWeek = function (premier) {
  * @return la date formatée
  */
 Date.prototype._toStringFormat = function (pattern, lg) {
-	var nm = this._getMonthName(lg),
-	    nd = this._getDayName(lg),
-	    k  = this.getHours() === 0 ? 24 : this.getHours(),
-	    h  = this.getHours() > 12 ? this.getHours() % 12 : (this.getHours() === 0 ? 12 : this.getHours());
-		
-	return pattern
+	var reg, regex, str;
 	
-		.replace(/\\\\/g,           "[[\\\\]]")
-		// date
-		.replace(/(^|[^\\]|)yyyy/g, "$1" + this.getFullYear())
-		.replace(/(^|[^\\])yy/g,    "$1" + String(this.getFullYear()).substr(2, 2))
-		.replace(/(^|[^\\])M{3,}/g, "$1" + nm.substr(0, 3))
-		.replace(/(^|[^\\])MM/g,    "$1" + String(this.getMonth() + 1)._padLeft(2, '0'))
-		.replace(/(^|[^\\])M/g,     "$1" + (this.getMonth() + 1))
-		.replace(/(^|[^\\])ww/g,    "$1" + String(this._getWeek())._padLeft(2, '0'))
-		.replace(/(^|[^\\])w/g,     "$1" + this._getWeek())
-		.replace(/(^|[^\\])DDD/g,   "$1" + String(this._getDayOfYear())._padLeft(2, '0'))
-		.replace(/(^|[^\\])D{1,2}/g,"$1" + this._getDayOfYear())
-		.replace(/(^|[^\\])dd/g,    "$1" + String(this.getDate())._padLeft(2, '0'))
-		.replace(/(^|[^\\])d/g,     "$1" + this.getDate())
-		.replace(/(^|[^\\])F/g,     "$1" + this.getDay())
-		.replace(/(^|[^\\])E{4,}/g, "$1" + nd)
-		.replace(/(^|[^\\])E+/g,    "$1" + nd.substr(0, 3))
-
-		// heure
-		.replace(/(^|[^\\])a/g,     "$1" + this.getHours() > 12 | this.getHours() === 0 ? 'PM' : 'AM')
-		.replace(/(^|[^\\])HH/g,    "$1" + String(this.getHours())._padLeft(2, '0'))
-		.replace(/(^|[^\\])H/g,     "$1" + this.getHours())
-		.replace(/(^|[^\\])kk/g,    "$1" + String(k)._padLeft(2, '0'))
-		.replace(/(^|[^\\])k/g,     "$1" + k)
-		.replace(/(^|[^\\])KK/g,    "$1" + String(this.getHours() % 12)._padLeft(2, '0'))
-		.replace(/(^|[^\\])K/g,     "$1" + this.getHours() % 12)
-		.replace(/(^|[^\\])hh/g,    "$1" + String(h)._padLeft(2, '0'))
-		.replace(/(^|[^\\])h/g,     "$1" + h)
-		.replace(/(^|[^\\])mm/g,    "$1" + String(this.getMinutes())._padLeft(2, '0'))
-		.replace(/(^|[^\\])m/g,     "$1" + this.getMinutes())
-		.replace(/(^|[^\\])ss/g,    "$1" + String(this.getSeconds())._padLeft(2, '0'))
-		.replace(/(^|[^\\])s/g,     "$1" + this.getSeconds())
-		.replace(/(^|[^\\])S{3,}/g, "$1" + String(this.getMilliseconds())._padLeft(3, '0'))
-		.replace(/(^|[^\\])S+/g,    "$1" + String(this.getMilliseconds()))
-		
-		.replace(/\\(.)/g,          "$1")
-		.replace(/\[\[\\\]\]/g,   "\\");
+	// protège les doubles \
+	str = pattern.replace(/\\\\/g, "[[\\\\]]");
+	
+	// parcours toutes les règles
+	for (reg in _dateFormatters) {
+		regex = _dateFormatters[reg];
+		if (regex[0].test(str)) {
+			str = str.replace(regex[0], "$1" + regex[1](this, lg));
+		}
+	}
+	// dèprotection
+	return str
+		.replace(/\\(.)/g,      "$1")
+		.replace(/\[\[\\\]\]/g, "\\");
 };

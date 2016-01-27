@@ -66,25 +66,22 @@ Number.prototype._formatByPattern = function(pattern, params) {
  * - decimalSize : nombre de décimales affichées 
  * - decimalZeroSize : nombre de chiffres minimums en décimal
  * - dot : forme du séparateur de décimales (défaut : '.')
- * - space : sparateur de millier (ou autre) (défaut : '')
+ * - space : spérateur de millier (ou autre) (défaut : '')
  * - unit : rien ou %
  * @return la chaine formatée
  */
 Number.prototype._format = function(format) {
-	var val,
+	var val = this,
 	    valueAsStr,
-	    result = '',
 	    format = !format ? {} : format,
-	    unit = format.unit||'';
-	
-	switch (unit.trim()) {
-		case '%':
-			val = new String(this * 100);
-			break;
-		default : 
-			val = new String(this);
+	    unit = format.unit||'',
+	    decimalSize = format.decimalSize > 0 ? format.decimalSize : 0;
+		
+	if (unit.trim() == '%') {
+		val = val * 100;
 	}
-	valueAsStr = val.match(/(-|)(\d*)(?:.(\d*))?/);
+	
+	valueAsStr = new String(Math._roundDecimal(val, decimalSize)).match(/(-|)(\d*)(?:.(\d*))?/);
 	if (format.zeroDigitSize > 0) {
 		valueAsStr[2] = valueAsStr[2]._padLeft(format.zeroDigitSize, '0');
 	}	
@@ -95,8 +92,8 @@ Number.prototype._format = function(format) {
 	
 	// formatage des décimales
 	var decimal = '';
-	if(format.decimalSize && format.decimalSize > 0) {
-		decimal = new String(Math._roundDecimal(parseFloat('.' + (valueAsStr[3]||'0')),format.decimalSize)).replace('0.', '');
+	if(format.decimalSize > 0) {
+		decimal = (valueAsStr[3]||'0').substring(0, format.decimalSize);
 		if (decimal == '0') {
 			decimal = '';
 		}
