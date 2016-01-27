@@ -7,6 +7,5 @@
  * @return la chaine formatée
  */
 Math._roundDecimal = function(number, decimalSize) {
-	var pow = Math.pow(10, decimalSize);
-	return Math.round(number * pow) / pow;
+	return Math.round( +(number +'e'+ (decimalSize))) / +('1e'+decimalSize);
 }	

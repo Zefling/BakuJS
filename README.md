@@ -41,7 +41,7 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 - <code>baku._new = document.createElement</code>
 
 ### Aides
-- <code>HTMLElement.css()</code> : ajout s'implifié de CSS sur un élement du DOM
+- <code>HTMLElement._css()</code> : ajout s'implifié de CSS sur un élement du DOM
 - <code>NodeList._css()</code> : ajout s'implifié de CSS sur une liste d'élements du DOM
 - <code>NodeList._addClass()</code> : ajout s'implifié d'une classe sur une liste d'élements du DOM
 - <code>NodeList._rmClass()</code> : suppression s'implifié d'une classe sur une liste d'élements du DOM

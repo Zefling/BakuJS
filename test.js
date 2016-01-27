@@ -137,6 +137,9 @@ window.onload = function(){
 	Test.equals("new Date('2016-01-02')._getWeek(0)", 1, 'week : 2016-01-02 → 1'); 
 	Test.equals("new Date('2016-01-03')._getWeek(0)", 2, 'week : 2016-01-03 → 2'); 
 	Test.equals("new Date('2016-01-04')._getWeek(0)", 2, 'week : 2016-01-04 → 2'); 
+	
+	Test.title("Date._toStringFormat()");
+	Test.equals("new Date('2012-12-21')._toStringFormat('MMMM M m', 'fr')", 'décembre 12 0', '2012-12-21 + "MMMM M m" → "décembre 12 0"');
 
 	Test.title("Number._formatByPattern()");
 	Test.equals("new Number(1)._formatByPattern('#,###',    {lg : 'fr'})", '1', '1 + #,### → 1');
@@ -168,10 +171,15 @@ window.onload = function(){
 	Test.equals("new Number(1.1)._formatByPattern('#,###.00%',    {lg : 'fr'})", '110,00%',   '1.1 + #,###.00% → 110,00%');
 	Test.equals("new Number(1.1)._formatByPattern('0,000.00%',    {lg : 'en'})", '0,110.00%', '1.1 + #,###.00% → 0,110.00%');
 	Test.equals("new Number(1.1111)._formatByPattern('0,000.00%', {lg : 'en'})", '0,111.11%',   '1.1111 + #,###.00% → 0,111.11%');
+	Test.equals("new Number(5.5)._formatByPattern('#',    {lg : 'fr'})", '6', '5.5 + # → 6');
 	Test.error("new Number(123.103)._formatByPattern('0#000.##',  {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0#',  {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0%',  {lg : 'fr'})");
+	
+	Test.title("Number._format()");
+	Test.equals("new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '})", '2 591,6', "2591.5978 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,6'");
+	Test.equals("new Number(2591.5178)._format({groupingSize : 3, decimalSize : 1, decimalZeroSize : 2, dot : ',', space : ' '})", '2 591,50', "2591.5178 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,50'"); // cas à con à revoir
 	
 	Test.title("String._padLeft()");
 	Test.equals("'1'._padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
@@ -252,5 +260,6 @@ window.onload = function(){
 	Test.equals("'{0, date, w-yyyy}'._format('2015-10-20')",     '43-2015',    '2015-10-20 + {0, date, w-yyyy} → 43-2015');
 	Test.equals("'{0, date, \\\\w\\\\e\\\\e\\\\kw\\\\\\\\yyyy}'._format('2015-10-20')", 'week43\\2015', '2015-10-20 + {0, date, \\w\\e\\e\\kw\\\\yyyy} → week43\\2015');
 	Test.equals("'{0, date, {1}}'._format(['2015-10-20', 'dd/MM/yyyy'])",   '20/10/2015',          '[2015-10-20, dd/MM/yyyy] + {0, date, {1}} → 20/10/2015');
+	
 	
 }
