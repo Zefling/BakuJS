@@ -7,7 +7,16 @@ baku._frag = document.createDocumentFragment;
 
 var DomArray = function() {}; 
 for(key in Array.prototype) { 
- DomArray.prototype[key] = Array.prototype[key];
+	DomArray.prototype[key] = Array.prototype[key];
+}
+
+/**
+ * test if it's a string
+ * @param s object test
+ * @return true is s is a string object
+ */
+function isString(s) {
+    return typeof(s) === 'string' || s instanceof String;
 }
 
 /**
@@ -39,6 +48,36 @@ HTMLElement.prototype._css = function (name, value) {
 	return this;
 };
 
+/** 
+ * ajout d'une classe sur un élement
+ * @param name nom de classe ou une liste de classes
+ * @return l'élement
+ */
+HTMLElement.prototype._addClass = function (classes) {
+	if (isString(classes)) {
+		classes = classes.split(/\s+/);
+	}
+	for (var i in classes) {
+		this.classList.add(classes[i]);
+	}
+	return this;
+};
+
+/** 
+ * supprime d'une classe sur un élement
+ * @param name nom de classe ou une liste de classes
+ * @return l'élement
+ */
+HTMLElement.prototype._rmClass  = function (classes) {
+	if (isString(classes)) {
+		classes = classes.split(/\s+/);
+	}
+	for (var i in classes) {
+		this.classList.remove(classes[i].trim());
+	}
+	return this;
+};
+
 /**
  * set les styles sur une liste d'élements
  * @param name nom du style
@@ -64,7 +103,7 @@ NodeList.prototype._addClass =
 DomArray.prototype._addClass = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
-			this[i].classList.add(name);
+			this[i]._addClass(name);
 		}
 	}
 	return this;
@@ -79,7 +118,7 @@ NodeList.prototype._rmClass =
 DomArray.prototype._rmClass  = function (name) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
-			this[i].classList.remove(name);
+			this[i]._rmClass(name);
 		}
 	}
 	return this;
