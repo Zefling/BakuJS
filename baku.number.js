@@ -4,7 +4,7 @@
  * @param params params
  *   - dot : forme du séparateur de décimales (défaut : rien)
  *   - space : sparateur de millier (ou autre) (défaut : rien)
- *   - language : langue de formatage (défaut : langue du navigateur)
+ *   - lg : langue de formatage (défaut : langue du navigateur)
  * @return la chaine formatée
  */
 Number.prototype._formatByPattern = function(pattern, params) {
@@ -101,7 +101,7 @@ Number.prototype._format = function(format) {
 			decimal = decimal._padRight(format.decimalZeroSize, '0');
 		}
 		if (decimal !== '') {
-			decimal = format.dot + decimal;
+			decimal = (format.dot||'.') + decimal;
 		}
 	}
 	return valueAsStr[1] + entier + decimal + unit;

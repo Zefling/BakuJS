@@ -1,39 +1,39 @@
 var Test = {};
 Test.title = function (title) {
-	var b = document.createElement("h2");
+	var b =  baku._new("h2");
 	b.textContent = title;
 	document.body.appendChild(b);
 };
 Test.equals = function (test, equals, message) {
-	var result, ok, time1, time2, b = document.createElement("div");
+	var result, ok, time1, time2, b =  baku._new("div");
 	try {
-		time1 = performance.now(); 
+		time1 = performance.now ? performance.now() : Date.now(); 
 		result = eval(test);
-		time2 = performance.now();
+		time2 = performance.now ? performance.now() : Date.now();
 		ok = result == equals;
 	}
 	catch (e) {
-		time2 = performance.now();
+		time2 = performance.now ? performance.now() : Date.now();
 		ok = false;
 	}
-	b.classList.add(ok ? 'ok' : 'ko');
+	b._addClass(ok ? 'ok' : 'ko');
 	b.title = message + (ok ? ' #ok' : ' #ko : "' + result + '" != "' + equals + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000) + 'ms)';
 	document.body.appendChild(b);
 	
 };
 Test.error = function (test) {
-	var ok = false, time1, time2, message = 'valide ?', diff = performance.now() - this.time, b = document.createElement("div");
+	var ok = false, time1, time2, message = 'valide ?', b = baku._new("div");
 	try {
-		time1 = performance.now(); 
+		time1 = performance.now ? performance.now() : Date.now(); 
 		result = eval(test);
-		time2 = performance.now();
+		time2 = performance.now ? performance.now() : Date.now();
 	}
 	catch (e) {
-		time2 = performance.now();
+		time2 = performance.now ? performance.now() : Date.now();
 		ok = true;
 		message = e;
 	}
-	b.classList.add(ok ? 'ok' : 'ko');
+	b._addClass(ok ? 'ok' : 'ko');
 	b.title = test + (ok ? ' #ko : ' + message : ' #ok : "' + result + '"' ) +  ' (' + (Math.round((time2 - time1) * 10000) / 10000) + 'ms)';
 	document.body.appendChild(b);
 };
@@ -157,6 +157,7 @@ window.onload = function(){
 	Test.equals("new Number(1000000)._formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.00 → 123,456,789.99');
 	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.## → 123,456,789.99');
+	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'xx'})", '123456789.99', '123456789.987654321 + #,###.## → 123456789.99');
 	Test.equals("new Number(123.123)._formatByPattern('0000.00',   {lg : 'fr'})", '0123,12',   '123.123 + #,### → 0123,12');
 	Test.equals("new Number(123.123)._formatByPattern('0000.0###', {lg : 'fr'})", '0123,123',  '123.123 + #,### → 0123,123');
 	Test.equals("new Number(123.123)._formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');
@@ -176,6 +177,7 @@ window.onload = function(){
 	Test.error("new Number(123.103)._formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0#',  {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0%',  {lg : 'fr'})");
+	
 	
 	Test.title("Number._format()");
 	Test.equals("new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '})", '2 591,6', "2591.5978 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,6'");
