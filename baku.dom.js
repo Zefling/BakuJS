@@ -1,22 +1,14 @@
-var baku = document;
-baku._id = document.elementById;
-baku._first = document.querySelector;
-baku._list = document.querySelectorAll;
-baku._new = document.createElement;
-baku._frag = document.createDocumentFragment;
+baku.dom  = {
+	id : function (id) { return document.elementById(id) },
+	first : function (selector) { return document.querySelector(selector) },
+	list : function (selector) { return  document.querySelectorAll(selector) },
+	new : function (name) { return document.createElement(name) },
+	frag : function (name) { return document.createDocumentFragment(name) }
+};
 
 var DomArray = function() {}; 
-for(key in Array.prototype) { 
+for(var key in Array.prototype) { 
 	DomArray.prototype[key] = Array.prototype[key];
-}
-
-/**
- * test if it's a string
- * @param s object test
- * @return true is s is a string object
- */
-function isString(s) {
-    return typeof(s) === 'string' || s instanceof String;
 }
 
 /**
@@ -54,7 +46,7 @@ HTMLElement.prototype._css = function (name, value) {
  * @return l'élement
  */
 HTMLElement.prototype._addClass = function (classes) {
-	if (isString(classes)) {
+	if (baku.isString(classes)) {
 		classes = classes.split(/\s+/);
 	}
 	for (var i in classes) {
@@ -69,7 +61,7 @@ HTMLElement.prototype._addClass = function (classes) {
  * @return l'élement
  */
 HTMLElement.prototype._rmClass  = function (classes) {
-	if (isString(classes)) {
+	if (baku.isString(classes)) {
 		classes = classes.split(/\s+/);
 	}
 	for (var i in classes) {
@@ -147,12 +139,12 @@ DomArray.prototype._first = function (selector) {
  */
 NodeList.prototype._list = 
 DomArray.prototype._list = function (selector) {
-	var e, k = 0, list = new DomArray();
-	for (var i in this) {
+	var e, i, j, list = new DomArray();
+	for (i in this) {
 		if (this[i] instanceof HTMLElement) {
 			e = this[i].querySelectorAll(selector);
 			if (e.length > 0) {
-				for(var j in e) {
+				for(j in e) {
 					if (e[j] instanceof HTMLElement) {
 						list[list.length] = e[j];
 					}

@@ -101,7 +101,7 @@ String.prototype._padLeft = function(n, str, mode) {
 			var adding = n - this.length,
 			    size = Math.trunc(adding / str.length + 1),
 			    cut =  str.length - (adding % str.length); 
-			return str.substring(cut, str.length) + Array(size).join(str || ' ') + this
+			return str.substring(cut, str.length) + Array(size).join(str || ' ') + this;
 	 }
 }; 
 
@@ -130,7 +130,6 @@ String.prototype._padRight = function(n, str, mode) {
 			 var adding = n - this.length,
 			     size = Math.trunc(adding / str.length + 1),
 			     cut =  adding % str.length; 
-			 return this + Array(size).join(str) + str.substring(0, cut)
-			 break;
+			 return this + Array(size).join(str) + str.substring(0, cut);
 	 }
 }; 

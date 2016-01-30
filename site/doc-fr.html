@@ -1,157 +1,370 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta  content="text/html; charset=UTF-8"  http-equiv="content-type">
-    <title>BakuJS</title>
-    <link  href="style.css"  rel="stylesheet"  type="text/css">
-  </head>
-  <body>
-    <h1>BakuJS</h1>
-    [ <a  href="doc-fr.html">Français</a> ] <br>
-    <h2>Date</h2>
-    <h3> Date.prototype._getMonthName([langue]) </h3>
-    <p>Retour le nom du mois d'une date. </p>
-    <ol>
-      <li>langue (string) : 'fr' pour français.<br>
-        <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li>
-    </ol>
-    <div> <code>
-        <pre>new Date('2012-09-30')._getMonthName(); // septembre</pre>
-      </code> </div>
-    <h3>Date.prototype._getDayName([langue]) </h3>
-    <p>Retour le nom du jour de la semaine d'une date.</p>
-    <ol>
-      <li>langue (string) : 'fr' pour français.<br>
-        <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li>
-    </ol>
-    <div> <code>
-        <pre>new Date('2012-09-30')._getDayName(); // dimanche</pre>
-      </code> </div>
-    <h3> Date.prototype._getDayOfYear()</h3>
-    <p>Retour le numéro du jour de l'anné d'une date.</p>
-    <div> <code>
-        <pre>new Date('2012-09-30')._getDayOfYear(); // 275</pre>
-      </code> </div>
-    <h3> Date.prototype.prototype._getWeek([mode]) </h3>
-    <p>Retour le numéro de semaine d'une date.</p>
-    <ol>
-      <li>mode (int) : 1 pour ISO (la semaine commence par le lundi), 0 pour US/UK&nbsp; (la semaine commande par le dimanche).<br>
-        <span  class="em">Si non renseigné, retourne au format ISO.</span></li>
-    </ol>
-    <div> <code>
-        <pre>new Date('2012-09-30')._getWeek();  // 39 (format ISO)<br>new Date('2012-09-30')._getWeek(0); // 40 (format US/UK)</pre></code>
-    </div>
+        <html>
+          <head>
+            <meta  content="text/html; charset=UTF-8"  http-equiv="content-type">
+            <title>BakuJS</title>
+            <link  href="style.css"  rel="stylesheet"  type="text/css">
+          </head>
+          <body  id="top">
+            <h1>BakuJS</h1>
+            [ <a  href="doc-fr.html">Français</a> ] <br>
+            <ul>
+              <li><a  href="#Date">Date</a></li>
+              <li><a  href="#Math">Math</a></li>
+              <li><a  href="#Number">Number</a></li>
+              <li><a  href="#String">String</a></li>
+              <li><a  href="#DOM">DOM</a></li>
+            </ul>
+            <h2  id="Date"><a  href="#top">↑</a> Date</h2>
+            <h3> Date.prototype._getMonthName([langue])</h3>
+            <p>Retour le nom du mois d'une date.</p>
+            <ol>
+              <li>langue (string) : 'fr' pour français.<br>
+                <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li>
+            </ol>
+            <div> <code>
+                <pre>new Date('2012-09-30')._getMonthName(); // septembre</pre>
+              </code> </div>
+            <h3>Date.prototype._getDayName([langue])</h3>
+            <p>Retour le nom du jour de la semaine d'une date.</p>
+            <ol>
+              <li>langue (string) : 'fr' pour français.<br>
+                <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li>
+            </ol>
+            <div> <code>
+                <pre>new Date('2012-09-30')._getDayName(); // dimanche</pre>
+              </code> </div>
+            <h3> Date.prototype._getDayOfYear()</h3>
+            <p>Retour le numéro du jour de l'anné d'une date.</p>
+            <div> <code>
+                <pre>new Date('2012-09-30')._getDayOfYear(); // 275</pre>
+              </code> </div>
+            <h3> Date.prototype._getWeek([mode]) </h3>
+            <p>Retour le numéro de semaine d'une date.</p>
+            <ol>
+              <li>mode (int) : 1 pour ISO (la semaine commence par le lundi), 0 pour US/UK&nbsp; (la semaine commande par le dimanche).<br>
+                <span  class="em">Si non renseigné, retourne au format ISO.</span></li>
+            </ol>
+            <div><code>
+                <pre>new Date('2012-09-30')._getWeek();  // 39 (format ISO)<br>new Date('2012-09-30')._getWeek(0); // 40 (format US/UK)</pre></code></div>
 <h3> Date.prototype._toStringFormat(pattern, [langue]) </h3>
-    <p>Retour une version formaté de la date.
-</p><ol><li>pattern (string) : formatage de la date. (Voir les règles dans le tableau ci-dessous.)</li><li>langue (string) : 'fr' pour français.<br>
-  <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li></ol>
-
+<p>Retour une version formaté de la date.</p>
+<ol>
+<li>pattern (string) : formatage de la date. (Voir les règles dans le tableau ci-dessous.)</li>
+<li>langue (string) : 'fr' pour français.    <br>
+  <span  class="em">Si non renseigné, utilise la langue du navigateur.</span></li>
+</ol>
 <div>
-      <pre>new Date('2012-02-03T17:04:01')._toStringFormat('dd/MM/yyyy HH\\h mm\\m ss\\s SSS'; // 03/02/2012 17h 04m 01s 000</pre>
-    </div>
-<p>Les règles sont les suivantes (avec la date '2012-02-03T17:04:01') :</p><table><tbody><tr><th>Règle</th><th>Rendu (fr)</th><th>Détail</th></tr><tr><td>yyyy</td><td>2012</td><td>Numéro de l'année sur 4 chiffres</td></tr><tr><td>yy</td><td>12</td><td>Numéro de l'année sur 2 chiffres</td></tr><tr><td>MMMM</td><td>février</td><td>Nom du mois</td></tr><tr><td>MMM</td><td>fév</td><td>Nom du mois sur 3 lettres</td></tr><tr><td>MM</td><td>02</td><td>Numéro du mois sur 2 chiffres</td></tr><tr><td>M</td><td>2</td><td>Numéro du mois</td></tr><tr><td>ww</td><td>05</td><td>Numéro de semaine sur 2 chiffres</td></tr><tr><td>w</td><td>5</td><td>Numéro de semaine</td></tr><tr><td>DDD</td><td>034</td><td>Numéro du jour d'année sur 3 chiffres</td></tr><tr><td>D, DD</td><td>34</td><td>Numéro du jour d'année </td></tr><tr><td>dd</td><td>03</td><td>Numéro du jour du mois sur 2 chiffres</td></tr><tr><td>d</td><td>3</td><td>Numéro du jour du mois</td></tr><tr><td>F</td><td>4</td><td>Numéro du jour de la semaine :<br>0 - dimanche, 1 - lundi, 2 - mardi, 3 - mercredi, 4 - jeudi, 5 - vendredi, 6 - samedi</td></tr><tr><td>EEEE</td><td>jeudi</td><td>Jour de la semaine</td></tr><tr><td>EEE</td><td>jeu</td><td>Jour de la semaine sur 3 lettres</td></tr><tr><td>E</td><td>j</td><td>Première lettre du jour de la semaine</td></tr><tr><td>a</td><td>PM</td><td>AM de 1:00 à 12:59 heures, PM de 13:00 à 0:59 heure</td></tr><tr><td>HH</td><td>17</td><td>Heure sur 24 heures (0-23) sur 2 chiffres</td></tr><tr><td>H</td><td>17</td><td>Heure sur 24 heures (0-23)</td></tr><tr><td>kk</td><td>17</td><td>Heure sur 24 heures (1-24) sur 2 chiffres</td></tr><tr><td>k</td><td>17</td><td>Heure sur 24 heures (1-24)</td></tr><tr><td>hh</td><td>05</td><td>Heure sur 12 heures sur 2 chiffres</td></tr><tr><td>h</td><td>5</td><td>Heure sur 12 heures </td></tr><tr><td>mm</td><td>04</td><td>Minutes sur 2 chiffres</td></tr><tr><td>m</td><td>4</td><td>Minutes</td></tr><tr><td>ss</td><td>01</td><td>secondes sur 2 chiffres</td></tr><tr><td>s</td><td>1</td><td>secondes</td></tr><tr><td>SSS, SSSS, ...</td><td>000</td><td>milliseconds sur 3 chiffres</td></tr><tr><td>S, SS</td><td>0</td><td>milliseconds</td></tr><tr><td>\</td><td><br></td><td>Permet de protéger un caractère pour qu'il ne soit pas interprêté</td></tr></tbody></table><br>
-    <h2>Math</h2>
-    <ul>
-      </ul><h3> Math._roundDecimal(number, decimal)</h3>
-            
-<p>Arrondir à une décimale précise</p><ol><li>number (Number) : nombre à arrondir</li><li>decimal (int) : nombre de décimales à concerver en arrondissant (0.5 est arrondi à 1)</li></ol>
-            
+<pre>new Date('2012-02-03T17:04:01')._toStringFormat('dd/MM/yyyy HH\\h mm\\m ss\\s SSS'; // 03/02/2012 17h 04m 01s 000</pre>
+</div>
+<p>Les règles sont les suivantes (avec la date '2012-02-03T17:04:01') :</p>
+<table>
+<tbody>
+<tr><th>Règle</th><th>Rendu (fr)</th><th>Détail</th></tr>
+<tr>
+<td>yyyy</td>
+<td>2012</td>
+<td>Numéro de l'année sur 4 chiffres</td></tr>
+<tr>
+<td>yy</td>
+<td>12</td>
+<td>Numéro de l'année sur 2 chiffres</td></tr>
+<tr>
+<td>MMMM</td>
+<td>février</td>
+<td>Nom du mois</td></tr>
+<tr>
+<td>MMM</td>
+<td>fév</td>
+<td>Nom du mois sur 3 lettres</td></tr>
+<tr>
+<td>MM</td>
+<td>02</td>
+<td>Numéro du mois sur 2 chiffres</td></tr>
+<tr>
+<td>M</td>
+<td>2</td>
+<td>Numéro du mois</td></tr>
+<tr>
+<td>ww</td>
+<td>05</td>
+<td>Numéro de semaine sur 2 chiffres</td></tr>
+<tr>
+<td>w</td>
+<td>5</td>
+<td>Numéro de semaine</td></tr>
+<tr>
+<td>DDD</td>
+<td>034</td>
+<td>Numéro du jour d'année sur 3 chiffres</td></tr>
+<tr>
+<td>D, DD</td>
+<td>34</td>
+<td>Numéro du jour d'année </td></tr>
+<tr>
+<td>dd</td>
+<td>03</td>
+<td>Numéro du jour du mois sur 2 chiffres</td></tr>
+<tr>
+<td>d</td>
+<td>3</td>
+<td>Numéro du jour du mois</td></tr>
+<tr>
+<td>F</td>
+<td>4</td>
+<td>Numéro du jour de la semaine :<br>0 - dimanche, 1 - lundi, 2 - mardi, 3 - mercredi, 4 - jeudi, 5 - vendredi, 6 - samedi</td></tr>
+<tr>
+<td>EEEE</td>
+<td>jeudi</td>
+<td>Jour de la semaine</td></tr>
+<tr>
+<td>EEE</td>
+<td>jeu</td>
+<td>Jour de la semaine sur 3 lettres</td></tr>
+<tr>
+<td>E</td>
+<td>j</td>
+<td>Première lettre du jour de la semaine</td></tr>
+<tr>
+<td>a</td>
+<td>PM</td>
+<td>AM de 1:00 à 12:59 heures, PM de 13:00 à 0:59 heure</td></tr>
+<tr>
+<td>HH</td>
+<td>17</td>
+<td>Heure sur 24 heures (0-23) sur 2 chiffres</td></tr>
+<tr>
+<td>H</td>
+<td>17</td>
+<td>Heure sur 24 heures (0-23)</td></tr>
+<tr>
+<td>kk</td>
+<td>17</td>
+<td>Heure sur 24 heures (1-24) sur 2 chiffres</td></tr>
+<tr>
+<td>k</td>
+<td>17</td>
+<td>Heure sur 24 heures (1-24)</td></tr>
+<tr>
+<td>hh</td>
+<td>05</td>
+<td>Heure sur 12 heures sur 2 chiffres</td></tr>
+<tr>
+<td>h</td>
+<td>5</td>
+<td>Heure sur 12 heures </td></tr>
+<tr>
+<td>mm</td>
+<td>04</td>
+<td>Minutes sur 2 chiffres</td></tr>
+<tr>
+<td>m</td>
+<td>4</td>
+<td>Minutes</td></tr>
+<tr>
+<td>ss</td>
+<td>01</td>
+<td>secondes sur 2 chiffres</td></tr>
+<tr>
+<td>s</td>
+<td>1</td>
+<td>secondes</td></tr>
+<tr>
+<td>SSS, SSSS, ...</td>
+<td>000</td>
+<td>milliseconds sur 3 chiffres</td></tr>
+<tr>
+<td>S, SS</td>
+<td>0</td>
+<td>milliseconds</td></tr>
+<tr>
+<td>\</td>
+<td><br></td>
+<td>Permet de protéger un caractère pour qu'il ne soit pas interprêté</td></tr></tbody></table>
+<h2  id="Math"><a  href="#top">↑</a> Math</h2>
+<h3> Math._roundDecimal(number, decimal)</h3>
+<p>Arrondir à une décimale précise.</p>
+<ol>
+<li>number (Number) : nombre à arrondir</li>
+<li>decimal (int) : nombre de décimales à concerver en arrondissant (0.5 est arrondi à 1)</li>
+</ol>
 <div> <code>
-                <pre>Math._roundDecimal(123.5678,  2);  // 123.57<br>Math._roundDecimal(123.5678, -2);  // 100</pre></code>
-    </div><ul>
-    </ul>
-    <h2>Number</h2>
-    <ul>
-      </ul><h3> Number.prototype._formatByPattern([pattern, [params]])</h3>
-            
+ <pre>Math._roundDecimal(123.5678,  2);  // 123.57<br>Math._roundDecimal(123.5678, -2);  // 100</pre></code>
+</div>
+<h2  id="Number"><a  href="#top">↑</a> Number</h2>
+<h3> Number.prototype._formatByPattern([pattern, [params]])</h3>
 <p>Formate un nombre avec un pattern.</p>
-<ol><li>pattern (String) : règles de formatages (Voir les règles dans le tableau ci-dessous.)<br><span
- class="em">Si non renseigné, utilisera le pattern </span><span  class="em">'#,###'.</span></li><li>params (Object) : <br>－ dot : forme du séparateur de décimales <span
+<ol>
+<li>pattern (String) : règles de formatages (Voir les règles dans le tableau ci-dessous.)<br><span
+ class="em">Si non renseigné, utilisera le pattern </span><span  class="em">'#,###'.</span></li>
+<li>params (Object) : <br>－ dot : forme du séparateur de décimales <span
  class="em">(défaut : rien)</span><br>－ space : sparateur de millier (ou autre) <span
  class="em">(défaut : rien)</span><br>－ language : langue de formatage <span
  class="em">(défaut : langue du navigateur)</span><br>
-  <span  class="em">Si non renseigné, aucun params.</span></li></ol>
-            
+  <span  class="em">Si non renseigné, aucun params.</span></li>
+</ol>
 <div> <code>
-                <pre>new Number(2591.5978)._formatByPattern('#,###.00', {language : 'fr'});  // 2 591,60</pre></code>
-    </div><p>Les règles sont les suivantes :</p><table>
-<tbody><tr><th>Règle</th><th>Nombre</th><th>Rendu (fr)</th><th>Note</th></tr><tr><td>####</td><td>1234.456789</td><td>1234</td><td>Un nombre entier</td></tr><tr><td
->#,###</td><td>1234.456789</td><td>1 234</td><td>L'espace est insécable.</td></tr><tr><td>#,#,###</td><td>123456</td><td>123 456</td><td>La première virgule en partant de droite est la référence.</td></tr><tr><td>000000</td><td>1234.456789</td><td>001234</td><td
- >La taille minimum correspond au nombre de 0.</td></tr><tr><td>000,000</td><td>1234.456789</td><td>001 234</td><td><br></td></tr><tr><td>##,#00</td><td>1.23</td><td
- >01</td><td><br></td></tr><tr><td >#.#</td><td
- >1.55</td><td>1,6</td><td>Les valeurs sont arrondies au supérieur.</td></tr><tr><td>#.00</td><td>1.5</td><td>1,50</td><td><br></td></tr><tr><td>#.00##</td><td>1.54589</td><td>1,5459</td><td
- colspan="1"  rowspan="2">Le nombre de # & 0 donne la taille maximum de décimale, les 0 donnes la tailles minimal.</td></tr><tr><td>#.00##</td><td>1.5</td><td>1,50</td></tr><tr><td>0,000.00##</td><td>1.5</td><td>0 001,50</td><td><br></td></tr><tr><td>###%</td><td>1.5</td><td>150%</td><td>Passe la valeur en pourcentage (×100).</td></tr><tr><td>#,###.00:en</td><td>1245.597</td><td>1,245.60</td><td>Force le format anglais.</td></tr><tr><td>#,###.00</td><td>1245.597</td><td>1_245!60</td><td>Avec les params {dot:'!', space : '_'}</td></tr></tbody></table><br>
-      <h3> Number.prototype._format([params]) </h3>
-            
-<p>Formate un nombre avec différents paramètres.
-</p>
-<ol><li>params (Object) : <br>－ groupingSize : séparateur de lisiblité<span
+ <pre>new Number(2591.5978)._formatByPattern('#,###.00', {language : 'fr'});  // 2 591,60</pre></code>
+</div>
+<p>Les règles sont les suivantes :</p>
+<table>
+<tbody>
+<tr><th>Règle</th><th>Nombre</th><th>Rendu (fr)</th><th>Note</th></tr>
+<tr>
+<td>####</td>
+<td>1234.456789</td>
+<td>1234</td>
+<td>Un nombre entier</td></tr>
+<tr>
+<td>#,###</td>
+<td>1234.456789</td>
+<td>1 234</td>
+<td>L'espace est insécable.</td></tr>
+<tr>
+<td>#,#,###</td>
+<td>123456</td>
+<td>123 456</td>
+<td>La première virgule en partant de droite est la référence.</td></tr>
+<tr>
+<td>000000</td>
+<td>1234.456789</td>
+<td>001234</td>
+<td>La taille minimum correspond au nombre de 0.</td></tr>
+<tr>
+<td>000,000</td>
+<td>1234.456789</td>
+<td>001 234</td>
+<td><br></td></tr>
+<tr>
+<td>##,#00</td>
+<td>1.23</td>
+<td>01</td>
+<td><br></td></tr>
+<tr>
+<td>#.#</td>
+<td>1.55</td>
+<td>1,6</td>
+<td>Les valeurs sont arrondies au supérieur.</td></tr>
+<tr>
+<td>#.00</td>
+<td>1.5</td>
+<td>1,50</td>
+<td><br></td></tr>
+<tr>
+<td>#.00##</td>
+<td>1.54589</td>
+<td>1,5459</td>
+<td  colspan="1"  rowspan="2">Le nombre de # & 0 donne la taille maximum de décimale, les 0 donnes la tailles minimal.</td></tr>
+<tr>
+<td>#.00##</td>
+<td>1.5</td>
+<td>1,50</td></tr>
+<tr>
+<td>0,000.00##</td>
+<td>1.5</td>
+<td>0 001,50</td>
+<td><br></td></tr>
+<tr>
+<td>###%</td>
+<td>1.5</td>
+<td>150%</td>
+<td>Passe la valeur en pourcentage (×100).</td></tr>
+<tr>
+<td>#,###.00:en</td>
+<td>1245.597</td>
+<td>1,245.60</td>
+<td>Force le format anglais.</td></tr>
+<tr>
+<td>#,###.00</td>
+<td>1245.597</td>
+<td>1_245!60</td>
+<td>Avec les params {dot:'!', space : '_'}</td></tr></tbody></table>
+<h3> Number.prototype._format([params]) </h3>
+<p>Formate un nombre avec différents paramètres.</p>
+<ol>
+<li>params (Object) : <br>－ groupingSize : séparateur de lisiblité<span
  class="em"> (0 = aucun)</span><br>－ zeroDigitSize : nombre de chiffres minimums<br>－ decimalSize : nombre de décimales affichées <br>－ decimalZeroSize : nombre de chiffres minimums en décimal<br>
 － dot : forme du séparateur de décimales <span  class="em">(défaut : rien)</span><br>
 － space : spérateur de millier (ou autre) <span  class="em">(défaut : rien)</span>－ unit : rien ou %<span
  class="em"></span><br>
-  <span  class="em">Si non renseigné, aucun params.</span></li></ol>
-            
-<div> <code>
-                <pre>new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '});  // 2 591,6</pre></code>
-    </div>
-
-    <h2>String</h2><h3>String.prototype._format(var1[, var2...n]) </h3>
-            
-<p>Formateur suivant plusieurs .
-</p>
-<ol><li>var1 (mixed) : <br>－ si Array : prend la liste et ignore les autres valeurs<br>－ si Object : prend l'object et ignore les autres valeurs<br>
+  <span  class="em">Si non renseigné, aucun params.</span></li>
+</ol>
+<div> <code> 
+ <pre>new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '});  // 2 591,6</pre></code>
+</div>
+<h2  id="String"><a  href="#top">↑</a> String</h2>
+<h3>String.prototype._format(var1[, var2...n]) </h3>
+<p>Formateur suivant plusieurs.</p>
+<ol>
+<li>var1 (mixed) : <br>－ si Array : prend la liste et ignore les autres valeurs<br>－ si Object : prend l'object et ignore les autres valeurs<br>
 － sinon : prend la liste des valeurs (var1, var2, var3, etc.) suivant leur position<br><span
- class="em">Si non renseigné, ne formate rien.</span></li></ol><p>Pour faire, simple, voilà les équivalences d'écriture :</p><div> <code>
-                <pre>'Le petit {0} de la {1}.'._format('chien', 'voisine');                                     // Le petit chien de la voisine.<br>'Le petit {0} de la {1}.'._format(['chien', 'voisine']);                                   // Le petit chien de la voisine.<br>'Le petit {animal} de la {personne}.'._format({ animal : 'chien', personne : 'voisine'});  // Le petit chien de la voisine.</pre></code>
-    </div>
-
-    <ul>
-      </ul>Il est possible d'aller plus loin et d'utiliser les formateurs :<br><ul><li>choice : {0, choice, 1# an|1> ans}</li><li>number : {0, number, #,##0}</li><li>date : {0,date, dd/MM/yyyy}</li></ul><div>
+ class="em">Si non renseigné, ne formate rien.</span></li></ol>
+<p>Pour faire, simple, voilà les équivalences d'écriture :</p>
+<div> <code>
+<pre>'Le petit {0} de la {1}.'._format('chien', 'voisine');                                     // Le petit chien de la voisine.<br>'Le petit {0} de la {1}.'._format(['chien', 'voisine']);                                   // Le petit chien de la voisine.<br>'Le petit {animal} de la {personne}.'._format({ animal : 'chien', personne : 'voisine'});  // Le petit chien de la voisine.</pre></code>
+</div>
+<p>Il est possible d'aller plus loin et d'utiliser les formateurs :</p>
+<ul>
+<li>choice : {0, choice, 1# an|1> ans}</li>
+<li>number : {0, number, #,##0}</li>
+<li>date : {0,date, dd/MM/yyyy}</li></ul>
+<div>
       <pre>"Il y a {0, number, #,##0:fr} jour{0, choice,1<=|1>s}".format(1200);                 // Il y a 1 200 jours
 "Il y a {jours, number, #,##0:fr} jour{jours, choice,1<=|1>s}".format({jours : 1});  // Il y a 1 jour
 "Le resultat est {0, choice, 10<{1}|10>={2}}.".format([12, 'petit', 'grand']);       // Le resultat est grand</pre>
-    </div><h4>choice</h4><p>Le formateur support les conditions suivantes suivant un « ou ». Dans l'ordre, la première qui sera vraie sera validée : </p><ul><li># pour l'égalié</li><li>>, >=, <, <= pour les conditions</li></ul><pre>{0, choise, 0# rien|2< peu de choses|5<= un peu plus de chose|5> beaucoup de chose}</pre><p>Attention : il n'y a pas valeur si aucune condition respecté</p><h4>number</h4>
-<p>Le formateur numérique support les mêmes pattern que <strong>Number.prototype._format()</strong>.</p><pre>{0, number, #,##0:fr}</pre><h4>date</h4>
+    </div><h4>choice</h4>
+<p>Le formateur support les conditions suivantes suivant un « ou ». Dans l'ordre, la première qui sera vraie sera validée : </p>
+<ul>
+<li># pour l'égalié</li>
+<li>>, >=, <, <= pour les conditions</li></ul>
+<pre>{0, choise, 0# rien|2< peu de choses|5<= un peu plus de chose|5> beaucoup de chose}</pre>
+<p>Attention : il n'y a pas valeur si aucune condition respecté</p>
+<h4>number</h4>
+<p>Le formateur numérique support les mêmes pattern que <strong>Number.prototype._format()</strong>.</p>
+<pre>{0, number, #,##0:fr}</pre>
+<h4>date</h4>
 <p>Le formateur numérique support les mêmes pattern que <strong>Date.prototype._toStringFormat()</strong>.</p>
-<pre>{0, date, dd/MM/yyyy}</pre><p>Attention : la date d'entrée doit être au format ISO (Ex. : 2016-10-20T17:59:59).</p><h3>String.prototype._padLeft(n, str[, mode]) </h3>
-            <p>Étrendre une chaine par la gauche avec un masque.
-</p><ol><li>n (int) : taille souhaité de la chaine.</li><li>str (String) : chaine pour le masque de répétion</li><li>mode (String) :<br>－ <span
- class="em">rien</span> (défaut) : répète la chaine par la chaine à étendre<br>－ l : répète la chaîne comme un masque qui part de la droite vers la gauche<br>－ r : répète la chaîne comme un masque qui part de la gauche vers la droite<br>
-  <span  class="em">Si non renseigné, prend le mode par défaut.</span></li></ol><pre>'X'._padLeft(10, 'ABCD')       // DABCDABCDX<br>'X'._padLeft(10, 'ABCD', 'l')  // CDABCDABCX<br>'X'._padLeft(10, 'ABCD', 'r')  // ABCDABCDAX</pre>
-
-
-
-
-<code></code><br><h3>String.prototype._padRight(n, str[, mode]) </h3>
-            
-<p>Étrendre une chaine par la droite avec un masque.
-</p>
-<ol><li>n (int) : taille souhaité de la chaine.
-</li><li>str (String) : chaine pour le masque de répétion
-  </li><li>mode (String) :<br>
+<pre>{0, date, dd/MM/yyyy}</pre>
+<p>Attention : la date d'entrée doit être au format ISO (Ex. : 2016-10-20T17:59:59.000), format US (10/20/2016 17:59:59.000) ou japonais (2016/10/20 17:59:59.000).</p>
+<h3>String.prototype._padLeft(n, str[, mode]) </h3>
+<p>Étrendre une chaine par la gauche avec un masque.</p>
+<ol>
+<li>n (int) : taille souhaité de la chaine.</li>
+<li>str (String) : chaine pour le masque de répétion</li>
+<li>mode (String) :<br>－ <span  class="em">rien</span> (défaut) : répète la chaine par la chaine à étendre.<br>－ l : répète la chaîne comme un masque qui part de la droite vers la gauche.<br>－ r : répète la chaîne comme un masque qui part de la gauche vers la droite.<br>
+  <span  class="em">Si non renseigné, prend le mode par défaut.</span></li></ol>
+<pre>'X'._padLeft(10, 'ABCD')       // DABCDABCDX<br>'X'._padLeft(10, 'ABCD', 'l')  // CDABCDABCX<br>'X'._padLeft(10, 'ABCD', 'r')  // ABCDABCDAX</pre>
+<h3>String.prototype._padRight(n, str[, mode]) </h3>
+<p>Étrendre une chaine par la droite avec un masque.</p>
+<ol>
+<li>n (int) : taille souhaité de la chaine.</li>
+<li>str (String) : chaine pour le masque de répétion</li>
+<li>mode (String) :<br>
 － <span  class="em">rien</span> (défaut) : répète la chaine par la chaine à étendre<br>
 － l : répète la chaîne comme un masque qui part de la droite vers la gauche<br>
 － r : répète la chaîne comme un masque qui part de la gauche vers la droite<br>
   <span  class="em">Si non renseigné, prend le mode par défaut.</span></li></ol>
-<pre>'X'._padRight(10, 'ABCD')       // XABCDABCDA<br>'X'._padRight(10, 'ABCD', 'l')  // XDABCDABCD<br>'X'._padRight(10, 'ABCD', 'r')  // XBCDABCDAB</pre><h2>DOM</h2>
+<pre>'X'._padRight(10, 'ABCD')       // XABCDABCDA<br>'X'._padRight(10, 'ABCD', 'l')  // XDABCDABCD<br>'X'._padRight(10, 'ABCD', 'r')  // XBCDABCDAB</pre>
+<h2  id="DOM"><a  href="#top">↑</a> DOM</h2>
     <h3>Raccourcis</h3>
     <ul>
-      <li><code>baku._id = document.elementById</code></li>
-      <li><code>baku._first = document.querySelector</code></li>
-      <li><code>baku._list = document.querySelectorAll</code></li>
-      <li><code>baku._new = document.createElement</code></li>
+      <li><code>baku.dom.id = document.elementById</code></li>
+      <li><code>baku.dom.first = document.querySelector</code></li>
+      <li><code>baku.dom.list = document.querySelectorAll</code></li>
+      <li><code>baku.dom.new = document.createElement</code></li>
     </ul>
     <h3>Aides</h3>
     <ul>
       <li><code>HTMLElement._css()</code> : ajout s'implifié de CSS sur un élement du DOM</li>
+      <li><code>HTMLElement._addClass()</code> : ajout s'implifié d'une classe sur un élement du DOM</li>
+      <li><code>HTMLElement._rmClass()</code> : ajout s'implifié d'une classe sur un élement du DOM</li>
       <li><code>NodeList._css()</code> : ajout s'implifié de CSS sur une liste d'élements du DOM</li>
       <li><code>NodeList._addClass()</code> : ajout s'implifié d'une classe sur une liste d'élements du DOM</li>
       <li><code>NodeList._rmClass()</code> : suppression s'implifié d'une classe sur une liste d'élements du DOM</li>
     </ul>
     <h3>Exemples</h3>
     <div>
-      <pre>baku._list('h2 + div')
+      <pre>baku.dom.list('h2 + div')
     ._css({'color' : 'red', 'text-decoration' : 'underline'})
     ._rmClass('ko');</pre>
     </div>

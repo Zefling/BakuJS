@@ -6,7 +6,10 @@ Formatter.choice = function (val, vals, arg) {
 	    val = typeof(val) === 'string' ? val.trim() : val,
 	    choicesRegex = /\s*([-\da-zA-Z]+)\s*(#|[><]=?)\s*((?:\\.|[^|])+)/g;
 	while((c = choicesRegex.exec(arg)) !== null) {
-		var test = c[1], etat = c[2], result = c[3].replace('\\|', '|').trim();
+		var test = c[1], 
+		    etat = c[2], 
+			result = c[3].replace('\\|', '|').trim();
+		
 		if((etat === "#"  && val == test) ||
 		   (etat === "<=" && val <= test) ||
 		   (etat === "<"  && val <  test) ||

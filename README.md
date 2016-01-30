@@ -35,10 +35,10 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 ## DOM
 
 ### Raccourcis
-- <code>baku._id = document.elementById</code>
-- <code>baku._first = document.querySelector</code>
-- <code>baku._list = document.querySelectorAll</code>
-- <code>baku._new = document.createElement</code>
+- <code>baku.dom.id = document.elementById</code>
+- <code>baku.dom.first = document.querySelector</code>
+- <code>baku.dom.list = document.querySelectorAll</code>
+- <code>baku.dom.new = document.createElement</code>
 
 ### Aides
 - <code>HTMLElement._css()</code> : ajout s'implifié de CSS sur un élement du DOM
@@ -50,7 +50,7 @@ Quelques petites méthodes en plus, par ajout sur le prototype des objets de bas
 
 ### Exemples
 ```js
-baku._list('h2 + div')
+baku.dom.list('h2 + div')
     ._css({'color' : 'red', 'text-decoration' : 'underline'})
     ._rmClass('ko');
 ```

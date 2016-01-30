@@ -1,11 +1,11 @@
 var Test = {};
 Test.title = function (title) {
-	var b =  baku._new("h2");
+	var b =  baku.dom.new("h2");
 	b.textContent = title;
 	document.body.appendChild(b);
 };
 Test.equals = function (test, equals, message) {
-	var result, ok, time1, time2, b =  baku._new("div");
+	var result, ok, time1, time2, b = baku.dom.new("div");
 	try {
 		time1 = performance.now ? performance.now() : Date.now(); 
 		result = eval(test);
@@ -22,7 +22,7 @@ Test.equals = function (test, equals, message) {
 	
 };
 Test.error = function (test) {
-	var ok = false, time1, time2, message = 'valide ?', b = baku._new("div");
+	var ok = false, time1, time2, message = 'valide ?', b = baku.dom.new("div");
 	try {
 		time1 = performance.now ? performance.now() : Date.now(); 
 		result = eval(test);
@@ -263,5 +263,4 @@ window.onload = function(){
 	Test.equals("'{0, date, \\\\w\\\\e\\\\e\\\\kw\\\\\\\\yyyy}'._format('2015-10-20')", 'week43\\2015', '2015-10-20 + {0, date, \\w\\e\\e\\kw\\\\yyyy} → week43\\2015');
 	Test.equals("'{0, date, {1}}'._format(['2015-10-20', 'dd/MM/yyyy'])",   '20/10/2015',          '[2015-10-20, dd/MM/yyyy] + {0, date, {1}} → 20/10/2015');
 	
-	
-}
+};

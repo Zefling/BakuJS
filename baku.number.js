@@ -44,19 +44,13 @@ Number.prototype._formatByPattern = function(pattern, params) {
 		throw 'patten error : '+pattern;
 	}
 	if (format.dot === undefined) {
-		switch (lg) {
-			case 'en' : format.dot = '.'; break;
-			case 'fr' : format.dot = ','; break;
-		}
+		format.dot = baku.lg(lg ,'math.dot');
 	}
 	if (format.space === undefined) {
-		switch (lg) {
-			case 'en' : format.space = ',';      break;
-			case 'fr' : format.space = "\u00A0"; break;
-		}
+		format.space = baku.lg(lg, 'math.space');
 	}
 	return this._format(format);
-}
+};
 
 /**
  * formatage suivant paramètre
@@ -77,7 +71,7 @@ Number.prototype._format = function(format) {
 	    unit = format.unit||'',
 	    decimalSize = format.decimalSize > 0 ? format.decimalSize : 0;
 		
-	if (unit.trim() == '%') {
+	if (unit.trim() === '%') {
 		val = val * 100;
 	}
 	
@@ -94,7 +88,7 @@ Number.prototype._format = function(format) {
 	var decimal = '';
 	if(format.decimalSize > 0) {
 		decimal = (valueAsStr[3]||'0').substring(0, format.decimalSize);
-		if (decimal == '0') {
+		if (decimal === '0') {
 			decimal = '';
 		}
 		if (format.decimalZeroSize > 0) {
@@ -105,4 +99,4 @@ Number.prototype._format = function(format) {
 		}
 	}
 	return valueAsStr[1] + entier + decimal + unit;
-}
+};
