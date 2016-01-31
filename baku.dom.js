@@ -1,23 +1,61 @@
 baku.dom  = {
-	id : function (id) { return document.elementById(id) },
-	first : function (selector) { return document.querySelector(selector) },
-	list : function (selector) { return  document.querySelectorAll(selector) },
-	new : function (name) { return document.createElement(name) },
-	frag : function (name) { return document.createDocumentFragment(name) }
+	/**
+	 * get a element by id ( id="xxx" )
+	 * @param id the id element
+	 * @return HTMLElement
+	 */
+	'id' : function (id) { return document.elementById(id) },
+	/**
+	 * get a element by name ( name="xxx" )
+	 * @param name the name element
+	 * @return HTMLElement
+	 */
+	'name' : function (name) { return document.elementByName(name) },
+	/**
+	 * get all elements that containts all classes list in params ( class="xxx yyy" )
+	 * @param classes class list (separete with space)
+	 * @return NodeList
+	 */
+	'class' : function (classes) { return document.elementByClassName(classes) },
+	/**
+	 * get all elements that respect a selector
+	 * @param selector CSS selector
+	 * @return HTMLElement
+	 */
+	'first' : function (selector) { return document.querySelector(selector) },
+	/**
+	 * get all elements that respect a selector
+	 * @param selector CSS selector
+	 * @return NodeList
+	 */
+	'list' : function (selector) { return  document.querySelectorAll(selector) },
+	/**
+	 * create a element
+	 * @param name name element
+	 * @return HTMLElement
+	 */
+	'new' : function (name) { return document.createElement(name) },
+	/**
+	 * create de dument fragment
+	 * @param name name element
+	 * @return DOM fragment
+	 */
+	'frag' : function (name) { return document.createDocumentFragment(name) }
 };
 
+// copy Array object in DomArray
 var DomArray = function() {}; 
 for(var key in Array.prototype) { 
 	DomArray.prototype[key] = Array.prototype[key];
 }
 
 /**
- * ajout d'un style sur un élement. 
- * @get si value === undefined
- * @set si value !== undefined || name est un object
- * @param name nom du style ou liste de style {'nom' : 'valeur'}
- * @param value valeur du style (facultatif)
- * @return valeur pour @get, this pour @set
+ * add a style on the element. 
+ * @get if value === undefined
+ * @set if value !== undefined || name is a object
+ * @param name style name or a style list {'name' : 'value'}
+ * @param value value of style (optional)
+ * @return a value if @get, 'this' if @set
  */
 HTMLElement.prototype._css = function (name, value) {
 	if (typeof(name) !== 'object' && value === undefined) {
@@ -41,9 +79,9 @@ HTMLElement.prototype._css = function (name, value) {
 };
 
 /** 
- * ajout d'une classe sur un élement
- * @param name nom de classe ou une liste de classes
- * @return l'élement
+ * add one or more classes on the element
+ * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @return the element
  */
 HTMLElement.prototype._addClass = function (classes) {
 	if (baku.isString(classes)) {
@@ -56,9 +94,9 @@ HTMLElement.prototype._addClass = function (classes) {
 };
 
 /** 
- * supprime d'une classe sur un élement
- * @param name nom de classe ou une liste de classes
- * @return l'élement
+ * remove one or more classes on element
+ * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @return the element
  */
 HTMLElement.prototype._rmClass  = function (classes) {
 	if (baku.isString(classes)) {
@@ -71,10 +109,12 @@ HTMLElement.prototype._rmClass  = function (classes) {
 };
 
 /**
- * set les styles sur une liste d'élements
- * @param name nom du style
- * @param value valeur du style
- * @return valeur ou undefined si non trouvée
+ * add a style on elements list. 
+ * @get if value === undefined
+ * @set if value !== undefined || name is a object
+ * @param name style name or a style list {'name' : 'value'}
+ * @param value value of style (optional)
+ * @return the list
  */
 NodeList.prototype._css =
 DomArray.prototype._css = function (name, value) {
@@ -87,9 +127,9 @@ DomArray.prototype._css = function (name, value) {
 };
 
 /** 
- * ajout d'une classe sur une liste d'élements
- * @param name nom de classe
- * @return la liste
+ * add one or more classes on the element list
+ * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @return the list
  */
 NodeList.prototype._addClass = 
 DomArray.prototype._addClass = function (name) {
@@ -102,9 +142,9 @@ DomArray.prototype._addClass = function (name) {
 };
 
 /**
- * supprime d'une classe sur une liste d'élements
- * @param name nom de classe
- * @return la liste
+ * remove one or more classes on the element list
+ * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @return the list
  */
 NodeList.prototype._rmClass = 
 DomArray.prototype._rmClass  = function (name) {
@@ -117,9 +157,9 @@ DomArray.prototype._rmClass  = function (name) {
 };
 
 /**
- * utilise le selector sur tout les élements de la liste et retour le premier
- * @param selector nom de classe
- * @return element
+ * use a selector on a list element and return the first found
+ * @param selector CSS selector
+ * @return the list
  */
 NodeList.prototype._first = 
 DomArray.prototype._first = function (selector) {
@@ -133,9 +173,9 @@ DomArray.prototype._first = function (selector) {
 };
 
 /**
- * utilise le selector sur tout les élements de la liste et retourne une liste
- * @param selector nom de classe
- * @return la liste
+ * use a selector on a list element and return the list found
+ * @param selector CSS selector
+ * @return the list
  */
 NodeList.prototype._list = 
 DomArray.prototype._list = function (selector) {

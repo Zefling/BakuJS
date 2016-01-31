@@ -157,7 +157,7 @@ window.onload = function(){
 	Test.equals("new Number(1000000)._formatByPattern('#,####',   {lg : 'fr'})", '100\u00A00000', '1000000 + #,### → 100\u00A00000');
 	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.00',   {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.00 → 123,456,789.99');
 	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'en'})", '123,456,789.99', '123456789.987654321 + #,###.## → 123,456,789.99');
-	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'xx'})", '123456789.99', '123456789.987654321 + #,###.## → 123456789.99');
+	Test.equals("new Number(123456789.987654321)._formatByPattern('#,###.##', {lg : 'xx'})", '123,456,789.99', '123456789.987654321 + #,###.## → 123,456,789.99');
 	Test.equals("new Number(123.123)._formatByPattern('0000.00',   {lg : 'fr'})", '0123,12',   '123.123 + #,### → 0123,12');
 	Test.equals("new Number(123.123)._formatByPattern('0000.0###', {lg : 'fr'})", '0123,123',  '123.123 + #,### → 0123,123');
 	Test.equals("new Number(123.123)._formatByPattern('0000.0000', {lg : 'fr'})", '0123,1230', '123.123 + #,### → 0123,1230');

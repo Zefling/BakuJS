@@ -9,50 +9,50 @@ Formatter._parsePattern = /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/;
  * @return la chaine parsée
  */
 Formatter._parse = function (str, func) {
-	var rtn = "", i  = 0, op = 0, cl = 0, frag = {};
+	var text = "", i  = 0, openTagCount = 0, closeTagCount = 0, fragment = {};
 	while ((i = str.indexOf('{' , i)) > -1) {
 		if (i === 0 || str[i-1] !== '\\') {
-			frag[i] = 1;
-			op++;
+			fragment[i] = 1;
+			openTagCount++;
 		}
 		i++;
 	}
 	i  = 0;
 	while ((i = str.indexOf('}' , i)) > -1) {
 		if (i === 0 || str[i-1] !== '\\') {
-			frag[i] = -1;
-			cl++;
+			fragment[i] = -1;
+			closeTagCount++;
 		}
 		i++;
 	}
-	if (op === cl) {
+	if (openTagCount === closeTagCount) {
 		var ct = 0, j = 0, mrq = 0, tmp;
-		for(var pos in frag) {
-			pos = parseInt(pos);
-			if (frag[pos] === 1 && frag[pos] + ct === 1) {
-				rtn += str.substring(mrq, pos);
-				mrq = pos;
+		for(var position in fragment) {
+			position = parseInt(position);
+			if (fragment[position] === 1 && fragment[position] + ct === 1) {
+				text += str.substring(mrq, position);
+				mrq = position;
 			}
-			else if (frag[pos] === -1 && frag[pos] + ct === 0) {
-				tmp = str.substring(mrq + 1, pos);
+			else if (fragment[position] === -1 && fragment[position] + ct === 0) {
+				tmp = str.substring(mrq + 1, position);
 				if (tmp.match(Formatter._parsePattern)) {
-					rtn += tmp.replace(Formatter._parsePattern, func);
+					text += tmp.replace(Formatter._parsePattern, func);
 				}
 				else {
 					throw 'pattern error';
 				}
-				mrq = pos + 1;
+				mrq = position + 1;
 				j++;
 			}
-			frag[pos] += ct;
-			ct = frag[pos];
+			fragment[position] += ct;
+			ct = fragment[position];
 		}
-		rtn += str.substr(mrq);
+		text += str.substr(mrq);
 	}
 	else {
 		throw 'pattern error';
 	}
-	return rtn;
+	return text;
 };
 
 /**
@@ -68,11 +68,20 @@ String.prototype._format = function (){
 		args = args[0];
 	}
 	
-	return Formatter._parse(this, function (base, value, func, params) {
-		return (func !== undefined && typeof Formatter[func] === 'function')  
-				? ( params !== undefined ? Formatter[func](args[value], args, params) : Formatter[func](args[value], args) )
-				: args[value];
-			}).replace('\\}', '}').replace('\\{', '{');
+	return Formatter._parse(this,
+		/**
+		 * remplace the tag by a formated string 
+		 * @param base compled string respect the replace pattern (not used) (see : Formatter._parsePattern )
+		 * @param key the key tag (ex. 0 for {0})
+		 * @param func name of function (optional)
+		 * @param params a paramter object (optional)
+		 * @return string
+		 */
+		function (base, key, func, params) {
+			return (func !== undefined && typeof Formatter[func] === 'function')  
+				? ( params !== undefined ? Formatter[func](args[key], args, params) : Formatter[func](args[key], args) )
+				: args[key];
+		}).replace('\\}', '}').replace('\\{', '{');
 };
 
 

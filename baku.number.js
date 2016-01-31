@@ -21,15 +21,15 @@ Number.prototype._formatByPattern = function(pattern, params) {
 		lg = params.lg || navigator.language;
 	
 	if(!pattern) {
-		// partern par défaut
+		// partern by default
 		pattern = '#,###';
 	}
 	
 	var match = pattern.match(/\s*(?:((?:[#,]*)(?:[0,]*))(?:(?:\.([0 ]*#*))|))((?:\s*\%)|)\s*$/);
 	if(match && match[0] === pattern) {
-		var number  = match[1];
-		var decimal = match[2] ? match[2].replace(/\s/, '').match(/^(0*)#*/) : null;
-		format.unit    = match[3];
+		var number  = match[1],
+		    decimal = match[2] ? match[2].replace(/\s/, '').match(/^(0*)#*/) : null;
+		format.unit = match[3];
 		
 		// digit grouping
 		format.groupingSize  = number.match(/,?([#]*[0]*)$/)[1].length;
@@ -44,10 +44,10 @@ Number.prototype._formatByPattern = function(pattern, params) {
 		throw 'patten error : '+pattern;
 	}
 	if (format.dot === undefined) {
-		format.dot = baku.lg(lg ,'math.dot');
+		format.dot = baku.lg(lg ,'number.dot');
 	}
 	if (format.space === undefined) {
-		format.space = baku.lg(lg, 'math.space');
+		format.space = baku.lg(lg, 'number.space');
 	}
 	return this._format(format);
 };

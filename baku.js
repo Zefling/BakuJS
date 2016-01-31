@@ -1,5 +1,7 @@
 var baku = {};
 
+baku.version = '0.1b';
+
 /**
  * get message by language
  * @param lg language id
@@ -10,16 +12,28 @@ baku.lg = function(lg, path) {
 	var text;
 	if (this.lg.lg[lg]) {
 		text = baku.get(this.lg.lg[lg], path.split('.'));
+	}
+	// if not found use the default language
+	if (text === undefined) {
+		text = baku.get(this.lg.lg[this.lg.default], path.split('.'));
 	}	
 	return text;
 };
 
+/** language base */
+baku.lg.lg = {};
+
 /**
- * add a language object
- * @param lg object
-  */
-baku.lg.add = function (lg) {
-	this.lg = baku.extend(this.lg, lg);
+ * add or extend a language object
+ * @param id language id
+ * @param lg object this language informations
+ */
+baku.lg.add = function (id, lg) {
+	// first if the defaut language
+	if (!this.default) {
+		this.default = id;
+	}
+	this.lg[id] = this.lg[id] ? baku.extend(this.lg[id], lg) : lg;
 };
 
 /**
