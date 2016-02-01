@@ -1,6 +1,6 @@
 var baku = {};
 
-baku.version = '0.1b';
+baku.version = '0.1c';
 
 /**
  * get message by language

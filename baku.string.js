@@ -1,14 +1,17 @@
-/** formateur (object avec des fonctions : "func(mixed value):string" ou "func(mixed value, string params):string"   */
-var Formatter = {};
+baku.string = {
+	parsePattern : /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/,
+	
+	/** formateur (object avec des fonctions : "func(mixed value):string" ou "func(mixed value, string params):string"   */
+	formatter : {}
+};
 
-Formatter._parsePattern = /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/;
 /**
  * fonction pour simuler le regex : /(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g
  * @param str la chaîne à parser
  * @param func la function à exécuter sur les balises
  * @return la chaine parsée
  */
-Formatter._parse = function (str, func) {
+baku.string.formatter._parse = function (str, func) {
 	var text = "", i  = 0, openTagCount = 0, closeTagCount = 0, fragment = {};
 	while ((i = str.indexOf('{' , i)) > -1) {
 		if (i === 0 || str[i-1] !== '\\') {
@@ -35,8 +38,8 @@ Formatter._parse = function (str, func) {
 			}
 			else if (fragment[position] === -1 && fragment[position] + ct === 0) {
 				tmp = str.substring(mrq + 1, position);
-				if (tmp.match(Formatter._parsePattern)) {
-					text += tmp.replace(Formatter._parsePattern, func);
+				if (tmp.match(baku.string.parsePattern)) {
+					text += tmp.replace(baku.string.parsePattern, func);
 				}
 				else {
 					throw 'pattern error';
@@ -58,7 +61,7 @@ Formatter._parse = function (str, func) {
 /**
  * formatage par function et paramètres :
  * - {key, function, params}
- * les functions sont des méthodes de Formatter
+ * les functions sont des méthodes de baku.string.formatter
  * @param liste d'arguments, array ou object
  * @return string
  */
@@ -68,18 +71,18 @@ String.prototype._format = function (){
 		args = args[0];
 	}
 	
-	return Formatter._parse(this,
+	return baku.string.formatter._parse(this,
 		/**
 		 * remplace the tag by a formated string 
-		 * @param base compled string respect the replace pattern (not used) (see : Formatter._parsePattern )
+		 * @param base compled string respect the replace pattern (not used) (see : baku.string.formatter._parsePattern )
 		 * @param key the key tag (ex. 0 for {0})
 		 * @param func name of function (optional)
 		 * @param params a paramter object (optional)
 		 * @return string
 		 */
 		function (base, key, func, params) {
-			return (func !== undefined && typeof Formatter[func] === 'function')  
-				? ( params !== undefined ? Formatter[func](args[key], args, params) : Formatter[func](args[key], args) )
+			return (func !== undefined && typeof baku.string.formatter[func] === 'function')  
+				? ( params !== undefined ? baku.string.formatter[func](args[key], args, params) : baku.string.formatter[func](args[key], args) )
 				: args[key];
 		}).replace('\\}', '}').replace('\\{', '{');
 };

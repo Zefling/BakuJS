@@ -1,7 +1,7 @@
 /**
  * {0,choice,1# an|1< ans}
  */ 
-Formatter.choice = function (val, vals, arg) {
+baku.string.formatter.choice = function (val, vals, arg) {
 	var c, 
 	    val = typeof(val) === 'string' ? val.trim() : val,
 	    choicesRegex = /\s*([-\da-zA-Z]+)\s*(#|[><]=?)\s*((?:\\.|[^|])+)/g;
@@ -26,7 +26,7 @@ Formatter.choice = function (val, vals, arg) {
  * {0, number, #,##0}
  * @required ext.number.js
  */ 
-Formatter.number = function (val, vals, arg) {
+baku.string.formatter.number = function (val, vals, arg) {
 	if(arg === undefined) {
 		arg = '';
 	}
@@ -50,7 +50,7 @@ Formatter.number = function (val, vals, arg) {
  * {0,date, dd/MM/yyyy}
  * @required ext.date.js
  */ 
-Formatter.date = function (val, vals, arg) {
+baku.string.formatter.date = function (val, vals, arg) {
 	if(arg && arg.indexOf('{') > -1) {
 		arg = arg._format(vals);
 	}

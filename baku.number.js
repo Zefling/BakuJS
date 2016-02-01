@@ -1,3 +1,52 @@
+baku.number = {
+	/** défaut pattern for formatting */
+	formatDefautPattern :'#,###',
+	
+	/**
+	 * parse the number formatter pattern
+	 * @param pattern formatter pattern (default: '#,###')
+	 * @param params params
+	 *   - dot   : decimal separator (default: empty)
+	 *   - space : digit grouping separator (ou autre) (défaut: empty)
+	 *   - lg    : formatage languga (defaut: web browser language)
+	 * @return la chaine formatée
+	 */
+	parse : function (pattern) {
+		var groupingSize    = 0,
+		    zeroDigitSize   = 0,
+		    decimalSize     = 0, 
+		    decimalZeroSize = 0,
+		    match           = pattern.match(/\s*(?:((?:[#,]*)(?:[0,]*))(?:(?:\.([0 ]*#*))|))((?:\s*\%)|)\s*$/),
+		    unit;
+		
+		if(match && match[0] === pattern) {
+			var number  = match[1],
+			    decimal = match[2] ? match[2].replace(/\s/, '').match(/^(0*)#*/) : null;
+			unit = match[3];
+			
+			// digit grouping
+			groupingSize  = number.match(/,?([#]*[0]*)$/)[1].length;
+			zeroDigitSize = number.match(/[,0]*$/)[0].replace(/,/g, '').length;
+			// decimal
+			if (decimal) {
+				decimalSize     = decimal[0].length;
+				decimalZeroSize = decimal[1].length;
+			}
+		}
+		else {
+			throw 'patten error: '+pattern;
+		}
+		return {
+			groupingSize    : groupingSize,
+			zeroDigitSize   : zeroDigitSize,
+			decimalSize     : decimalSize, 
+			decimalZeroSize : decimalZeroSize,
+			unit            : unit,
+		};
+	}
+};
+
+
 /**
  * formatage par pattern
  * @param pattern de formatage (défaut : '#,###')
@@ -9,46 +58,10 @@
  */
 Number.prototype._formatByPattern = function(pattern, params) {
 	var params = typeof(params) === 'object' ? params : {},
-		format = {
-			groupingSize : 0,
-			zeroDigitSize : 0,
-			decimalSize : 0, 
-			decimalZeroSize : 0,
-			unit : undefined,
-			dot : params.dot,
-			space : params.space
-		},
-		lg = params.lg || navigator.language;
-	
-	if(!pattern) {
-		// partern by default
-		pattern = '#,###';
-	}
-	
-	var match = pattern.match(/\s*(?:((?:[#,]*)(?:[0,]*))(?:(?:\.([0 ]*#*))|))((?:\s*\%)|)\s*$/);
-	if(match && match[0] === pattern) {
-		var number  = match[1],
-		    decimal = match[2] ? match[2].replace(/\s/, '').match(/^(0*)#*/) : null;
-		format.unit = match[3];
-		
-		// digit grouping
-		format.groupingSize  = number.match(/,?([#]*[0]*)$/)[1].length;
-		format.zeroDigitSize = number.match(/[,0]*$/)[0].replace(/,/g, '').length;
-		// decimal
-		if (decimal) {
-			format.decimalSize     = decimal[0].length;
-			format.decimalZeroSize = decimal[1].length;
-		}
-	}
-	else {
-		throw 'patten error : '+pattern;
-	}
-	if (format.dot === undefined) {
-		format.dot = baku.lg(lg ,'number.dot');
-	}
-	if (format.space === undefined) {
-		format.space = baku.lg(lg, 'number.space');
-	}
+	    format = baku.number.parse(pattern || baku.number.formatDefautPattern),
+	    lg     = params.lg || navigator.language;
+	format.dot = params.dot || baku.lg(lg ,'number.dot');
+	format.space = params.space || baku.lg(lg, 'number.space');	
 	return this._format(format);
 };
 
@@ -81,8 +94,8 @@ Number.prototype._format = function(format) {
 	}	
 	// ajoute des espaces
 	var entier = format.space !== undefined && format.groupingSize && format.groupingSize > 0 
-		? valueAsStr[2].replace(new RegExp('(?=(?:\\d{' + format.groupingSize + '})+$)(?!^)', 'g'), format.space) 
-		: valueAsStr[2];
+	    ? valueAsStr[2].replace(new RegExp('(?=(?:\\d{' + format.groupingSize + '})+$)(?!^)', 'g'), format.space) 
+	    : valueAsStr[2];
 	
 	// formatage des décimales
 	var decimal = '';
@@ -99,4 +112,30 @@ Number.prototype._format = function(format) {
 		}
 	}
 	return valueAsStr[1] + entier + decimal + unit;
+};
+
+/**
+ * parse a string for extract a number (if possible)
+ * @param format
+ *   - dot   : decimal separator (default: empty)
+ *   - space : digit grouping separator (ou autre) (défaut: empty)
+ *   - lg    : formatage languga (defaut: web browser language)
+ * @return a number
+ */
+Number._parse = function (string, params) {
+	var number,
+	    params = typeof(params) === 'object' ? params : {}, 
+	    lg    = params.lg    || navigator.language,
+	    dot   = params.dot   || baku.lg(lg, 'number.dot'),
+	    space = params.space || baku.lg(lg, 'number.space'),
+	    match = string.match(new RegExp('(\\d*((' + space + ')\\d*)*\\d)((' + dot + ')(\\d*))?', 'g') );
+	
+	if (match[0]) {
+		number = +(match[0].replace(new RegExp(space, 'g'), '').replace(dot, '.'));
+	}
+	else {
+		throw 'parsing error: '+string;
+	}
+	
+	return number;
 };
