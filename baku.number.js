@@ -41,7 +41,7 @@ baku.number = {
 			zeroDigitSize   : zeroDigitSize,
 			decimalSize     : decimalSize, 
 			decimalZeroSize : decimalZeroSize,
-			unit            : unit,
+			unit            : unit
 		};
 	}
 };
@@ -126,12 +126,11 @@ Number._parse = function (string, params) {
 	var number,
 	    params = typeof(params) === 'object' ? params : {}, 
 	    lg    = params.lg    || navigator.language,
-	    dot   = params.dot   || baku.lg(lg, 'number.dot'),
-	    space = params.space || baku.lg(lg, 'number.space'),
+	    dot   = RegExp._toRegexString(params.dot   || baku.lg(lg, 'number.dot')),
+	    space = RegExp._toRegexString(params.space || baku.lg(lg, 'number.space')),
 	    match = string.match(new RegExp('(\\d*((' + space + ')\\d*)*\\d)((' + dot + ')(\\d*))?', 'g') );
-	
 	if (match[0]) {
-		number = +(match[0].replace(new RegExp(space, 'g'), '').replace(dot, '.'));
+		number = +(match[0].replace(new RegExp(space, 'g'), '').replace(new RegExp(dot), '.'));
 	}
 	else {
 		throw 'parsing error: '+string;
@@ -139,3 +138,14 @@ Number._parse = function (string, params) {
 	
 	return number;
 };
+
+/** 
+ * test if the value is a finite number
+ * @param value testing value
+ * @return true if a finite number
+ */
+if (!Number.isFinite) {
+	Number.isFinite = function(value) {
+	    return typeof value === "number" && isFinite(value);
+	}
+}

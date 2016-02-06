@@ -86,7 +86,7 @@ var _dateFormatters = {
 	h    : [/(^|[^\\])h/     , function (d) {return d.getHours() > 12 ? d.getHours() % 12 : (d.getHours() === 0 ? 12 : d.getHours());}],
 	mm   : [/(^|[^\\])mm/    , function (d) {return new String(d.getMinutes())._padLeft(2, '0');}],
 	m    : [/(^|[^\\])m/     , function (d) {return d.getMinutes();}],
-	ss   : [/(^|[^\\])ss/    , function (d) {return new Sring(d.getSeconds())._padLeft(2, '0');}],
+	ss   : [/(^|[^\\])ss/    , function (d) {return new String(d.getSeconds())._padLeft(2, '0');}],
 	s    : [/(^|[^\\])s/     , function (d) {return d.getSeconds();}],
 	SSS  : [/(^|[^\\])S{3,}/ , function (d) {return new String(d.getMilliseconds())._padLeft(3, '0');}],
 	S    : [/(^|[^\\])S+/    , function (d) {return new String(d.getMilliseconds());}]

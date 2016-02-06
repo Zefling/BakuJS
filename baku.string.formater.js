@@ -36,12 +36,16 @@ baku.string.formatter.number = function (val, vals, arg) {
 	else if(arg.indexOf('{') > -1) {
 		arg = arg._format(vals);
 	}
-	// recupération de la langue : #,##0:fr
+	// get the language : #,##0:fr
 	var params = {},
 	    match = arg.match(/([^:]*)(?::(([a-z]{2})(-[A-Z]{2})?)|)/);
 	if(match && match[2]) {
 		params.lg = match[3];
 		params.local = match[2];
+	}
+	// if is not number, transform the val in number
+	if (!Number.isFinite(val)) {
+		val = Number._parse(val)
 	}
 	return val._formatByPattern(match[1], params);
 };

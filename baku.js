@@ -1,48 +1,23 @@
 var baku = {};
 
-baku.version = '0.1c';
-
-/**
- * get message by language
- * @param lg language id
- * @param path path of message
- * @return message or 'undefined' if not found
- */
-baku.lg = function(lg, path) {
-	var text;
-	if (this.lg.lg[lg]) {
-		text = baku.get(this.lg.lg[lg], path.split('.'));
-	}
-	// if not found use the default language
-	if (text === undefined) {
-		text = baku.get(this.lg.lg[this.lg.default], path.split('.'));
-	}	
-	return text;
-};
-
-/** language base */
-baku.lg.lg = {};
-
-/**
- * add or extend a language object
- * @param id language id
- * @param lg object this language informations
- */
-baku.lg.add = function (id, lg) {
-	// first if the defaut language
-	if (!this.default) {
-		this.default = id;
-	}
-	this.lg[id] = this.lg[id] ? baku.extend(this.lg[id], lg) : lg;
-};
+baku.version = '0.1d';
 
 /**
  * test if it's a string
- * @param s object test
- * @return true is s is a string object
+ * @param string object test
+ * @return true is string is a string object
  */
-baku.isString= function(s) {
-    return typeof(s) === 'string' || s instanceof String;
+baku.isString = function(string) {
+    return typeof(string) === 'string' || string instanceof String;
+};
+
+/**
+ * test if it's a array
+ * @param array object test
+ * @return true is s is a array object
+ */
+baku.isArray = function(array) {
+    return typeof(array) === 'object' || array instanceof Array;
 };
 
 /**
@@ -77,4 +52,38 @@ baku.get = function (o, path) {
 		val = base;
 	}
     return val;
+};
+
+/**
+ * get message by language
+ * @param lg language id
+ * @param path path of message
+ * @return message or 'undefined' if not found
+ */
+baku.lg = function(lg, path) {
+	var text;
+	if (this.lg.lg[lg]) {
+		text = baku.get(this.lg.lg[lg], path.split('.'));
+	}
+	// if not found use the default language
+	if (text === undefined) {
+		text = baku.get(this.lg.lg[this.lg['default']], path.split('.'));
+	}	
+	return text;
+};
+
+/** language base */
+baku.lg.lg = {};
+
+/**
+ * add or extend a language object
+ * @param id language id
+ * @param lg object this language informations
+ */
+baku.lg.add = function (id, lg) {
+	// first if the defaut language
+	if (!this['default']) {
+		this['default'] = id;
+	}
+	this.lg[id] = this.lg[id] ? baku.extend(this.lg[id], lg) : lg;
 };

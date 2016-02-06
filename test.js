@@ -42,7 +42,7 @@ Test.error = function (test) {
 
 window.onload = function(){
 	
-	Test.title("Date._getWeek()");
+	Test.title("Date.prototype._getWeek()");
 	Test.equals("new Date('2013-12-21')._getWeek()", 51,'week : 2013-12-21 → 51'); 
 	Test.equals("new Date('2013-12-22')._getWeek()", 51,'week : 2013-12-22 → 51'); 
 	Test.equals("new Date('2013-12-23')._getWeek()", 52,'week : 2013-12-23 → 52'); 
@@ -138,10 +138,14 @@ window.onload = function(){
 	Test.equals("new Date('2016-01-03')._getWeek(0)", 2, 'week : 2016-01-03 → 2'); 
 	Test.equals("new Date('2016-01-04')._getWeek(0)", 2, 'week : 2016-01-04 → 2'); 
 	
-	Test.title("Date._toStringFormat()");
-	Test.equals("new Date('2012-12-21')._toStringFormat('MMMM M m', 'fr')", 'décembre 12 0', '2012-12-21 + "MMMM M m" → "décembre 12 0"');
+	Test.title("Date.prototype._toStringFormat()");
+	Test.equals("new Date('2012-12-21')._toStringFormat('dd/MM/yyyy', 'fr')",  '21/12/2012',      '2012-12-21 + "Mdd/MM/yyyy" → "21/12/2012"');
+	Test.equals("new Date('2012-12-21')._toStringFormat('MMMM M m', 'fr')",    'décembre 12 0',   '2012-12-21 + "MMMM M m" → "décembre 12 0"');
+	Test.equals("new Date('2012-12-19')._toStringFormat('EEEE EEE W', 'en')",  'Wednesday Wed W', '2012-12-21 + "EEEE EEE W" → "Wednesday Wed W"');
+	Test.equals("new Date('2012-12-21T13:14:15.678')._toStringFormat('HH:mm:ss.SSS', 'fr')",   '13:14:15.678',    '2012-12-21T13:14:15.678 + "HH:mm:ss.SSS" → "13:14:15.678"');
+	Test.equals("new Date('2012-12-21T03:04:05.078')._toStringFormat('H:m:s.S', 'fr')",        '3:4:5.78',        '2012-12-21T03:04:05.078 + "H:m:s.S" → "3:4:5.78"');
 
-	Test.title("Number._formatByPattern()");
+	Test.title("Number.prototype._formatByPattern()");
 	Test.equals("new Number(1)._formatByPattern('#,###',    {lg : 'fr'})", '1', '1 + #,### → 1');
 	Test.equals("new Number(1)._formatByPattern('#,##0',    {lg : 'fr'})", '1', '1 + #,##0 → 1');
 	Test.equals("new Number(1)._formatByPattern('#,#00',    {lg : 'fr'})", '01', '1 + #,#00 → 01');
@@ -179,11 +183,23 @@ window.onload = function(){
 	Test.error("new Number(123.103)._formatByPattern('0000.#0%',  {lg : 'fr'})");
 	
 	
-	Test.title("Number._format()");
+	Test.title("Number.prototype._format()");
 	Test.equals("new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '})", '2 591,6', "2591.5978 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,6'");
 	Test.equals("new Number(2591.5178)._format({groupingSize : 3, decimalSize : 1, decimalZeroSize : 2, dot : ',', space : ' '})", '2 591,50', "2591.5178 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,50'"); // cas à con à revoir
 	
-	Test.title("String._padLeft()");
+	Test.title("Number._parse()");
+	Test.equals("Number._parse('1')",                    '1',         "1 → 1");
+	Test.equals("Number._parse('1,2',        {lg : 'fr'})", '1.2',    "1.2 → 1.2");
+	Test.equals("Number._parse('1,2%',       {lg : 'fr'})", '1.2',    "1.2% → 1.2");
+	Test.equals("Number._parse('1,2 avions', {lg : 'fr'})", '1.2',    "1.2 avions → 1.2");
+	Test.equals("Number._parse('1,000.2',    {lg : 'en'})", '1000.2', "1,000.2 → 1000.2");
+	Test.equals("Number._parse('1\u00A0000', {lg : 'fr'})", '1000',   "1,000 → 1000");
+	Test.equals("Number._parse('1 000',    {space : ' '})", '1000',   "1 000 → 1000");
+	Test.equals("Number._parse('1 000\u00A0000',    {space : [' ', '\u00A0']})", '1000000',   "1 000\u00A0000 → 1000000");
+	Test.equals("Number._parse('1.2',    {dot : '.'})", '1.2',   "1.2 → 1.2");
+	Test.equals("Number._parse('1,2',    {dot : ['.', ',']})", '1.2',   "1,2 → 1.2");
+	
+	Test.title("String.prototype._padLeft()");
 	Test.equals("'1'._padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
 	Test.equals("'1'._padLeft(2,  '.')",            '.1',            "1 + left(1, '.') → .1");
 	Test.equals("'1'._padLeft(10, '.')",            '.........1',    "1 + left(10, '.') → ........1");
@@ -206,7 +222,7 @@ window.onload = function(){
 	Test.equals("'12345'._padLeft(6, 'ABCD')",      'D12345',        "12345 + left(6, 'ABCD') → D12345");
 	Test.equals("'12345'._padLeft(10,'ABCD')",      'DABCD12345',    "12345 + left(10, 'ABCD') → DABCD12345");
 	
-	Test.title("String._padRight()");	
+	Test.title("String.prototype._padRight()");	
 	Test.equals("'1'._padRight(1, '.')",            '1',              "1 + right(1, '') → 1");
 	Test.equals("'1'._padRight(2, '.')",            '1.',             "1 + right(1, '.') → 1.");
 	Test.equals("'1'._padRight(10, '.')",           '1.........',     "1 + right(10, '.') → 1........");
@@ -224,7 +240,7 @@ window.onload = function(){
 	Test.equals("'12345'._padRight(6, 'ABCD', 'l')",'12345D',         "12345 + left(6, 'ABCD', 'l') → 12345D");
 	Test.equals("'12345'._padRight(10,'ABCD', 'l')",'12345DABCD',     "12345 + left(10, 'ABCD', 'l') → 12345DABCD");
 	
-	Test.title("String._format()");
+	Test.title("String.prototype._format()");
 	Test.equals("'a'._format(1)",                 'a',     '1 + a → a');
 	Test.equals("'{0}'._format(1)",               '1',     '1 + {0} → 1');
 	Test.equals("'a{0}'._format(1)",              'a1',    '1 + a{0} → a1');
@@ -238,15 +254,17 @@ window.onload = function(){
 	Test.error("'{0}{0\\\\}{0}'._format(1)");
 	Test.error("'{0}{0,}{0}'._format(1)");
 	
-	Test.title("String._format() + number");
+	Test.title("String.prototype._format() + number");
 	Test.equals("'{0, number, #,###}'._format(1)",             '1',             '1 + {0, number, #,###} → 1');
 	Test.equals("'{0, number, #,###:fr}'._format([1000.10])",  '1\u00A0000',    '[1000.10] + {0, number, #,###:fr} → 1\u00A0000');
 	Test.equals("'{0, number, #,###.00:fr}'._format(1000.10)", '1\u00A0000,10', '1000.10 + {0, number, #,###.00:fr} → 1\u00A0000,00');
 	Test.equals("'{0, number, #,###.00:en}'._format(1000.10)", '1,000.10',      '1000.10 + {0, number, #,###.00:en} → 1,000.10');
-	Test.equals("'{0, number, {1}}'._format([1, '#,###.00:fr'])",'1,00',        '[1, #,###.00:fr] + {0, number, {1}} → 1,00');
-	Test.equals("'{0, number, {1}}'._format([1, '#,###.00%:fr'])",'100,00%',    '[1, #,###.00%:fr] + {0, number, {1}} → 100,00%');
+	Test.equals("'{0, number, {1}}'._format([1, '#,###.00:fr'])", '1,00',        '[1, #,###.00:fr] + {0, number, {1}} → 1,00');
+	Test.equals("'{0, number, {1}}'._format([1, '#,###.00%:fr'])",'100,00%',     '[1, #,###.00%:fr] + {0, number, {1}} → 100,00%');
+	Test.equals("'{0, number, {1}}'._format(['1a', '#,###'])",    '1',           '[a, #,###.00%:fr] + {0, number, {1}} → 100,00%');
+	Test.error("'{0, number, {1}}'._format(['a', '#,###.00%:fr'])");
 	
-	Test.title("String._format() + choice");
+	Test.title("String.prototype._format() + choice");
 	Test.equals("'{0, choice, 1# true|2# false}'._format(1)",             'true',      '1 + {0, choice, 1# true|2# false} → true');
 	Test.equals("'{0, choice, 1# true\\\\|true|2# false}'._format(1)",      'true|true', '1 + {0, choice, 1# true\\|true|2# false} → true|true');
 	Test.equals("'{0, choice, 1# false|2# true}'._format(2)",             'true',      '2 + {0, choice, 1# false|2# true} → true');
@@ -256,7 +274,7 @@ window.onload = function(){
 	Test.equals("'{val, choice, this# \\\\{1\\\\}|other#\\\\{0\\\\}}'._format({val : 'this'})", '{1}',  '{val : \'this\'} + {val, choice, this# \\{1\\}|other#\\{0\\}} → true');
 	Test.equals("'{0, choice, 1#{1}|2#{2}}'._format([1, 2, 3])",        '2',          '[1, 2, 3] + {0, choice, 1#{1}|2#{2}} → 2');
 	
-	Test.title("String._format() + date");
+	Test.title("String.prototype._format() + date");
 	Test.equals("'{0, date, d/M/yy}'._format('2015-02-08')",     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');
 	Test.equals("'{0, date, dd/MM/yyyy}'._format('2015-10-20')", '20/10/2015', '2015-10-20 + {0, date, dd/MM/yyyy} → 20/10/2015');
 	Test.equals("'{0, date, w-yyyy}'._format('2015-10-20')",     '43-2015',    '2015-10-20 + {0, date, w-yyyy} → 43-2015');
