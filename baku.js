@@ -1,6 +1,6 @@
 var baku = {};
 
-baku.version = '0.1d';
+baku.version = '0.1e';
 
 /**
  * test if it's a string
@@ -27,7 +27,7 @@ baku.isArray = function(array) {
  * @return merged object
  */
 baku.extend = function (base, add) {
-	if (typeof(base) === 'object' && !(base instanceof Array)) {
+	if (typeof(base) === 'object' && !(base instanceof Array) && add) {
 		for(var i in add) {
 			base[i] = baku.extend(base[i], add[i]);
         }

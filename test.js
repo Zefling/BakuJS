@@ -176,7 +176,6 @@ window.onload = function(){
 	Test.equals("new Number(1.1)._formatByPattern('#,###.00%',    {lg : 'fr'})", '110,00%',   '1.1 + #,###.00% → 110,00%');
 	Test.equals("new Number(1.1)._formatByPattern('0,000.00%',    {lg : 'en'})", '0,110.00%', '1.1 + #,###.00% → 0,110.00%');
 	Test.equals("new Number(1.1111)._formatByPattern('0,000.00%', {lg : 'en'})", '0,111.11%',   '1.1111 + #,###.00% → 0,111.11%');
-	Test.equals("new Number(5.5)._formatByPattern('#',    {lg : 'fr'})", '6', '5.5 + # → 6');
 	Test.error("new Number(123.103)._formatByPattern('0#000.##',  {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0#',  {lg : 'fr'})");
@@ -185,19 +184,27 @@ window.onload = function(){
 	
 	Test.title("Number.prototype._format()");
 	Test.equals("new Number(2591.5978)._format({groupingSize : 3, decimalSize : 2, dot : ',', space : ' '})", '2 591,6', "2591.5978 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,6'");
-	Test.equals("new Number(2591.5178)._format({groupingSize : 3, decimalSize : 1, decimalZeroSize : 2, dot : ',', space : ' '})", '2 591,50', "2591.5178 + {groupingSize : 3, decimalSize : 2, dot : ',', space : ' '}  → '2 591,50'"); // cas à con à revoir
+	Test.equals("new Number(2591.5178)._format({groupingSize : 3, decimalSize : 1, decimalZeroSize : 2, dot : ',', space : ' '})", '2 591,50',  "2591.5178 + {groupingSize : 3, decimalSize : 1, decimalZeroSize : 2, dot : ',', space : ' '}  → '2 591,50'"); // cas à con à revoir
+	Test.equals("new Number(2591.5178)._format({groupingSize : 2, decimalSize : 3, decimalZeroSize : 3, dot : '.', space : '_'})", '25_91.518', "2591.5178 + {groupingSize : 2, decimalSize : 3, decimalZeroSize : 3, dot : '.', space : '_'}  → '25_91.518'"); 
+	Test.equals("new Number(2591.5178)._format({groupingSize : -1, dot : '.', space : ','})", '2592', "2591.5178 + {groupingSize : -1, dot : '.', space : ','}  → '2592'"); 
+	Test.equals("new Number(2591.5178)._format({lg : 'fr'})", '2\u00A0592', "2591.5178 + {lg : 'fr'}  → '2\u00A0591'"); 
+	Test.equals("new Number(2591.5178)._format({lg : 'en'})", '2,592',     "2591.5178 + {lg : 'en'}  → '2,591'"); 
+
 	
 	Test.title("Number._parse()");
 	Test.equals("Number._parse('1')",                    '1',         "1 → 1");
 	Test.equals("Number._parse('1,2',        {lg : 'fr'})", '1.2',    "1.2 → 1.2");
 	Test.equals("Number._parse('1,2%',       {lg : 'fr'})", '1.2',    "1.2% → 1.2");
+	Test.equals("Number._parse('a1b2c',      {lg : 'fr'})", '1',      "a1b2c → 1");
 	Test.equals("Number._parse('1,2 avions', {lg : 'fr'})", '1.2',    "1.2 avions → 1.2");
 	Test.equals("Number._parse('1,000.2',    {lg : 'en'})", '1000.2', "1,000.2 → 1000.2");
 	Test.equals("Number._parse('1\u00A0000', {lg : 'fr'})", '1000',   "1,000 → 1000");
 	Test.equals("Number._parse('1 000',    {space : ' '})", '1000',   "1 000 → 1000");
-	Test.equals("Number._parse('1 000\u00A0000',    {space : [' ', '\u00A0']})", '1000000',   "1 000\u00A0000 → 1000000");
+	Test.equals("Number._parse('1 000\u00A0000', {space : [' ', '\u00A0']})", '1000000',   "1 000\u00A0000 → 1000000");
+	Test.equals("Number._parse('1 000\u00A0000', {space : ' '})",             '1000',      "1 000\u00A0000 → 1000");
 	Test.equals("Number._parse('1.2',    {dot : '.'})", '1.2',   "1.2 → 1.2");
 	Test.equals("Number._parse('1,2',    {dot : ['.', ',']})", '1.2',   "1,2 → 1.2");
+	
 	
 	Test.title("String.prototype._padLeft()");
 	Test.equals("'1'._padLeft(1,  '.')",            '1',             "1 + left(1, '') → 1");
@@ -261,7 +268,7 @@ window.onload = function(){
 	Test.equals("'{0, number, #,###.00:en}'._format(1000.10)", '1,000.10',      '1000.10 + {0, number, #,###.00:en} → 1,000.10');
 	Test.equals("'{0, number, {1}}'._format([1, '#,###.00:fr'])", '1,00',        '[1, #,###.00:fr] + {0, number, {1}} → 1,00');
 	Test.equals("'{0, number, {1}}'._format([1, '#,###.00%:fr'])",'100,00%',     '[1, #,###.00%:fr] + {0, number, {1}} → 100,00%');
-	Test.equals("'{0, number, {1}}'._format(['1a', '#,###'])",    '1',           '[a, #,###.00%:fr] + {0, number, {1}} → 100,00%');
+	Test.equals("'{0, number, {1}}'._format(['1a', '#,###'])",    '1',           '[1a, #,###.00%:fr] + {0, number, {1}} → 100,00%');
 	Test.error("'{0, number, {1}}'._format(['a', '#,###.00%:fr'])");
 	
 	Test.title("String.prototype._format() + choice");
