@@ -136,7 +136,7 @@ Number._parse = function (string, params) {
 	    lg    = params.lg    || navigator.language,
 	    dot   = RegExp._toRegexString(params.dot   || baku.lg(lg, 'number.dot')),
 	    space = RegExp._toRegexString(params.space || baku.lg(lg, 'number.space')),
-	    match = string.match(new RegExp('(\\d*((' + space + ')\\d*)*\\d)((' + dot + ')(\\d*))?', 'g') );
+	    match = string.match(new RegExp('-?(\\d*((' + space + ')\\d*)*\\d)((' + dot + ')(\\d*))?', 'g') );
 	if (match[0]) {
 		number = +(match[0].replace(new RegExp(space, 'g'), '').replace(new RegExp(dot), '.'));
 	}

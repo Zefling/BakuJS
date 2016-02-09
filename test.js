@@ -204,6 +204,10 @@ window.onload = function(){
 	Test.equals("Number._parse('1 000\u00A0000', {space : ' '})",             '1000',      "1 000\u00A0000 → 1000");
 	Test.equals("Number._parse('1.2',    {dot : '.'})", '1.2',   "1.2 → 1.2");
 	Test.equals("Number._parse('1,2',    {dot : ['.', ',']})", '1.2',   "1,2 → 1.2");
+	Test.equals("Number._parse('-1,2',   {lg : 'fr'})", '-1.2',   "-1,2 → -1.2");
+	Test.equals("Number._parse('-1\u00A0234,5',    {lg : 'fr'})", '-1234.5',   "-1\u00A0234,5 → -1234.5");
+	Test.equals("Number._parse('a -1\u00A0234,5 b',{lg : 'fr'})", '-1234.5',   "a -1\u00A0234,5 b → -1234.5");
+	Test.equals("Number._parse('a-1\u00A0234,5b',  {lg : 'fr'})", '-1234.5',   "a-1\u00A0234,5b → -1234.5");
 	
 	
 	Test.title("String.prototype._padLeft()");
