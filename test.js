@@ -208,6 +208,10 @@ window.onload = function(){
 	Test.equals("Number._parse('-1\u00A0234,5',    {lg : 'fr'})", '-1234.5',   "-1\u00A0234,5 → -1234.5");
 	Test.equals("Number._parse('a -1\u00A0234,5 b',{lg : 'fr'})", '-1234.5',   "a -1\u00A0234,5 b → -1234.5");
 	Test.equals("Number._parse('a-1\u00A0234,5b',  {lg : 'fr'})", '-1234.5',   "a-1\u00A0234,5b → -1234.5");
+	Test.equals("Number._parse('')",                   '',         "'' → ''");
+	Test.error("Number._parse()");
+	Test.error("Number._parse(null)");
+	Test.error("Number._parse({})");
 	
 	
 	Test.title("String.prototype._padLeft()");
@@ -232,24 +236,33 @@ window.onload = function(){
 	Test.equals("'12345'._padLeft(4, 'ABCD')",      '12345',         "12345 + left(4, 'ABCD') → 12345");
 	Test.equals("'12345'._padLeft(6, 'ABCD')",      'D12345',        "12345 + left(6, 'ABCD') → D12345");
 	Test.equals("'12345'._padLeft(10,'ABCD')",      'DABCD12345',    "12345 + left(10, 'ABCD') → DABCD12345");
+	Test.equals("'12345'._padLeft(10,'ABCD')",      'DABCD12345',    "12345 + left(10, 'ABCD') → DABCD12345");
+	Test.equals("'12345'._padLeft(10)",             '     12345',    "12345 + left(10) → '     12345'");
+	Test.equals("'12345'._padLeft()",               '12345',         "12345 + left() → '12345'");
+	Test.equals("'12345'._padLeft({})",             '12345',         "12345 + left({}) → '12345'");
+	Test.equals("'12345'._padLeft(1, {})",          '12345',         "12345 + left(1, {}) → '12345'");
 	
 	Test.title("String.prototype._padRight()");	
 	Test.equals("'1'._padRight(1, '.')",            '1',              "1 + right(1, '') → 1");
 	Test.equals("'1'._padRight(2, '.')",            '1.',             "1 + right(1, '.') → 1.");
 	Test.equals("'1'._padRight(10, '.')",           '1.........',     "1 + right(10, '.') → 1........");
-	Test.equals("'1'._padRight(2, 'ABCD')",         '1A',             "1 + left(2, 'ABCD') → 1A");
+	Test.equals("'1'._padRight(2, 'ABCD')",         '1A',             "1 + right(2, 'ABCD') → 1A");
 	Test.equals("'1'._padRight(10, 'ABCD')",        '1ABCDABCDA',     "1 + right(10, 'ABCD') → 1ABCDABCDA");
-	Test.equals("'1'._padRight(2, 'ABCD', 'r')",    '1B',             "1 + left(2, 'ABCD', 'r') → 1B");
+	Test.equals("'1'._padRight(2, 'ABCD', 'r')",    '1B',             "1 + right(2, 'ABCD', 'r') → 1B");
 	Test.equals("'1'._padRight(10, 'ABCD', 'r')",   '1BCDABCDAB',     "1 + right(10, 'ABCD', 'r') → 1BCDABCDAB");
-	Test.equals("'1'._padRight(2, 'ABCD', 'l')",    '1D',             "1 + left(2, 'ABCD', 'l') → 1D");
+	Test.equals("'1'._padRight(2, 'ABCD', 'l')",    '1D',             "1 + right(2, 'ABCD', 'l') → 1D");
 	Test.equals("'1'._padRight(10, 'ABCD', 'l')",   '1DABCDABCD',     "1 + right(10, 'ABCD', 'l') → 1DABCDABCD");
-	Test.equals("'12345'._padRight(4, 'ABCD')",     '12345',          "12345 + left(4, 'ABCD') → 12345");
-	Test.equals("'12345'._padRight(6, 'ABCD')",     '12345A',         "12345 + left(6, 'ABCD') → 12345A");
-	Test.equals("'12345'._padRight(10,'ABCD')",     '12345ABCDA',     "12345 + left(10, 'ABCD') → 12345ABCDA");
-	Test.equals("'12345'._padRight(6, 'ABCD', 'r')",'12345B',         "12345 + left(6, 'ABCD', 'r') → 12345B");
-	Test.equals("'12345'._padRight(10,'ABCD', 'r')",'12345BCDAB',     "12345 + left(10, 'ABCD', 'r') → 12345BCDAB");
-	Test.equals("'12345'._padRight(6, 'ABCD', 'l')",'12345D',         "12345 + left(6, 'ABCD', 'l') → 12345D");
-	Test.equals("'12345'._padRight(10,'ABCD', 'l')",'12345DABCD',     "12345 + left(10, 'ABCD', 'l') → 12345DABCD");
+	Test.equals("'12345'._padRight(4, 'ABCD')",     '12345',          "12345 + right(4, 'ABCD') → 12345");
+	Test.equals("'12345'._padRight(6, 'ABCD')",     '12345A',         "12345 + right(6, 'ABCD') → 12345A");
+	Test.equals("'12345'._padRight(10,'ABCD')",     '12345ABCDA',     "12345 + right(10, 'ABCD') → 12345ABCDA");
+	Test.equals("'12345'._padRight(6, 'ABCD', 'r')",'12345B',         "12345 + right(6, 'ABCD', 'r') → 12345B");
+	Test.equals("'12345'._padRight(10,'ABCD', 'r')",'12345BCDAB',     "12345 + right(10, 'ABCD', 'r') → 12345BCDAB");
+	Test.equals("'12345'._padRight(6, 'ABCD', 'l')",'12345D',         "12345 + right(6, 'ABCD', 'l') → 12345D");
+	Test.equals("'12345'._padRight(10,'ABCD', 'l')",'12345DABCD',     "12345 + right(10, 'ABCD', 'l') → 12345DABCD");
+	Test.equals("'12345'._padRight(10)",            '12345     ',     "12345 + right(10) → '12345     '");
+	Test.equals("'12345'._padRight()",              '12345',          "12345 + right() → '12345'");
+	Test.equals("'12345'._padRight({})",            '12345',          "12345 + right({}) → '12345'");
+	Test.equals("'12345'._padRight(1, {})",         '12345',          "12345 + right(1, {}) → '12345'");
 	
 	Test.title("String.prototype._format()");
 	Test.equals("'a'._format(1)",                 'a',     '1 + a → a');
@@ -277,13 +290,14 @@ window.onload = function(){
 	
 	Test.title("String.prototype._format() + choice");
 	Test.equals("'{0, choice, 1# true|2# false}'._format(1)",             'true',      '1 + {0, choice, 1# true|2# false} → true');
-	Test.equals("'{0, choice, 1# true\\\\|true|2# false}'._format(1)",      'true|true', '1 + {0, choice, 1# true\\|true|2# false} → true|true');
+	Test.equals("'{0, choice, 1# true\\\\|true|2# false}'._format(1)",    'true|true', '1 + {0, choice, 1# true\\|true|2# false} → true|true');
 	Test.equals("'{0, choice, 1# false|2# true}'._format(2)",             'true',      '2 + {0, choice, 1# false|2# true} → true');
 	Test.equals("'{0, choice, 1# false|2# true}'._format([2])",           'true',      '[2] + {0, choice,  1# false|2# true} → true');
-	Test.equals("'{0, choice, this# true|other false}'._format(['this'])",'true',          '[\'get\'] + {0, choice, get# true|other false} → true');
+	Test.equals("'{0, choice, this# true|other false}'._format(['this'])",'true',      '[\'get\'] + {0, choice, get# true|other false} → true');
 	Test.equals("'{val, choice, this# true|other false}'._format({val : 'this'})",  'true', '{val : \'this\'} + {val, choice, get# true|other false} → true');
 	Test.equals("'{val, choice, this# \\\\{1\\\\}|other#\\\\{0\\\\}}'._format({val : 'this'})", '{1}',  '{val : \'this\'} + {val, choice, this# \\{1\\}|other#\\{0\\}} → true');
 	Test.equals("'{0, choice, 1#{1}|2#{2}}'._format([1, 2, 3])",        '2',          '[1, 2, 3] + {0, choice, 1#{1}|2#{2}} → 2');
+	Test.equals("'{0, choice, 1#{1}|2#{2}}'._format('a')",              '',           '"a" + {0, choice, 1#{1}|2#{2}} → ""');
 	
 	Test.title("String.prototype._format() + date");
 	Test.equals("'{0, date, d/M/yy}'._format('2015-02-08')",     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');
@@ -291,5 +305,7 @@ window.onload = function(){
 	Test.equals("'{0, date, w-yyyy}'._format('2015-10-20')",     '43-2015',    '2015-10-20 + {0, date, w-yyyy} → 43-2015');
 	Test.equals("'{0, date, \\\\w\\\\e\\\\e\\\\kw\\\\\\\\yyyy}'._format('2015-10-20')", 'week43\\2015', '2015-10-20 + {0, date, \\w\\e\\e\\kw\\\\yyyy} → week43\\2015');
 	Test.equals("'{0, date, {1}}'._format(['2015-10-20', 'dd/MM/yyyy'])",   '20/10/2015',          '[2015-10-20, dd/MM/yyyy] + {0, date, {1}} → 20/10/2015');
+	Test.equals("'{0, date, {1}}'._format(['a', 'dd/MM/yyyy'])",   '',          '[a, dd/MM/yyyy] + {0, date, {1}} → ""');
+	Test.equals("'{0, date, {1}}'._format(['2015-10-20'])",        '',          '[20/10/2015] + {0, date, {1}} → ""');
 	
 };

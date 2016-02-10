@@ -67,7 +67,10 @@ baku.string.formatter._parse = function (str, func) {
  */
 String.prototype._format = function (){
 	var args = arguments, str;
-	if (typeof args[0] === 'array' || typeof args[0] === 'object') {
+	if(args.length === 0) {
+		return '';
+	}
+	else if (typeof args[0] === 'array' || typeof args[0] === 'object') {
 		args = args[0];
 	}
 	
@@ -91,14 +94,17 @@ String.prototype._format = function (){
 /**
  * ajout d'une chaine répétée au début jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
- * @param str chaîne à répété 
+ * @param str chaîne à répété (défaut : ' ')
  * @param mode mode de répétition
  * @return chaîne modifiée
  */
 String.prototype._padLeft = function(n, str, mode) {
-	if (!n || n <= 0 || this.length >= n || str instanceof String) {
+	if (isNaN(parseInt(n)) || n <= 0 || this.length >= n || str === '') {
 		return this;
-	} 
+	}
+	if (str === undefined) {
+		str = ' ';
+	}
 	if (str.length === 1) {
 		mode = '';
 	}
@@ -120,15 +126,19 @@ String.prototype._padLeft = function(n, str, mode) {
 /**
  * ajout d'une chaine répétée à la fin jusqu'à la longeur désirée
  * @param n taille de chaîne désirée
- * @param str chaîne à répété
+ * @param str chaîne à répété (défaut : ' ')
  * @param mode mode de répétition
  * @return chaîne modifiée
  */
 String.prototype._padRight = function(n, str, mode) {
-	 if (!n || n <= 0 || this.length >= n || str instanceof String) {
+	
+	if (isNaN(parseInt(n)) || n <= 0 || this.length >= n || str === '') {
 		return this;
 	}
-	if (str.length === 1) {
+	if (str === undefined) {
+		str = ' ';
+	}
+	if (str.length <= 1) {
 		mode = '';
 	}
 	switch (mode) {

@@ -8,6 +8,9 @@ baku.number = {
 	 * @return formatted string number
 	 */
 	parse : function (pattern) {
+		if (!baku.isString(pattern)) {
+			throw 'patten error : is not a string';
+		}		
 		var groupingSize    = 0,
 		    zeroDigitSize   = 0,
 		    decimalSize     = 0, 
@@ -131,17 +134,22 @@ Number.prototype._format = function(format) {
  * @return a number
  */
 Number._parse = function (string, params) {
-	var number,
+	if (!baku.isString(string)) {
+		throw 'not a string';
+	}	
+	var number = '',
 	    params = typeof(params) === 'object' ? params : {}, 
 	    lg    = params.lg    || navigator.language,
 	    dot   = RegExp._toRegexString(params.dot   || baku.lg(lg, 'number.dot')),
 	    space = RegExp._toRegexString(params.space || baku.lg(lg, 'number.space')),
 	    match = string.match(new RegExp('-?(\\d*((' + space + ')\\d*)*\\d)((' + dot + ')(\\d*))?', 'g') );
-	if (match[0]) {
-		number = +(match[0].replace(new RegExp(space, 'g'), '').replace(new RegExp(dot), '.'));
-	}
-	else {
-		throw 'parsing error: '+string;
+	if (match) {
+		if (match[0]) {
+			number = +(match[0].replace(new RegExp(space, 'g'), '').replace(new RegExp(dot), '.'));
+		}
+		else {
+			throw 'parsing error: '+string;
+		}
 	}
 	
 	return number;

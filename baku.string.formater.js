@@ -55,8 +55,9 @@ baku.string.formatter.number = function (val, vals, arg) {
  * @required ext.date.js
  */ 
 baku.string.formatter.date = function (val, vals, arg) {
-	if(arg && arg.indexOf('{') > -1) {
+	if(arg !== "undefined" && arg.indexOf('{') > -1) {
 		arg = arg._format(vals);
 	}
-	return arg !== undefined ? new Date(val)._toStringFormat(arg) : '';
+	var date = new Date(val);
+	return arg !== "undefined" && !isNaN(date.getTime()) ? date._toStringFormat(arg) : '';
 };
