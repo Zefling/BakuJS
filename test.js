@@ -42,6 +42,13 @@ Test.error = function (test) {
 
 window.onload = function(){
 	
+	Test.title("Date.prototype._getDayOfYear()");
+	for(i = 1; i < 731; i++) {
+		var r = i === 366 ? 366 : i % 366;
+		Test.equals("new Date(2016,0,"+i+")._getDayOfYear()", r, 'day : 201' +(i < 336 ? 6 : 7)+ ' day ' + r + ' → '+ r); 
+	}
+	
+	
 	Test.title("Date.prototype._getWeek()");
 	Test.equals("new Date('2013-12-21')._getWeek()", 51,'week : 2013-12-21 → 51'); 
 	Test.equals("new Date('2013-12-22')._getWeek()", 51,'week : 2013-12-22 → 51'); 
@@ -171,11 +178,19 @@ window.onload = function(){
 	Test.equals("new Number(123.103)._formatByPattern('00000,000.00', {lg : 'en'})", '00,000,123.10', '123.103 + 00000,000.00 → 00,000,123.10');
 	Test.equals("new Number(123.103)._formatByPattern('#0,000.00',    {lg : 'en'})", '0,123.10',      '123.103 + #0,000.00 → 0,123.10');
 	Test.equals("new Number(1325123.103456)._formatByPattern('0,00,000.000 00',  {lg : 'en'})", '1,325,123.10346', '1325123.103456 + #0,000.00 → 1,325,123.10346');
-	Test.equals("new Number(1)._formatByPattern('#,###%',  {lg : 'fr'})", '100%',  '1 + #,###% → 100%');
-	Test.equals("new Number(1)._formatByPattern('#,### %', {lg : 'fr'})", '100 %', '1 + #,### % → 100 %');
+	Test.equals("new Number(1)._formatByPattern('#,###%',         {lg : 'fr'})", '100%',  '1 + #,###% → 100%');
+	Test.equals("new Number(1)._formatByPattern('#,### %',        {lg : 'fr'})", '100 %', '1 + #,### % → 100 %');
 	Test.equals("new Number(1.1)._formatByPattern('#,###.00%',    {lg : 'fr'})", '110,00%',   '1.1 + #,###.00% → 110,00%');
 	Test.equals("new Number(1.1)._formatByPattern('0,000.00%',    {lg : 'en'})", '0,110.00%', '1.1 + #,###.00% → 0,110.00%');
 	Test.equals("new Number(1.1111)._formatByPattern('0,000.00%', {lg : 'en'})", '0,111.11%',   '1.1111 + #,###.00% → 0,111.11%');
+	Test.equals("new Number(1)._formatByPattern('#',              {lg : 'fr'})", '1', '1 + # → 1');
+	Test.equals("new Number(1)._formatByPattern('###',            {lg : 'fr'})", '1', '1 + ### → 1');
+	Test.equals("new Number(1000)._formatByPattern('#',           {lg : 'fr'})", '1000', '1000 + # → 1000');
+	Test.equals("new Number(1000)._formatByPattern('###',         {lg : 'fr'})", '1000', '1000 + ### → 1000');
+	Test.equals("new Number(1000.1)._formatByPattern('#',         {lg : 'fr'})", '1000', '1000.1 + # → 1000');
+	Test.equals("new Number(1000.1)._formatByPattern('###',       {lg : 'fr'})", '1000', '1000.1 + ### → 1000');	
+	Test.equals("new Number(1.1)._formatByPattern('000',          {lg : 'fr'})", '001', '1.1 + 000 → 001');	
+	Test.equals("new Number(1.7)._formatByPattern('000',          {lg : 'fr'})", '002', '1.7 + 000 → 002');
 	Test.error("new Number(123.103)._formatByPattern('0#000.##',  {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0',   {lg : 'fr'})");
 	Test.error("new Number(123.103)._formatByPattern('0000.#0#',  {lg : 'fr'})");
