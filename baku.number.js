@@ -24,7 +24,10 @@ baku.number = {
 			unit = match[3];
 			
 			// digit grouping
-			groupingSize  = number.match(/,?([#]*[0]*)$/)[1].length;
+			var numberMatch = number.match(/,([#]*[0]*)$/);
+			if (numberMatch) {
+				groupingSize  = numberMatch[1].length;
+			}
 			zeroDigitSize = number.match(/[,0]*$/)[0].replace(/,/g, '').length;
 			// decimal
 			if (decimal) {
