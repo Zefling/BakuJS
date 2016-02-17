@@ -1,6 +1,6 @@
 var baku = {};
 
-baku.version = '0.1g';
+baku.version = '0.2';
 
 /**
  * test if it's a string

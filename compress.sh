@@ -10,4 +10,4 @@ elif [ "$1" = 'dom' ]; then
 else 
 	cat baku.js baku.math.js baku.number.js baku.date.js baku.regexp.js baku.string.js baku.string.formater.js | closure-compiler --js_output_file="baku$name.min.js"
 fi
-sed -i '1i/*! BakuJs v0.1g | (c) Zefling | license, see: github.com/Zefling/BakuJS */' "baku$name.min.js"
+sed -i '1i/*! BakuJs v0.2 | (c) Zefling | license, see: github.com/Zefling/BakuJS */' "baku$name.min.js"
