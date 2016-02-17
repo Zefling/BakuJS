@@ -289,9 +289,11 @@ window.onload = function(){
 	Test.equals("'{0}{0}{0}'._format(1)",         '111',   '1 + {0}{0}{0} → 111');
 	Test.equals("'a{0}b{0}c'._format(1)",         'a1b1c', '1 + a{0}b{0}c → a1b1c');
 	Test.equals("'{0}\\\\{0\\\\}{0}'._format(1)", '1{0}1', '1 + {0}\\{0\\}{0} → 1{0}1');
+	Test.equals("'\\\\{0\\\\}{0}\\\\{0\\\\}'._format(1)", '{0}1{0}', '1 + \\{0\\}{0}\\{0\\} → {0}1{0}');
 	Test.error("'{0}\\\\{0}{0}'._format(1)");
 	Test.error("'{0}{0\\\\}{0}'._format(1)");
 	Test.error("'{0}{0,}{0}'._format(1)");
+	
 	
 	Test.title("String.prototype._format() + number");
 	Test.equals("'{0, number, #,###}'._format(1)",             '1',             '1 + {0, number, #,###} → 1');
@@ -313,6 +315,7 @@ window.onload = function(){
 	Test.equals("'{val, choice, this# \\\\{1\\\\}|other#\\\\{0\\\\}}'._format({val : 'this'})", '{1}',  '{val : \'this\'} + {val, choice, this# \\{1\\}|other#\\{0\\}} → true');
 	Test.equals("'{0, choice, 1#{1}|2#{2}}'._format([1, 2, 3])",        '2',          '[1, 2, 3] + {0, choice, 1#{1}|2#{2}} → 2');
 	Test.equals("'{0, choice, 1#{1}|2#{2}}'._format('a')",              '',           '"a" + {0, choice, 1#{1}|2#{2}} → ""');
+	
 	
 	Test.title("String.prototype._format() + date");
 	Test.equals("'{0, date, d/M/yy}'._format('2015-02-08')",     '8/2/15',     '2015-02-08 + {0, date, d/M/yy} → 8/2/15');

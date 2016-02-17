@@ -74,20 +74,22 @@ String.prototype._format = function (){
 		args = args[0];
 	}
 	
-	return baku.string.formatter._parse(this,
-		/**
-		 * remplace the tag by a formated string 
-		 * @param base compled string respect the replace pattern (not used) (see : baku.string.formatter._parsePattern )
-		 * @param key the key tag (ex. 0 for {0})
-		 * @param func name of function (optional)
-		 * @param params a paramter object (optional)
-		 * @return string
-		 */
-		function (base, key, func, params) {
-			return (func !== undefined && typeof baku.string.formatter[func] === 'function')  
-				? ( params !== undefined ? baku.string.formatter[func](args[key], args, params) : baku.string.formatter[func](args[key], args) )
-				: args[key];
-		}).replace('\\}', '}').replace('\\{', '{');
+	return baku.string.formatter
+		._parse(this,
+			/**
+			 * remplace the tag by a formated string 
+			 * @param base compled string respect the replace pattern (not used) (see : baku.string.formatter._parsePattern )
+			 * @param key the key tag (ex. 0 for {0})
+			 * @param func name of function (optional)
+			 * @param params a paramter object (optional)
+			 * @return string
+			 */
+			function (base, key, func, params) {
+				return (func !== undefined && typeof baku.string.formatter[func] === 'function')  
+					? ( params !== undefined ? baku.string.formatter[func](args[key], args, params) : baku.string.formatter[func](args[key], args) )
+					: args[key];
+		})
+		.replace(/\\([{}])/g, '$1');
 };
 
 
