@@ -1,0 +1,7 @@
+#### backup #####
+.bak
+*.bak
+*.kate-swp
+
+#### generated files #####
+.directory
