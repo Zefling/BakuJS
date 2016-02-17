@@ -1,15 +1,15 @@
 baku.string = {
 	parsePattern : /^\s*([^,]+)\s*(?:,\s*([^,]+)\s*(?:,\s*(.*)\s*)?)?$/,
 	
-	/** formateur (object avec des fonctions : "func(mixed value):string" ou "func(mixed value, string params):string"   */
+	/** formatter (object with functions: "func(mixed value):string" otr "func(mixed value, string params):string"   */
 	formatter : {}
 };
 
 /**
- * fonction pour simuler le regex : /(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g
- * @param str la chaîne à parser
- * @param func la function à exécuter sur les balises
- * @return la chaine parsée
+ * function for simulating the PCRE regex: /(|\\){\s*([^,{}]+)\s*(?:,\s*([^,}]+)\s*)?(?:,\s*((?:(?R)|\\.|[^}])+)\s*)?}/g
+ * @param str string to parse
+ * @param func the function to execute on tags
+ * @return parsed string
  */
 baku.string.formatter._parse = function (str, func) {
 	var text = "", i  = 0, openTagCount = 0, closeTagCount = 0, fragment = {};
@@ -59,10 +59,10 @@ baku.string.formatter._parse = function (str, func) {
 };
 
 /**
- * formatage par function et paramètres :
+ *  formatting with function and parameters:
  * - {key, function, params}
- * les functions sont des méthodes de baku.string.formatter
- * @param liste d'arguments, array ou object
+ * functions are functions of baku.string.formatter
+ * @param liste arguments, array or object
  * @return string
  */
 String.prototype._format = function (){
@@ -94,11 +94,11 @@ String.prototype._format = function (){
 
 
 /**
- * ajout d'une chaine répétée au début jusqu'à la longeur désirée
- * @param n taille de chaîne désirée
- * @param str chaîne à répété (défaut : ' ')
- * @param mode mode de répétition
- * @return chaîne modifiée
+ * before the string, adding another string repeated until the desired length
+ * @param n size desired string
+ * @param str string to repeat (default: ' ')
+ * @param mode repeat mode
+ * @return modified string
  */
 String.prototype._padLeft = function(n, str, mode) {
 	if (isNaN(parseInt(n)) || n <= 0 || this.length >= n || str === '') {
@@ -126,11 +126,11 @@ String.prototype._padLeft = function(n, str, mode) {
 }; 
 
 /**
- * ajout d'une chaine répétée à la fin jusqu'à la longeur désirée
- * @param n taille de chaîne désirée
- * @param str chaîne à répété (défaut : ' ')
- * @param mode mode de répétition
- * @return chaîne modifiée
+ * after the string, adding another string repeated until the desired length
+ * @param n size desired string
+ * @param str string to repeat (default: ' ')
+ * @param mode repeat mode
+ * @return modified string
  */
 String.prototype._padRight = function(n, str, mode) {
 	

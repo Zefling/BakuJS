@@ -50,7 +50,7 @@ baku.number = {
 
 
 /**
- * formatage par pattern
+ * formatage by pattern
  * @param pattern formatter pattern (default: '#,###')
  * @param params params
  *   - dot   : symbol of decimal separator (default: empty)
@@ -70,7 +70,7 @@ Number.prototype._formatByPattern = function(pattern, params) {
 };
 
 /**
- * formatage suivant paramètre
+ * formatting function of a parameter
  * @param format 
  *   - groupingSize    : grouping digit size (0 <= not)
  *   - zeroDigitSize   : minimum number of digits
@@ -80,7 +80,7 @@ Number.prototype._formatByPattern = function(pattern, params) {
  *   - space           : symbol of grouping digit separator (default: '')
  *   - unit            : nothing or % (% → val×100, ex.: 1.5 → 150%)
  *   - lg              : defaults parameters defind by the language (only if language is defined)
- * @return la chaine formatée
+ * @return formatted string
  */
 Number.prototype._format = function(format) {
 	var val = this,
