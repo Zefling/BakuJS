@@ -4,19 +4,19 @@ baku.dom  = {
 	 * @param id the id element
 	 * @return HTMLElement
 	 */
-	'id' : function (id) { return document.elementById(id) },
+	'id' : function (id) { return document.getElementById(id) },
 	/**
 	 * get a element by name ( name="xxx" )
 	 * @param name the name element
 	 * @return HTMLElement
 	 */
-	'name' : function (name) { return document.elementByName(name) },
+	'name' : function (name) { return document.getElementByName(name) },
 	/**
 	 * get all elements that containts all classes list in params ( class="xxx yyy" )
 	 * @param classes class list (separete with space)
 	 * @return NodeList
 	 */
-	'class' : function (classes) { return document.elementByClassName(classes) },
+	'class' : function (classes) { return document.getElementByClassName(classes) },
 	/**
 	 * get all elements that respect a selector
 	 * @param selector CSS selector
@@ -36,11 +36,17 @@ baku.dom  = {
 	 */
 	'new' : function (name) { return document.createElement(name) },
 	/**
-	 * create de dument fragment
+	 * create fragment document
 	 * @param name name element
 	 * @return DOM fragment
 	 */
-	'frag' : function (name) { return document.createDocumentFragment(name) }
+	'frag' : function (name) { return document.createDocumentFragment(name) },
+	/**
+	 * create de text element
+	 * @param text text
+	 * @return DOM text
+	 */
+	'text' : function (text) { return document.createTextNode(text) }
 };
 
 // copy Array object in DomArray
@@ -49,8 +55,48 @@ for(var key in Array.prototype) {
 	DomArray.prototype[key] = Array.prototype[key];
 }
 
+
 /**
- * add a style on the element. 
+ * add a value on object of element. 
+ * @get if value === undefined
+ * @set if value !== undefined || name is a object
+ * @param attr attr name 
+ * @param secure true is index exist, false for creation
+ * @param name index or a list {'name' : 'value'}
+ * @param value value (optional)
+ * @return a value if @get, 'this' if @set
+ */
+HTMLElement.prototype._getInAttrObject = function (attr, secure, name, value) {
+	var list = this[attr];
+	if (!list) {
+		throw "It is not possible: " + attr + " not found.";
+	}
+	if (typeof(name) !== 'object' && value === undefined) {
+		if (attr === 'attributes') {
+			this.getAttribute(key);
+		} else if (list[name]) {
+			return list[name];
+		}
+	} else {
+		var attrs = {};
+		if (value === undefined) {
+			attrs = name;
+		} else {
+			attrs[name] = value;
+		}
+		for(var key in attrs) {
+			if (attr === 'attributes') {
+				this.setAttribute(key, attrs[key]);
+			} else if (!secure || secure && list[key] !== undefined) {
+				list[key] = attrs[key];
+			}
+		}
+	}
+	return this;
+};
+
+/**
+ * set or get a style on the element. 
  * @get if value === undefined
  * @set if value !== undefined || name is a object
  * @param name style name or a style list {'name' : 'value'}
@@ -58,29 +104,36 @@ for(var key in Array.prototype) {
  * @return a value if @get, 'this' if @set
  */
 HTMLElement.prototype._css = function (name, value) {
-	if (typeof(name) !== 'object' && value === undefined) {
-		if (this.style[name]) {
-			return this.style[name];
-		}
-	} else {
-		var styles = {};
-		if (value === undefined) {
-			styles = name;
-		} else {
-			styles[name] = value;
-		}
-		for(var key in styles) {
-			if (this.style[key] !== undefined) {
-				this.style[key] = styles[key];
-			}
-		}
-	}
-	return this;
+	return this._getInAttrObject('style', true, name, value);
+};
+
+/**
+ * set or get a dataset on the element.
+ * @get if value === undefined
+ * @set if value !== undefined || name is a object
+ * @param name dataset name or a dataset list {'name' : 'value'}
+ * @param value value of dataset (optional)
+ * @return a value if @get, 'this' if @set
+ */
+HTMLElement.prototype._data = function (name, value) {
+	return this._getInAttrObject('dataset', false, name, value);
+};
+
+/**
+ * set or get a attribute on the element.
+ * @get if value === undefined
+ * @set if value !== undefined || name is a object
+ * @param name attribute name or a attribute list {'name' : 'value'}
+ * @param value value of attribute (optional)
+ * @return a value if @get, 'this' if @set
+ */
+HTMLElement.prototype._attr = function (name, value) {
+	return this._getInAttrObject('attributes', false, name, value);
 };
 
 /** 
  * add one or more classes on the element
- * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @param name name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the element
  */
 HTMLElement.prototype._addClass = function (classes) {
@@ -95,7 +148,7 @@ HTMLElement.prototype._addClass = function (classes) {
 
 /** 
  * remove one or more classes on element
- * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @param name name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the element
  */
 HTMLElement.prototype._rmClass  = function (classes) {
@@ -107,6 +160,38 @@ HTMLElement.prototype._rmClass  = function (classes) {
 	}
 	return this;
 };
+
+/** 
+ * remove one or more classes on element
+ * @param name name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
+ * @param active if true add classes, id false remove classes
+ * @return the element
+ */
+HTMLElement.prototype._toggleClass = function (classes, active) {
+	this[active ? '_addClass' : '_rmClass' ](classes);
+	return this;
+};
+
+/**
+ * get Id in a element
+ * @param id id
+ * @return node or undefined if not found
+ */
+HTMLElement.prototype._getById = function (id) {
+	var children = this.childNodes;
+	var l = children.length;
+	for (var i = 0; i < l; i++) {
+		if (children[i].id === id) {
+			return children[i];
+		} else {
+			var node = children[i]._getById(id);
+			if (node instanceof HTMLElement) {
+				return node;
+			}
+		}
+	}
+	return undefined;
+}
 
 /**
  * add a style on elements list. 
@@ -128,11 +213,11 @@ DomArray.prototype._css = function (name, value) {
 
 /** 
  * add one or more classes on the element list
- * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @param classes name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the list
  */
 NodeList.prototype._addClass = 
-DomArray.prototype._addClass = function (name) {
+DomArray.prototype._addClass = function (classes) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i]._addClass(name);
@@ -143,16 +228,28 @@ DomArray.prototype._addClass = function (name) {
 
 /**
  * remove one or more classes on the element list
- * @param name name of class or a liste of classe. Ex. "class1 class2"
+ * @param classes name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the list
  */
 NodeList.prototype._rmClass = 
-DomArray.prototype._rmClass  = function (name) {
+DomArray.prototype._rmClass  = function (classes) {
 	for (var i in this) {
 		if (this[i] instanceof HTMLElement) {
 			this[i]._rmClass(name);
 		}
 	}
+	return this;
+};
+
+/**
+ * remove one or more classes on the element list
+ * @param classes name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
+ * @param active if true add classes, id false remove classes
+ * @return the list
+ */
+NodeList.prototype._toggleClass = 
+DomArray.prototype._toggleClass  = function (classes, active) {
+	this[active ? '_addClass' : '_rmClass' ](classes);
 	return this;
 };
 
@@ -194,5 +291,3 @@ DomArray.prototype._list = function (selector) {
 	}
 	return list;
 };
-
-
