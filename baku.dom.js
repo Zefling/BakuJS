@@ -183,7 +183,7 @@ HTMLElement.prototype._getById = function (id) {
 	for (var i = 0; i < l; i++) {
 		if (children[i].id === id) {
 			return children[i];
-		} else {
+		} else if (children[i] instanceof HTMLElement) {
 			var node = children[i]._getById(id);
 			if (node instanceof HTMLElement) {
 				return node;
