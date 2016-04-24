@@ -6,11 +6,11 @@ baku.dom  = {
 	 */
 	'id' : function (id) { return document.getElementById(id) },
 	/**
-	 * get a element by name ( name="xxx" )
+	 * get a elements by name ( name="xxx" )
 	 * @param name the name element
 	 * @return HTMLElement
 	 */
-	'name' : function (name) { return document.getElementByName(name) },
+	'name' : function (name) { return document.getElementsByName(name) },
 	/**
 	 * get all elements that containts all classes list in params ( class="xxx yyy" )
 	 * @param classes class list (separete with space)
