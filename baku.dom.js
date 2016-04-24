@@ -16,7 +16,7 @@ baku.dom  = {
 	 * @param classes class list (separete with space)
 	 * @return NodeList
 	 */
-	'class' : function (classes) { return document.getElementByClassName(classes) },
+	'class' : function (classes) { return document.getElementsByClassName(classes) },
 	/**
 	 * get all elements that respect a selector
 	 * @param selector CSS selector
