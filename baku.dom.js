@@ -66,7 +66,7 @@ for(var key in Array.prototype) {
  * @param value value (optional)
  * @return a value if @get, 'this' if @set
  */
-HTMLElement.prototype._getInAttrObject = function (attr, secure, name, value) {
+Element.prototype._getInAttrObject = function (attr, secure, name, value) {
 	var list = this[attr];
 	if (!list) {
 		throw "It is not possible: " + attr + " not found.";
@@ -103,7 +103,7 @@ HTMLElement.prototype._getInAttrObject = function (attr, secure, name, value) {
  * @param value value of style (optional)
  * @return a value if @get, 'this' if @set
  */
-HTMLElement.prototype._css = function (name, value) {
+Element.prototype._css = function (name, value) {
 	return this._getInAttrObject('style', true, name, value);
 };
 
@@ -115,7 +115,7 @@ HTMLElement.prototype._css = function (name, value) {
  * @param value value of dataset (optional)
  * @return a value if @get, 'this' if @set
  */
-HTMLElement.prototype._data = function (name, value) {
+Element.prototype._data = function (name, value) {
 	return this._getInAttrObject('dataset', false, name, value);
 };
 
@@ -127,7 +127,7 @@ HTMLElement.prototype._data = function (name, value) {
  * @param value value of attribute (optional)
  * @return a value if @get, 'this' if @set
  */
-HTMLElement.prototype._attr = function (name, value) {
+Element.prototype._attr = function (name, value) {
 	return this._getInAttrObject('attributes', false, name, value);
 };
 
@@ -136,7 +136,7 @@ HTMLElement.prototype._attr = function (name, value) {
  * @param name name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the element
  */
-HTMLElement.prototype._addClass = function (classes) {
+Element.prototype._addClass = function (classes) {
 	if (baku.isString(classes)) {
 		classes = classes.split(/\s+/);
 	}
@@ -151,7 +151,7 @@ HTMLElement.prototype._addClass = function (classes) {
  * @param name name of class or a list of classes. Ex. "class1 class2" or ["class1", "class2"]
  * @return the element
  */
-HTMLElement.prototype._rmClass  = function (classes) {
+Element.prototype._rmClass  = function (classes) {
 	if (baku.isString(classes)) {
 		classes = classes.split(/\s+/);
 	}
@@ -167,7 +167,7 @@ HTMLElement.prototype._rmClass  = function (classes) {
  * @param active if true add classes, id false remove classes
  * @return the element
  */
-HTMLElement.prototype._toggleClass = function (classes, active) {
+Element.prototype._toggleClass = function (classes, active) {
 	this[active ? '_addClass' : '_rmClass' ](classes);
 	return this;
 };
@@ -177,21 +177,31 @@ HTMLElement.prototype._toggleClass = function (classes, active) {
  * @param id id
  * @return node or undefined if not found
  */
-HTMLElement.prototype._getById = function (id) {
+Element.prototype._getById = function (id) {
 	var children = this.childNodes;
 	var l = children.length;
 	for (var i = 0; i < l; i++) {
 		if (children[i].id === id) {
 			return children[i];
-		} else if (children[i] instanceof HTMLElement) {
+		} else if (children[i] instanceof Element) {
 			var node = children[i]._getById(id);
-			if (node instanceof HTMLElement) {
+			if (node instanceof Element) {
 				return node;
 			}
 		}
 	}
 	return undefined;
 }
+
+/**
+ * alias for querySelector
+ */
+Element.prototype._first = function (selector) { return this.querySelector(selector) }
+
+/**
+ * alias for querySelectorAll
+ */
+Element.prototype._list  = function (selector) { return this.querySelectorAll(selector) }
 
 /**
  * add a style on elements list. 
@@ -204,7 +214,7 @@ HTMLElement.prototype._getById = function (id) {
 NodeList.prototype._css =
 DomArray.prototype._css = function (name, value) {
 	for (var i in this) {
-		if (this[i] instanceof HTMLElement) {
+		if (this[i] instanceof Element) {
 		    this[i]._css(name, value);
 		}
 	}
@@ -219,7 +229,7 @@ DomArray.prototype._css = function (name, value) {
 NodeList.prototype._addClass = 
 DomArray.prototype._addClass = function (classes) {
 	for (var i in this) {
-		if (this[i] instanceof HTMLElement) {
+		if (this[i] instanceof Element) {
 			this[i]._addClass(name);
 		}
 	}
@@ -234,7 +244,7 @@ DomArray.prototype._addClass = function (classes) {
 NodeList.prototype._rmClass = 
 DomArray.prototype._rmClass  = function (classes) {
 	for (var i in this) {
-		if (this[i] instanceof HTMLElement) {
+		if (this[i] instanceof Element) {
 			this[i]._rmClass(name);
 		}
 	}
@@ -278,11 +288,11 @@ NodeList.prototype._list =
 DomArray.prototype._list = function (selector) {
 	var e, i, j, list = new DomArray();
 	for (i in this) {
-		if (this[i] instanceof HTMLElement) {
+		if (this[i] instanceof Element) {
 			e = this[i].querySelectorAll(selector);
 			if (e.length > 0) {
 				for(j in e) {
-					if (e[j] instanceof HTMLElement) {
+					if (e[j] instanceof Element) {
 						list[list.length] = e[j];
 					}
 				}
