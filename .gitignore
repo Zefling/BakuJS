@@ -2,6 +2,7 @@
 .bak
 *.bak
 *.kate-swp
+*.min.js
 
 #### generated files #####
 .directory
